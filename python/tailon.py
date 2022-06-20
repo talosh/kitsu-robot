@@ -25,7 +25,7 @@ def tailon(config):
             for host_ip in cmd_hostname_result:
                 if not host_ip:
                     continue
-                bind_string += host_ip + ':' + config.get('WEBLOG_PORT', '88088') + ','
+                bind_string += host_ip + ':' + config.get('WEBLOG_PORT', '8088') + ','
             if bind_string.endswith(','):
                 bind_string = bind_string[:-1]
 
