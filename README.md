@@ -1,4 +1,4 @@
-# kitsu-robot
+# Kitsu-Robot
 Kitsu automation backend
 
 ## Setup
