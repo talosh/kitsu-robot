@@ -98,6 +98,7 @@ if __name__ == "__main__":
     while True:
         try:
             print ('[' + datetime.now().strftime("%Y%m%d %H:%M") + ']\n' + 'Hello from Kitsu-Robot' + '\n')
+            print (os.environ.get('KITSU_SITE'))
             time.sleep(1)
         except KeyboardInterrupt:
             sys.exit()
