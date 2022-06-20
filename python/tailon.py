@@ -32,6 +32,7 @@ def tailon(config):
                     ]
                     cmd_ipconfig_result = subprocess.run(cmd_ipconfig, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                     cmd_ipconfig_result = cmd_ipconfig_result.stdout.decode()
+                    cmd_ipconfig_result = cmd_ipconfig_result.replace('\n', '')
                     if cmd_ipconfig_result:
                         cmd_hostname_result.append(cmd_ipconfig_result)
 
