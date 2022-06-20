@@ -16,7 +16,6 @@ DEBUG=True
 __version__ = 'v0.0.1'
 
 if __name__ == "__main__":
-    os.system('/usr/bin/env python /opt/kitsu-robot/setenv.py')
     
     '''
     print ('... starting robot ...')
