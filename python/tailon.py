@@ -22,7 +22,7 @@ def tailon(config):
                 cmd_networksetup_result = cmd_networksetup_result.stdout.decode()
                 for line in cmd_networksetup_result.splitlines():
                     if line.startswith('Device'):
-                        interface_names.append(line.rsplit(':')[1])
+                        interface_names.append(line.rsplit(': ')[1])
 
                 pprint (interface_names)
 
