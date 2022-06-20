@@ -4,6 +4,9 @@ Kitsu automation backend
 ## Setup
 
 ### Dependencies
+```
+brew install logrotate
+```
 
 ### Get Kitsu-Robot sources
 ```
@@ -19,4 +22,17 @@ pip3 install virtualenv
 virtualenv robotenv
 . robotenv/bin/activate
 pip3 install -r requirements.txt
+```
+
+### Configure logging
+
+* rotate logs
+```
+crontab -e
+```
+
+add line
+
+```
+0 4 * * * /usr/local/opt/logrotate/sbin/logrotate --state /opt/kitsu-robot/log/logrotate.status /opt/kitsu-robot/logrotate.conf
 ```
