@@ -16,6 +16,8 @@ DEBUG=True
 __version__ = 'v0.0.1'
 
 if __name__ == "__main__":
+    os.environ['KITSU_SITE'] = 'http://192.168.15.99'
+    
     '''
     print ('... starting robot ...')
     print ('robot says:')
