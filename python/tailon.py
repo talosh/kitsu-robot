@@ -24,8 +24,18 @@ def tailon(config):
                     if line.startswith('Device'):
                         interface_names.append(line.rsplit(': ')[1])
 
-                pprint (interface_names)
+                for ifname in interface_names:
+                    cmd_ipconfig = [
+                        'ipconfig',
+                        'getifaddr',
+                        ifname
+                    ]
+                    cmd_ipconfig_result = subprocess.run(cmd_ipconfig, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    cmd_ipconfig_result = cmd_ipconfig_result.stdout.decode()
+                    if cmd_ipconfig_result:
+                        cmd_hostname_result.append(cmd_ipconfig_result)
 
+                pprint (cmd_hostname_result)
             else:
                 cmd_hostname = [
                         'hostname',
