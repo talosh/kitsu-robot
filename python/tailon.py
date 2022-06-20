@@ -11,15 +11,31 @@ from pprint import pprint, pformat
 def tailon(config):
     while True:
         try:
-            cmd_hostname = [
-                    'hostname',
-                    '-I'
-                    ]
+            cmd_hostname_result = []
+            if sys.platform == 'darwin':
+                interface_names = []
+                cmd_networksetup = [
+                    'networksetup',
+                    '-listallhardwareports'
+                ]
+                cmd_networksetup_result = subprocess.run(cmd_networksetup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                cmd_networksetup_result = cmd_networksetup_result.stdout.decode()
+                for line in cmd_networksetup_result.splitlines():
+                    if line.startswith('Device'):
+                        interface_names.append(line.rsplit(':')[1])
 
-            cmd_hostname_result = subprocess.run(cmd_hostname, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            cmd_hostname_result = cmd_hostname_result.stdout.decode()
-            cmd_hostname_result = cmd_hostname_result.replace('\n', '')
-            cmd_hostname_result = cmd_hostname_result.split(' ')
+                pprint (interface_names)
+
+            else:
+                cmd_hostname = [
+                        'hostname',
+                        '-I'
+                        ]
+
+                cmd_hostname_result = subprocess.run(cmd_hostname, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                cmd_hostname_result = cmd_hostname_result.stdout.decode()
+                cmd_hostname_result = cmd_hostname_result.replace('\n', '')
+                cmd_hostname_result = cmd_hostname_result.split(' ')
 
             bind_string = ''
             for host_ip in cmd_hostname_result:
