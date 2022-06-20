@@ -9,6 +9,8 @@ import re
 import subprocess
 import uuid
 
+import gazu
+
 from pprint import pprint, pformat
 
 from python.tailon import tailon
@@ -97,16 +99,21 @@ if __name__ == "__main__":
     delivery_thread.daemon = True
     delivery_thread.start()
     '''
+
     config = {}
 
     weblog_thread = threading.Thread(target=tailon, args=(config, ))
     weblog_thread.daemon = True
     weblog_thread.start()
 
+    gazu.set_host("http://192.168.15.99/api")
+    gazu.log_in("admin@dirtylooks.co.uk", "dirtylooks")
+
     while True:
         try:
             print ('[' + datetime.now().strftime("%Y%m%d %H:%M") + ']\n' + 'Hello from Kitsu-Robot' + '\n')
-            print (os.environ.get('KITSU_SITE'))
+            projects = gazu.project.all_open_projects()
+            pprint (projects)
             time.sleep(1)
         except KeyboardInterrupt:
             sys.exit()
