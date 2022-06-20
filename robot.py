@@ -99,7 +99,7 @@ if __name__ == "__main__":
     '''
     config = {}
 
-    weblog_thread = threading.Thread(target=tailon, args=(config))
+    weblog_thread = threading.Thread(target=tailon, args=(config, ))
     weblog_thread.daemon = True
     weblog_thread.start()
 
