@@ -29,8 +29,8 @@ def tailon(config):
             if bind_string.endswith(','):
                 bind_string = bind_string[:-1]
 
-            tailon_location = config.get('TAILON_BINARY', '/opt/sgrobot/robotenv/bin/tailon')
-            logfile_location = config.get('LOGFILE', '/opt/sgrobot/log/robot.log')
+            tailon_location = config.get('TAILON_BINARY', '/opt/kitsu-robot/robotenv/bin/tailon')
+            logfile_location = config.get('LOGFILE', '/opt/kitsu-robot/log/robot.log')
             if os.path.isfile(tailon_location):
                 cmd_tailon = [
                     tailon_location,
