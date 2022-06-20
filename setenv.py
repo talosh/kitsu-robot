@@ -1,4 +1,5 @@
 # set login environment variables
+#!/usr/bin/env python
 
 import os
 
