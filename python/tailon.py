@@ -8,7 +8,7 @@ from .common import log
 
 from pprint import pprint, pformat
 
-def tailon(sg_cache, config):
+def tailon(config):
     while True:
         try:
             cmd_hostname = [

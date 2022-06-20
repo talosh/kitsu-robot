@@ -11,6 +11,8 @@ import uuid
 
 from pprint import pprint, pformat
 
+from python.tailon import tailon
+
 DEBUG=True
 
 __version__ = 'v0.0.1'
@@ -95,6 +97,11 @@ if __name__ == "__main__":
     delivery_thread.daemon = True
     delivery_thread.start()
     '''
+    config = {}
+
+    weblog_thread = threading.Thread(target=tailon, args=(config))
+    weblog_thread.daemon = True
+    weblog_thread.start()
 
     while True:
         try:
