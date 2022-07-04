@@ -113,7 +113,7 @@ if __name__ == "__main__":
         try:
             print ('[' + datetime.now().strftime("%Y%m%d %H:%M") + ']\n' + 'Hello from Kitsu-Robot' + '\n')
             projects = gazu.project.all_open_projects()
-            data = gazu.client.fetch_all("metadata_descriptor")
+            data = gazu.client.fetch_all("metadata")
             pprint (data)
             # pprint (dir(gazu))
             time.sleep(4)
