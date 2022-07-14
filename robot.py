@@ -111,11 +111,13 @@ if __name__ == "__main__":
 
     while True:
         try:
-            print ('[' + datetime.now().strftime("%Y%m%d %H:%M") + ']\n' + 'Hello from Kitsu-Robot' + '\n')
+            # print ('[' + datetime.now().strftime("%Y%m%d %H:%M") + ']\n' + 'Hello from Kitsu-Robot' + '\n')
             projects = gazu.project.all_open_projects()
-            data = gazu.client.fetch_all("shots")
-            pprint (data)
+            pprint (projects)
+            # data = gazu.client.fetch_all("shots")
+            # pprint (data)
             # pprint (dir(gazu))
             time.sleep(4)
         except KeyboardInterrupt:
             sys.exit()
+            
