@@ -115,7 +115,7 @@ if __name__ == "__main__":
             projects = gazu.project.all_open_projects()
             for project in projects:
                 print ('name: %s' % project.get('name'))
-                api_path = '/data/projects/' + project.get('id')
+                api_path = '/data/projects/' + project.get('id') + '/metadata-descriptors'
                 project_data = gazu.client.get(api_path)
                 pprint (project_data)
             # data = gazu.client.fetch_all("shots")
