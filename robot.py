@@ -113,11 +113,14 @@ if __name__ == "__main__":
         try:
             # print ('[' + datetime.now().strftime("%Y%m%d %H:%M") + ']\n' + 'Hello from Kitsu-Robot' + '\n')
             projects = gazu.project.all_open_projects()
-            pprint (projects)
+            for project in projects:
+                print ('name: %s' % project.get('name'))
+                api_path = '/data/projects/' + project.get('id')
+                project_data = gazu.client.get(api_path)
+                pprint (project_data)
             # data = gazu.client.fetch_all("shots")
             # pprint (data)
             # pprint (dir(gazu))
             time.sleep(4)
         except KeyboardInterrupt:
             sys.exit()
-            
