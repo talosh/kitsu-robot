@@ -119,6 +119,15 @@ if __name__ == "__main__":
                 project_descriptor_data = gazu.client.get(descriptors_api_path)
                 project_descriptor_names = [x['name'] for x in project_descriptor_data]
                 pprint (project_descriptor_names)
+                if 'test' not in project_descriptor_names:
+                    data = {
+                        'name': 'test',
+                        'choices': [],
+                        'for_client': False,
+                        'entity_type': 'Shot',
+                        'departments': []
+                    }
+                pprint (project_descriptor_names)
             # data = gazu.client.fetch_all("shots")
             # pprint (data)
             # pprint (dir(gazu))
