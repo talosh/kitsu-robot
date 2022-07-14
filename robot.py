@@ -117,8 +117,8 @@ if __name__ == "__main__":
                 print ('name: %s' % project.get('name'))
                 descriptors_api_path = '/data/projects/' + project.get('id') + '/metadata-descriptors'
                 project_descriptor_data = gazu.client.get(descriptors_api_path)
-                for project_descriptor in project_descriptor_data:
-                    pprint (project_descriptor)
+                project_descriptor_names = [x['name'] for x in project_descriptor_data]
+                pprint (project_descriptor_names)
             # data = gazu.client.fetch_all("shots")
             # pprint (data)
             # pprint (dir(gazu))
