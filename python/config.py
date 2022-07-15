@@ -2,6 +2,8 @@ import os
 import sys
 import json
 
+from pprint import pprint, pformat
+
 def default_config_data():
     data = {}
 
@@ -44,22 +46,32 @@ def default_config_data():
     if not os.path.isdir(flapi_module_path):
         print ('unable to find flapi python module')
         sys.exit()
-
-    data['flapi_host'] = 'localhost'
     
     data['flapi_module_path'] = flapi_module_path
 
     return data
 
 def get_config_data(config_folder_path):
+    data = default_config_data()
+    
+    if not os.path.isdir(config_folder_path):
+        return data
+    
+    config_files = os.listdir(config_folder_path)
+
+    pprint (config_files)
+    sys.exit()
+
+
+
 
     config_file_path = os.path.join(
         config_folder_path,
         'config.json'
     )
 
-    config = None
 
+    config = None
     if os.path.isfile(config_file_path):
         try:
             with open(config_file_path, 'r') as config_file:
@@ -68,8 +80,6 @@ def get_config_data(config_folder_path):
         except Exception as e:
             print('[WARNING] Unable to read config file %s' % config_file_path)
             print(e)
-
-    data = default_config_data()
 
     if not isinstance (config, dict):
         pass
