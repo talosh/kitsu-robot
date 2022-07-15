@@ -1,1 +1,3 @@
 gazu
+websocket-client
+opentimelineio

@@ -49,6 +49,8 @@ def default_config_data():
     
     data['flapi_module_path'] = flapi_module_path
 
+    return data
+
 def get_config_data(config_folder_path):
 
     config_file_path = os.path.join(
