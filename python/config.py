@@ -1,3 +1,7 @@
+import os
+import sys
+import json
+
 def default_config_data():
     data = {}
 
@@ -45,15 +49,15 @@ def default_config_data():
     
     data['flapi_module_path'] = flapi_module_path
 
-def get_config_data(args):
-    config_file_path = args.get('config file')
-    if not (config_file_path):
-        file_path = os.path.abspath(__file__)
-        config_dir = os.path.dirname(os.path.dirname(file_path))
-        config_file_path = os.path.join(config_dir, 'config.json')
+def get_config_data(config_folder_path):
+
+    config_file_path = os.path.join(
+        config_folder_path,
+        'config.json'
+    )
 
     config = None
-    
+
     if os.path.isfile(config_file_path):
         try:
             with open(config_file_path, 'r') as config_file:
@@ -64,8 +68,6 @@ def get_config_data(args):
             print(e)
 
     data = default_config_data()
-    for key in args.keys():
-        data[key] = args.get(key)
 
     if not isinstance (config, dict):
         pass

@@ -23,9 +23,11 @@ __version__ = 'v0.0.1'
 
 if __name__ == "__main__":
     app_location = os.path.dirname(os.path.abspath(__file__))
-    print (app_location)
-    sys.exit()
+    config_folder_path = os.path.join(app_location, 'config')
     app_config = get_config_data(config_folder_path)
+
+    pprint (app_config)
+    sys.exit()
 
     '''
     print ('... starting robot ...')
