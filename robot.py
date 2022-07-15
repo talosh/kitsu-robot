@@ -13,14 +13,20 @@ import gazu
 
 from pprint import pprint, pformat
 
+from python.config import get_config_data
 from python.tailon import tailon
+
 
 DEBUG=True
 
 __version__ = 'v0.0.1'
 
 if __name__ == "__main__":
-    
+    app_location = os.path.dirname(os.path.abspath(__file__))
+    print (app_location)
+    sys.exit()
+    app_config = get_config_data(config_folder_path)
+
     '''
     print ('... starting robot ...')
     print ('robot says:')
@@ -135,3 +141,6 @@ if __name__ == "__main__":
             time.sleep(4)
         except KeyboardInterrupt:
             sys.exit()
+
+
+"wookie:dlj0356_mr_malcolms_list:grade:reel_01_v*"
