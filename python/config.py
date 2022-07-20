@@ -59,8 +59,17 @@ def get_config_data(config_folder_path):
         return data
     
     config_files = os.listdir(config_folder_path)
+    if not config_files:
+        return data
+    
+    for config_file in config_files:
+        config_file_path = os.path.join(
+            config_folder_path,
+            config_file
+        )
 
-    pprint (config_files)
+        pprint (config_file_path)
+
     sys.exit()
 
 
