@@ -1,56 +1,98 @@
 [
     {
         "name": "00.Shot-ID",
-        "choices": [],
-        "for_client": false,
         "entity_type": "Shot"
     },
     {
         "name": "01.Locator",
-        "choices": [],
-        "for_client": false,
         "entity_type": "Shot"
     },
     {
         "name": "02.Prod-Opt-Notes",
-        "choices": [],
-        "for_client": false,
         "entity_type": "Shot"
     },
     {
         "name": "03.Conform-Notes",
-        "choices": [],
-        "for_client": false,
         "entity_type": "Shot"
     },
     {
         "name": "04.Opt-Done",
-        "choices": [],
-        "for_client": false,
         "entity_type": "Shot"
     },
     {
         "name": "05.Has Speed Change",
-        "choices": [],
-        "for_client": false,
         "entity_type": "Shot"
     },
     {
         "name": "06.DL-Time-Est",
-        "choices": [],
-        "for_client": false,
         "entity_type": "Shot"
     },
     {
         "name": "07.DL-Needs-Prod-Atn",
-        "choices": [],
-        "for_client": false,
         "entity_type": "Shot"
     },
     {
         "name": "08.DL-Producer-Notes",
-        "choices": [],
-        "for_client": false,
+        "entity_type": "Shot"
+    },
+    {
+        "name": "09.EDL-event",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "10.Tape",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "11.Source TC Start",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "12.Source TC End",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "13.Record TC Start",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "14.Record TC End",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "15.Vers-in-Baselight",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "16.Vers-Prod-Final",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "17.Vendor",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "18.DL-Import-Date",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "19.EDL-Comment",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "21.Turnover-Package",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "22.Prod TC In",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "23.Prod TC Out",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "25.Rec-Frame",
         "entity_type": "Shot"
     }
 ]
