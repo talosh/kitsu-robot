@@ -1,6 +1,54 @@
 [
     {
-        "name": "0.Shot-ID",
+        "name": "00.Shot-ID",
+        "choices": [],
+        "for_client": false,
+        "entity_type": "Shot"
+    },
+    {
+        "name": "01.Locator",
+        "choices": [],
+        "for_client": false,
+        "entity_type": "Shot"
+    },
+    {
+        "name": "02.Prod-Opt-Notes",
+        "choices": [],
+        "for_client": false,
+        "entity_type": "Shot"
+    },
+    {
+        "name": "03.Conform-Notes",
+        "choices": [],
+        "for_client": false,
+        "entity_type": "Shot"
+    },
+    {
+        "name": "04.Opt-Done",
+        "choices": [],
+        "for_client": false,
+        "entity_type": "Shot"
+    },
+    {
+        "name": "05.Has Speed Change",
+        "choices": [],
+        "for_client": false,
+        "entity_type": "Shot"
+    },
+    {
+        "name": "06.DL-Time-Est",
+        "choices": [],
+        "for_client": false,
+        "entity_type": "Shot"
+    },
+    {
+        "name": "07.DL-Needs-Prod-Atn",
+        "choices": [],
+        "for_client": false,
+        "entity_type": "Shot"
+    },
+    {
+        "name": "08.DL-Producer-Notes",
         "choices": [],
         "for_client": false,
         "entity_type": "Shot"
