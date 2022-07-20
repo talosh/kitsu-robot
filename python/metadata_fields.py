@@ -16,17 +16,19 @@ def set_metadata_fields(config):
     gazu.set_host(host)
     gazu.log_in(name, password)
 
+    metadata_descriptors = config.get('metadata_descriptors')
+    pprint (metadata_descriptors)
+    sys.exit()
+
     while True:
         try:
             # print ('[' + datetime.now().strftime("%Y%m%d %H:%M") + ']\n' + 'Hello from Kitsu-Robot' + '\n')
             projects = gazu.project.all_open_projects()
             for project in projects:
-                print ('name: %s' % project.get('name'))
                 descriptors_api_path = '/data/projects/' + project.get('id') + '/metadata-descriptors'
                 project_descriptor_data = gazu.client.get(descriptors_api_path)
                 project_descriptor_names = [x['name'] for x in project_descriptor_data]
-                pprint (project_descriptor_names)
-                pprint (project_descriptor_data)
+                
                 if 'test' not in project_descriptor_names:
                     data = {
                         'name': 'test',
