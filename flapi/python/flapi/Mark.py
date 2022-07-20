@@ -233,5 +233,46 @@ class Mark(Interface):
             {}
         )
 
+    # get_properties
+    #
+    # Return dictionary of properties for this Mark object
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (dict): Dictionary containing property keys and values
+    #
+    def get_properties(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Mark.get_properties",
+            {}
+        )
+
+    # set_properties
+    #
+    # Set the property values for the given dictionary of keys & values.
+    # Setting a value to NULL will remove it from the property set.
+    #
+    # Arguments:
+    #    'props' (dict): Dictionary of property keys & values
+    #
+    # Returns:
+    #    (none)
+    #
+    def set_properties(self, props):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Mark.set_properties",
+            {
+                'props': props,
+            }
+        )
+
 Library.register_class( 'Mark', Mark )
 

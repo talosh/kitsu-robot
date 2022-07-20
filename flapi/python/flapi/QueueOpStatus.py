@@ -9,7 +9,9 @@ import json
 class QueueOpStatus:
     
     # Constructor
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, **kwargs):
+        if obj is None:
+            obj=kwargs
         if obj != None:
             self.ID = obj.get("ID")
             self.Status = obj.get("Status")

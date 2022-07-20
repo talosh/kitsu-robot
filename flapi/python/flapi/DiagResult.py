@@ -9,7 +9,9 @@ import json
 class DiagResult:
     
     # Constructor
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, **kwargs):
+        if obj is None:
+            obj=kwargs
         if obj != None:
             self.Name = obj.get("Name")
             self.Hosts = obj.get("Hosts")

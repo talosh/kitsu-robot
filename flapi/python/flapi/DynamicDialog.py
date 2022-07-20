@@ -19,7 +19,7 @@ class DynamicDialog(Interface):
     # Arguments:
     #    'title' (string): Title of dialog
     #    'defns' (list): Array of items to show in dialog
-    #        '<n>' (DialogItem): 
+    #        '<n>' (DialogItem): Definition for an individual item in the DynamicDialog
     #    'settings' (dict): Dictionary of initial settings for dialog items
     #
     # Returns:
@@ -129,6 +129,48 @@ class DynamicDialog(Interface):
             {
                 'settings': settings,
             }
+        )
+
+    # set_timer_callback
+    #
+    # Set time until callback signal TimerCallback will be sent
+    #
+    # Arguments:
+    #    'delay' (int): Time until signal in milliseconds
+    #    'repeat' (int): Flag indicating signal should repeat until cancel_timer_callback is called [Optional]
+    #
+    # Returns:
+    #    (none)
+    #
+    def set_timer_callback(self, delay, repeat = 1):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "DynamicDialog.set_timer_callback",
+            {
+                'delay': delay,
+                'repeat': repeat,
+            }
+        )
+
+    # cancel_timer_callback
+    #
+    # Cancel any pending timer callback
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (none)
+    #
+    def cancel_timer_callback(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "DynamicDialog.cancel_timer_callback",
+            {}
         )
 
 Library.register_class( 'DynamicDialog', DynamicDialog )

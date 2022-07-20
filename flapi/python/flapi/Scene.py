@@ -404,6 +404,44 @@ class Scene(Interface):
             {}
         )
 
+    # is_read_only
+    #
+    # Has this scene interface been opened 'read only'. Interfaces opened read only cannot modify their scene using the standard start_delta, make changes, end_delta paradigm. At any given time, multiple interfaces may reference/open the same scene in read only mode. However, at most only a single interface may reference a scene in read/write mode 
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (int): 1 if the interface is read only, 0 if not (read/write)
+    #
+    def is_read_only(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.is_read_only",
+            {}
+        )
+
+    # is_read_only_for_host
+    #
+    # Is the scene opened 'read only' for the host application. Note: This will be false if any interface has opened the scene in read/write mode (or the host has explicitly opened the scene read/write itself)
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (int): 1 if the scene is read only for the host, 0 if not
+    #
+    def is_read_only_for_host(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.is_read_only_for_host",
+            {}
+        )
+
     # get_formats
     #
     # Return FormatSet for formats defined within this Scene
@@ -584,27 +622,6 @@ class Scene(Interface):
             {}
         )
 
-    # get_record_timecode_for_frame
-    #
-    # Get record timecode for a given (timeline) frame number
-    #
-    # Arguments:
-    #    'frame_num' (int): Timeline frame number
-    #
-    # Returns:
-    #    (timecode): Record timecode
-    #
-    def get_record_timecode_for_frame(self, frame_num):
-        if self.target == None:
-            raise FLAPIException( "Instance method called on object with no instance" )
-        return self.conn.call(
-            self.target,
-            "Scene.get_record_timecode_for_frame",
-            {
-                'frame_num': frame_num,
-            }
-        )
-
     # get_shot_index_range
     #
     # Get index range of shots intersecting the (end exclusive) timeline frame range supplied
@@ -647,27 +664,6 @@ class Scene(Interface):
             {}
         )
 
-    # get_shot_id_at
-    #
-    # Return the ID of the shot at the timeline frame number supplied
-    #
-    # Arguments:
-    #    'frame' (int): Timeline frame number
-    #
-    # Returns:
-    #    (int): ID of shot at frame, or -1 if none found
-    #
-    def get_shot_id_at(self, frame):
-        if self.target == None:
-            raise FLAPIException( "Instance method called on object with no instance" )
-        return self.conn.call(
-            self.target,
-            "Scene.get_shot_id_at",
-            {
-                'frame': frame,
-            }
-        )
-
     # get_shot_id
     #
     # Return the ID for the shot at the given index within the Scene
@@ -697,7 +693,6 @@ class Scene(Interface):
     # * ShotId - A shot idenfifier (which can be used to obtain a Shot object via get_shot() if required).
     # * StartFrame - The shot's timeline start frame
     # * EndFrame - The shot's timeline end frame
-    # * PosterFrame - The shot's timeline poster frame
     # Returns new array shot list on success, NULL on error.
     #
     # Arguments:
@@ -1207,6 +1202,116 @@ class Scene(Interface):
             None,
             "Scene.get_look_infos",
             {}
+        )
+
+    # set_transient_write_lock_deltas
+    #
+    # Use to enable (or disable) creation of deltas in a scene where FLAPI does not have the write lock.  In particular, this is needed for FLAPI scripts running inside the main application that wish to modify the current scene.
+    #  When you open such a delta, you are preventing anything else from being able to make normal scene modifications.  You should therefore ensure you hold it open for as short a time as possible. 
+    # Note also that you should not disable transient deltas while a transient delta is in progress.
+    #
+    # Arguments:
+    #    'enable' (int): If non-zero, creation of deltas when FLAPI does not have the write lock will be enabled
+    #
+    # Returns:
+    #    (none)
+    #
+    def set_transient_write_lock_deltas(self, enable):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.set_transient_write_lock_deltas",
+            {
+                'enable': enable,
+            }
+        )
+
+    # get_groups
+    #
+    # Return list of groups in the scene
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (list): Array of group keys
+    #        '<n>' (string): Groups
+    #
+    def get_groups(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.get_groups",
+            {}
+        )
+
+    # get_group
+    #
+    # Return array of shot IDs for shots in group, or NULL if the group doesn't exist
+    #
+    # Arguments:
+    #    'key' (string): Key used to identify group
+    #
+    # Returns:
+    #    (list): Set of shot IDs [Optional]
+    #        '<n>' (int): ShotId
+    #
+    def get_group(self, key):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.get_group",
+            {
+                'key': key,
+            }
+        )
+
+    # set_group
+    #
+    # Create or update a group of shot IDs
+    #
+    # Arguments:
+    #    'key' (string): Key used to identify group
+    #    'shotIDs' (list): Array of shot IDs [Optional]
+    #        '<n>' (int): ShotId
+    #
+    # Returns:
+    #    (none)
+    #
+    def set_group(self, key, shotIDs):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.set_group",
+            {
+                'key': key,
+                'shotIDs': shotIDs,
+            }
+        )
+
+    # delete_group
+    #
+    # Delete Group
+    #
+    # Arguments:
+    #    'key' (string): Key used to identify group
+    #
+    # Returns:
+    #    (none)
+    #
+    def delete_group(self, key):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.delete_group",
+            {
+                'key': key,
+            }
         )
 
 Library.register_class( 'Scene', Scene )

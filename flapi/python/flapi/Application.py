@@ -37,83 +37,6 @@ class Application(Interface):
             {}
         )
 
-    # get_connections_info
-    #
-    # Get array of current connections. Each entry in the array will be a ConnectionInfo object describing that connection.
-    #
-    # Arguments:
-    #    None
-    #
-    # Returns:
-    #    (list): Array of connection info objects
-    #        '<n>' (ConnectionInfo): 
-    #
-    def get_connections_info(self):
-        if self.target != None:
-            raise FLAPIException( "Static method get_connections_info called on instance of Application" )
-        return self.conn.call(
-            None,
-            "Application.get_connections_info",
-            {}
-        )
-
-    # get_video_streaming_supported
-    #
-    # Is video streaming supported (hardware, setup & licensed)
-    #
-    # Arguments:
-    #    None
-    #
-    # Returns:
-    #    (int): 1 if streaming supported, 0 if not
-    #
-    def get_video_streaming_supported(self):
-        if self.target != None:
-            raise FLAPIException( "Static method get_video_streaming_supported called on instance of Application" )
-        return self.conn.call(
-            None,
-            "Application.get_video_streaming_supported",
-            {}
-        )
-
-    # get_video_streaming_enabled
-    #
-    # Is video streaming currently enabled
-    #
-    # Arguments:
-    #    None
-    #
-    # Returns:
-    #    (int): 1 if streaming enabled, 0 if not
-    #
-    def get_video_streaming_enabled(self):
-        if self.target != None:
-            raise FLAPIException( "Static method get_video_streaming_enabled called on instance of Application" )
-        return self.conn.call(
-            None,
-            "Application.get_video_streaming_enabled",
-            {}
-        )
-
-    # get_video_stream_address
-    #
-    # Return address for video stream
-    #
-    # Arguments:
-    #    None
-    #
-    # Returns:
-    #    (string): Address for video stream access. Used by Client View.
-    #
-    def get_video_stream_address(self):
-        if self.target != None:
-            raise FLAPIException( "Static method get_video_stream_address called on instance of Application" )
-        return self.conn.call(
-            None,
-            "Application.get_video_stream_address",
-            {}
-        )
-
     # is_playing
     #
     # Is playback currently in progress
@@ -135,7 +58,7 @@ class Application(Interface):
 
     # get
     #
-    # Return instance of the Application object (typically for signal connection)
+    # Return instance of the Application object
     #
     # Arguments:
     #    None
@@ -168,6 +91,107 @@ class Application(Interface):
         return self.conn.call(
             self.target,
             "Application.get_current_scene",
+            {}
+        )
+
+    # get_current_scene_name
+    #
+    # Return the name of the currently active Scene within the application
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (string): Current Scene name
+    #
+    def get_current_scene_name(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Application.get_current_scene_name",
+            {}
+        )
+
+    # get_open_scene_names
+    #
+    # Return array of names of scenes currently open in the application.
+    # You can get the Scene object for a given name by calling get_scene_by_name().
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (list): Array of Scene Names
+    #        '<n>' (string): Scene Name
+    #
+    def get_open_scene_names(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Application.get_open_scene_names",
+            {}
+        )
+
+    # get_scene_by_name
+    #
+    # Return the Scene object for the scene with the given name.
+    # If no matching scene can be found, NULL is returned.
+    #
+    # Arguments:
+    #    'name' (string): Name of Scene
+    #
+    # Returns:
+    #    (Scene): Scene object for given scene name
+    #
+    def get_scene_by_name(self, name):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Application.get_scene_by_name",
+            {
+                'name': name,
+            }
+        )
+
+    # get_current_cursor
+    #
+    # Return the currently active Cursor within the application
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (Cursor): Current Cursor
+    #
+    def get_current_cursor(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Application.get_current_cursor",
+            {}
+        )
+
+    # get_cursors
+    #
+    # Return active Cursor objects within the application
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (list): Array of Cursor objects
+    #        '<n>' (Cursor): Cursor object representing active cursor in application
+    #
+    def get_cursors(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Application.get_cursors",
             {}
         )
 

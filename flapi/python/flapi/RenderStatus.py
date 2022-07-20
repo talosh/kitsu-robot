@@ -9,7 +9,9 @@ import json
 class RenderStatus:
     
     # Constructor
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, **kwargs):
+        if obj is None:
+            obj=kwargs
         if obj != None:
             self.Status = obj.get("Status")
             self.Error = obj.get("Error")

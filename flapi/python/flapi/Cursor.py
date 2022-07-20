@@ -50,44 +50,6 @@ class Cursor(Interface):
             {}
         )
 
-    # get_record_timecode
-    #
-    # Get cursor's position in the timeline as a timecode
-    #
-    # Arguments:
-    #    None
-    #
-    # Returns:
-    #    (timecode): Record timecode
-    #
-    def get_record_timecode(self):
-        if self.target == None:
-            raise FLAPIException( "Instance method called on object with no instance" )
-        return self.conn.call(
-            self.target,
-            "Cursor.get_record_timecode",
-            {}
-        )
-
-    # get_viewing_format_name
-    #
-    # Get the name of the cursor's current viewing format.
-    #
-    # Arguments:
-    #    None
-    #
-    # Returns:
-    #    (string): Viewing format name
-    #
-    def get_viewing_format_name(self):
-        if self.target == None:
-            raise FLAPIException( "Instance method called on object with no instance" )
-        return self.conn.call(
-            self.target,
-            "Cursor.get_viewing_format_name",
-            {}
-        )
-
     # get_viewing_format_dims
     #
     # Get basic geometry (width, height and aspect ratio) of the cursor's current viewing format
@@ -110,41 +72,22 @@ class Cursor(Interface):
             {}
         )
 
-    # get_viewing_format_mask_name
+    # get_viewing_format_name
     #
-    # Get current viewing format mask name
-    #
-    # Arguments:
-    #    None
-    #
-    # Returns:
-    #    (FormatMask):  [Optional]
-    #
-    def get_viewing_format_mask_name(self):
-        if self.target == None:
-            raise FLAPIException( "Instance method called on object with no instance" )
-        return self.conn.call(
-            self.target,
-            "Cursor.get_viewing_format_mask_name",
-            {}
-        )
-
-    # get_viewing_format_mask
-    #
-    # Get current viewing format mask rectangle
+    # Get the name of the cursor's current viewing format.
     #
     # Arguments:
     #    None
     #
     # Returns:
-    #    (FormatMask):  [Optional]
+    #    (string): Viewing format name
     #
-    def get_viewing_format_mask(self):
+    def get_viewing_format_name(self):
         if self.target == None:
             raise FLAPIException( "Instance method called on object with no instance" )
         return self.conn.call(
             self.target,
-            "Cursor.get_viewing_format_mask",
+            "Cursor.get_viewing_format_name",
             {}
         )
 
@@ -164,25 +107,6 @@ class Cursor(Interface):
         return self.conn.call(
             self.target,
             "Cursor.get_age",
-            {}
-        )
-
-    # is_using_truelight
-    #
-    # Is Truelight currently in use (ie. a profile has been selected & Truelight is enabled) in this cursor.
-    #
-    # Arguments:
-    #    None
-    #
-    # Returns:
-    #    (int): Flag indicating if Truelight is in use
-    #
-    def is_using_truelight(self):
-        if self.target == None:
-            raise FLAPIException( "Instance method called on object with no instance" )
-        return self.conn.call(
-            self.target,
-            "Cursor.is_using_truelight",
             {}
         )
 

@@ -233,5 +233,30 @@ class Export(Interface):
             {}
         )
 
+    # get_presets
+    #
+    # Return array of presets.  
+    # Note:  this function is provided to make it easier to discover what settings are required when you want a particular export format (in particular for stills where it may not be obvious how to choose quality / compression settings etc).  It is not, currently, intended to be a full-fledged interface to the Baselight presets.
+    #
+    # Arguments:
+    #    'scene' (Scene): Scene to read presets from
+    #    'export_type' (string): Type of Export to request presets from
+    #
+    # Returns:
+    #    (list): 
+    #        '<n>' (dict): 
+    #
+    def get_presets(self, scene, export_type):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Export.get_presets",
+            {
+                'scene': scene,
+                'export_type': export_type,
+            }
+        )
+
 Library.register_class( 'Export', Export )
 

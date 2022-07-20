@@ -9,7 +9,9 @@ import json
 class RenderDeliverable:
     
     # Constructor
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, **kwargs):
+        if obj is None:
+            obj=kwargs
         if obj != None:
             self.Name = obj.get("Name")
             self.Disabled = obj.get("Disabled")
@@ -18,6 +20,7 @@ class RenderDeliverable:
             self.MovieCodec = obj.get("MovieCodec")
             self.AudioCodec = obj.get("AudioCodec")
             self.ImageOptions = obj.get("ImageOptions")
+            self.FastStart = obj.get("FastStart")
             self.AudioSampleRate = obj.get("AudioSampleRate")
             self.AudioNumChannels = obj.get("AudioNumChannels")
             self.Container = obj.get("Container")
@@ -56,6 +59,7 @@ class RenderDeliverable:
             self.MovieCodec = None
             self.AudioCodec = None
             self.ImageOptions = None
+            self.FastStart = 0
             self.AudioSampleRate = 48000
             self.AudioNumChannels = 0
             self.Container = None
@@ -101,6 +105,7 @@ class RenderDeliverable:
             "MovieCodec": self.MovieCodec,
             "AudioCodec": self.AudioCodec,
             "ImageOptions": self.ImageOptions,
+            "FastStart": self.FastStart,
             "AudioSampleRate": self.AudioSampleRate,
             "AudioNumChannels": self.AudioNumChannels,
             "Container": self.Container,

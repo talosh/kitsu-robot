@@ -9,7 +9,9 @@ import json
 class VolumeInfo:
     
     # Constructor
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, **kwargs):
+        if obj is None:
+            obj=kwargs
         if obj != None:
             self.Key = obj.get("Key")
             self.Name = obj.get("Name")

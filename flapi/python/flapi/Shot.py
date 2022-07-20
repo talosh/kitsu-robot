@@ -110,25 +110,6 @@ class Shot(Interface):
             {}
         )
 
-    # get_poster_frame
-    #
-    # Get the poster frame of the shot within the scene that contains it. 
-    #
-    # Arguments:
-    #    None
-    #
-    # Returns:
-    #    (float): Poster frame number of the shot.
-    #
-    def get_poster_frame(self):
-        if self.target == None:
-            raise FLAPIException( "Instance method called on object with no instance" )
-        return self.conn.call(
-            self.target,
-            "Shot.get_poster_frame",
-            {}
-        )
-
     # get_start_timecode
     #
     # Get the start record timecode of the shot
@@ -561,10 +542,10 @@ class Shot(Interface):
 
     # get_client_event_list
     #
-    # Get array of client events (notes/flags) for this shot. The array is chronologically sorted (oldest first). Each event entry is a dictionary describing the event.
+    # Get array of client events (notes/flags) for either an entire shot, or a specific frame of a shot. The array returned is chronologically sorted (oldest first). Each event entry is a dictionary describing the event.
     #
     # Arguments:
-    #    None
+    #    'list_frame' (int): Identifies which event list to return; either for the entire shot (if no list_frame supplied), or for a specific, shot start relative frame number [Optional]
     #
     # Returns:
     #    (list): Array of client events for the shot.
@@ -577,27 +558,30 @@ class Shot(Interface):
     #            'Source' (string): Source of the event. Either "FLAPI" if event was added from an external source, or "Application" if added from the Filmlight host application.
     #            'Time' (int): Time the entry was created (in seconds since 1/1/70 UTC).
     #
-    def get_client_event_list(self):
+    def get_client_event_list(self, list_frame = None):
         if self.target == None:
             raise FLAPIException( "Instance method called on object with no instance" )
         return self.conn.call(
             self.target,
             "Shot.get_client_event_list",
-            {}
+            {
+                'list_frame': list_frame,
+            }
         )
 
     # add_client_note
     #
-    # Add a client note to this shot's client event list.
+    # Add a client note to either the client event list for an entire shot, or to the client event list at a specific frame number.
     #
     # Arguments:
     #    'client_name' (string): Name of client adding the note.
     #    'note_text' (string): Note text.
+    #    'event_list_frame' (int): Client event list frame number, or NULL/None/null for the entire shot's client event list [Optional]
     #
     # Returns:
-    #    (int): Event list identifier which can be used to edit/delete the note later.
+    #    (int): Event identifier which can be used to edit/delete the note later.
     #
-    def add_client_note(self, client_name, note_text):
+    def add_client_note(self, client_name, note_text, event_list_frame = None):
         if self.target == None:
             raise FLAPIException( "Instance method called on object with no instance" )
         return self.conn.call(
@@ -606,20 +590,22 @@ class Shot(Interface):
             {
                 'client_name': client_name,
                 'note_text': note_text,
+                'event_list_frame': event_list_frame,
             }
         )
 
     # add_client_flag
     #
-    # Add a new client flag entry to this shot's client data event list. A shot's event list only supports a single flag event for a given client name; If one already exists, a call to this method will replace it with a new one. 
+    # Add a new client flag entry to either the client event list for an entire shot, or to the client event list at a specific frame number. A client event list only supports a single flag event for a given client name; If one already exists, a call to this method will replace it with a new one. 
     #
     # Arguments:
     #    'client_name' (string): Name of client flagging the shot.
+    #    'event_list_frame' (int): Client event list frame number, or NULL/None/null for the entire shot's client event list [Optional]
     #
     # Returns:
-    #    (int): Event list identifier which can be used to remove the flag later.
+    #    (int): Event identifier which can be used to remove the flag later.
     #
-    def add_client_flag(self, client_name):
+    def add_client_flag(self, client_name, event_list_frame = None):
         if self.target == None:
             raise FLAPIException( "Instance method called on object with no instance" )
         return self.conn.call(
@@ -627,6 +613,7 @@ class Shot(Interface):
             "Shot.add_client_flag",
             {
                 'client_name': client_name,
+                'event_list_frame': event_list_frame,
             }
         )
 
@@ -648,6 +635,116 @@ class Shot(Interface):
             "Shot.delete_client_event",
             {
                 'event_id': event_id,
+            }
+        )
+
+    # set_client_event_metadata
+    #
+    # Set custom metadata key/value pairs for the client event with the supplied ID.
+    #
+    # Arguments:
+    #    'client_event_id' (int): ID of client event
+    #    'metadata' (dict): Key/value pairs containing the metadata for the client event.
+    #
+    # Returns:
+    #    (none)
+    #
+    def set_client_event_metadata(self, client_event_id, metadata):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.set_client_event_metadata",
+            {
+                'client_event_id': client_event_id,
+                'metadata': metadata,
+            }
+        )
+
+    # get_client_event_metadata
+    #
+    # Get custom metadata key/value pairs for the client event with the supplied ID.
+    #
+    # Arguments:
+    #    'client_event_id' (int): ID of client event
+    #    'md_keys' (set): Set of metadata keys whose values are required, or NULL/None/null for all metadata.
+    #
+    # Returns:
+    #    (dict): Key/value pairs containing the metadata for the client event.
+    #
+    def get_client_event_metadata(self, client_event_id, md_keys):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.get_client_event_metadata",
+            {
+                'client_event_id': client_event_id,
+                'md_keys': md_keys,
+            }
+        )
+
+    # delete_client_event_metadata
+    #
+    # Delete a single metadata key/value item from the client event with the supplied ID.
+    #
+    # Arguments:
+    #    'client_event_id' (int): ID of client event
+    #    'metadata_key' (any): Key of metadata item to remove from client event.
+    #
+    # Returns:
+    #    (none)
+    #
+    def delete_client_event_metadata(self, client_event_id, metadata_key):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.delete_client_event_metadata",
+            {
+                'client_event_id': client_event_id,
+                'metadata_key': metadata_key,
+            }
+        )
+
+    # get_client_event_list_frames
+    #
+    # Get array of (shot start relative) frame numbers of frames with client event lists
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (list): Array of frames with client event lists
+    #        '<n>' (int): frame number
+    #
+    def get_client_event_list_frames(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.get_client_event_list_frames",
+            {}
+        )
+
+    # delete_frame_client_event_list
+    #
+    # Delete the entire client event list at the given shot frame (if any).
+    #
+    # Arguments:
+    #    'list_frame' (int): Frame number of frame containing the event list
+    #
+    # Returns:
+    #    (none)
+    #
+    def delete_frame_client_event_list(self, list_frame):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.delete_frame_client_event_list",
+            {
+                'list_frame': list_frame,
             }
         )
 
@@ -1247,6 +1344,46 @@ class Shot(Interface):
             "Shot.set_decode_parameters",
             {
                 'decode_params': decode_params,
+            }
+        )
+
+    # get_audio_settings
+    #
+    # Return the audio settings defined for this shot. Returns NULL if the shot has no audio defined.
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (AudioSequenceSettings): Audio settings for shot
+    #
+    def get_audio_settings(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.get_audio_settings",
+            {}
+        )
+
+    # set_audio_settings
+    #
+    # Set the audio settings for this shot. 
+    #
+    # Arguments:
+    #    'audio_settings' (AudioSequenceSettings): New audio settings for shot
+    #
+    # Returns:
+    #    (none)
+    #
+    def set_audio_settings(self, audio_settings):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.set_audio_settings",
+            {
+                'audio_settings': audio_settings,
             }
         )
 

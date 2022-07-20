@@ -45,7 +45,7 @@ else:
     endFrame = None
 
 seqs = conn.SequenceDescriptor.get_for_template( template, None, None )
-if seqs == None:
+if len(seqs)==0:
     print( "Cannot find SequenceDescriptor for " + template )
     sys.exit(1)
 

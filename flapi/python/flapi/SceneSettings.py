@@ -123,7 +123,7 @@ class SceneSettings(Interface):
     #
     # Arguments:
     #    'key' (string): SceneSettings key for value to set
-    #    'value' (any): New value for the given SceneSettings key
+    #    'value' (any): New value for the given SceneSettings key [Optional]
     #
     # Returns:
     #    (none)

@@ -9,7 +9,9 @@ import json
 class RenderProcessorLogItem:
     
     # Constructor
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, **kwargs):
+        if obj is None:
+            obj=kwargs
         if obj != None:
             self.Time = obj.get("Time")
             self.Type = obj.get("Type")

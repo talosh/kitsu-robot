@@ -9,23 +9,25 @@ import json
 class FormatMapping:
     
     # Constructor
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, **kwargs):
+        if obj is None:
+            obj=kwargs
         if obj != None:
-            self.Sx = obj.get("Sx")
-            self.Sy = obj.get("Sy")
-            self.Tx = obj.get("Tx")
-            self.Ty = obj.get("Ty")
-            self.Inside = obj.get("Inside")
-            self.SrcMask = obj.get("SrcMask")
-            self.DstMask = obj.get("DstMask")
+            self.sx = obj.get("sx")
+            self.sy = obj.get("sy")
+            self.tx = obj.get("tx")
+            self.ty = obj.get("ty")
+            self.inside = obj.get("inside")
+            self.src_mask = obj.get("src_mask")
+            self.dst_mask = obj.get("dst_mask")
         else:
-            self.Sx = None
-            self.Sy = None
-            self.Tx = None
-            self.Ty = None
-            self.Inside = None
-            self.SrcMask = None
-            self.DstMask = None
+            self.sx = None
+            self.sy = None
+            self.tx = None
+            self.ty = None
+            self.inside = None
+            self.src_mask = None
+            self.dst_mask = None
 
     @staticmethod
     def from_dict(o):
@@ -34,13 +36,13 @@ class FormatMapping:
     def json(self):
         return {
             "_type": "FormatMapping",
-            "Sx": self.Sx,
-            "Sy": self.Sy,
-            "Tx": self.Tx,
-            "Ty": self.Ty,
-            "Inside": self.Inside,
-            "SrcMask": self.SrcMask,
-            "DstMask": self.DstMask,
+            "sx": self.sx,
+            "sy": self.sy,
+            "tx": self.tx,
+            "ty": self.ty,
+            "inside": self.inside,
+            "src_mask": self.src_mask,
+            "dst_mask": self.dst_mask,
         }
 
     def __repr__(self):

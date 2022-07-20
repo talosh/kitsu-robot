@@ -9,7 +9,9 @@ import json
 class DiagHostResult:
     
     # Constructor
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, **kwargs):
+        if obj is None:
+            obj=kwargs
         if obj != None:
             self.Host = obj.get("Host")
             self.Messages = obj.get("Messages")

@@ -4,8 +4,8 @@
       "Name": "Application",
       "Desc": null,
       "Signals": [ 
-        "SigSceneOpen", 
-        "SigSceneClosed", 
+        "SceneOpened", 
+        "SceneClosed", 
         "PlayModeChanged"
       ],
       "Methods": [ 
@@ -22,59 +22,6 @@
           }
         }, 
         {
-          "Name": "get_connections_info",
-          "Desc": "Get array of current connections. Each entry in the array will be a ConnectionInfo object describing that connection.",
-          "Static": 1,
-          "Args": {
-
-          },
-          "Result": {
-            "Type": "array",
-            "Desc": "Array of connection info objects"
-          }
-        }, 
-        {
-          "Name": "get_video_streaming_supported",
-          "Desc": "Is video streaming supported (hardware, setup & licensed)",
-          "Static": 1,
-          "Args": {
-
-          },
-          "Result": {
-            "Type": "int",
-            "Desc": "1 if streaming supported, 0 if not"
-          }
-        }, 
-        {
-          "Name": "get_video_streaming_enabled",
-          "Desc": "Is video streaming currently enabled",
-          "Static": 1,
-          "Args": {
-
-          },
-          "Result": {
-            "Type": "int",
-            "Desc": "1 if streaming enabled, 0 if not"
-          }
-        }, 
-        {
-          "Name": "get_video_stream_address",
-          "Desc": "Return address for video stream",
-          "Static": 1,
-          "Args": [ 
-            {
-              "Name": "context",
-              "Type": "context",
-              "Desc": null,
-              "Nullable": 0
-            }
-          ],
-          "Result": {
-            "Type": "string",
-            "Desc": "Address for video stream access. Used by Client View."
-          }
-        }, 
-        {
           "Name": "is_playing",
           "Desc": "Is playback currently in progress",
           "Static": 1,
@@ -85,43 +32,22 @@
             "Type": "int",
             "Desc": "1 if playback in progress, 0 if not"
           }
-        }
-      ],
-      "URIs": null
-    }, 
-    {
-      "Name": "ClientViewManager",
-      "Desc": null,
-      "Signals": [ 
-        "SigStreamConfigsChanged", 
-        "SigConnectedClientConfigsChanged", 
-        "SigSessionClientConfigsChanged", 
-        "SigCurrentSessionChanged", 
-        "SigSessionPropertyChanged", 
-        "SigClientViewEnabledChanged", 
-        "SigStreamingEnabledChanged", 
-        "SigStreamResListChanged", 
-        "ClientConfigsChanged", 
-        "StreamConfigsChangedStart", 
-        "StreamConfigsChangedEnd", 
-        "PerformSimAdAction"
-      ],
-      "Methods": [ 
+        }, 
         {
           "Name": "get",
-          "Desc": "Get reference to the (singleton) ClientViewManager object",
+          "Desc": "Return instance of the Application object",
           "Static": 1,
           "Args": {
 
           },
           "Result": {
-            "Type": "ClientViewManager",
-            "Desc": ""
+            "Type": "Application",
+            "Desc": "Returns Application object"
           }
         }, 
         {
-          "Name": "get_client_settings",
-          "Desc": "Get the connected Client View's config/settings object.",
+          "Name": "get_current_scene",
+          "Desc": "Return the currently active Scene within the application",
           "Static": null,
           "Args": [ 
             {
@@ -132,56 +58,246 @@
             }
           ],
           "Result": {
-            "Type": "ClientViewClientSettings",
-            "Desc": ""
+            "Type": "Scene",
+            "Desc": "Current Scene"
           }
         }, 
         {
-          "Name": "get_stream_settings",
-          "Desc": "Get array of stream settings objects.",
+          "Name": "get_current_scene_name",
+          "Desc": "Return the name of the currently active Scene within the application",
           "Static": null,
           "Args": {
-
-          },
-          "Result": {
-            "Type": "array",
-            "Desc": ""
-          }
-        }, 
-        {
-          "Name": "get_streaming_enabled",
-          "Desc": "Is streaming currently enabled.",
-          "Static": null,
-          "Args": {
-
-          },
-          "Result": {
-            "Type": "int",
-            "Desc": "1 if streaming enabled, otherwise 0"
-          }
-        }, 
-        {
-          "Name": "get_session_name",
-          "Desc": "Get the current Client View session name.",
-          "Static": null,
-          "Args": {
-
+            "client": {
+              "Type": "context"
+            }
           },
           "Result": {
             "Type": "string",
-            "Desc": "Current session name"
+            "Desc": "Current Scene name"
           }
         }, 
         {
-          "Name": "get_session_clients",
-          "Desc": "Get array of current session clients. Each entry in the array will be a ConnectionInfo object describing that connection.",
+          "Name": "get_open_scene_names",
+          "Desc": "Return array of names of scenes currently open in the application. You can get the Scene object for a given name by calling get_scene_by_name().",
           "Static": null,
           "Args": {
 
           },
           "Result": {
             "Type": "array",
-            "Desc": "Array of current session clients"
+            "Desc": "Array of Scene Names"
+          }
+        }, 
+        {
+          "Name": "get_scene_by_name",
+          "Desc": "Return the Scene object for the scene with the given name. If no matching scene can be found, NULL is returned.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "client",
+              "Type": "context",
+              "Desc": null,
+              "Nullable": 0
+            }, 
+            {
+              "Name": "name",
+              "Type": "string",
+              "Desc": "Name of Scene",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "Scene",
+            "Desc": "Scene object for given scene name"
+          }
+        }, 
+        {
+          "Name": "get_current_cursor",
+          "Desc": "Return the currently active Cursor within the application",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "client",
+              "Type": "context",
+              "Desc": null,
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "Cursor",
+            "Desc": "Current Cursor"
+          }
+        }, 
+        {
+          "Name": "get_cursors",
+          "Desc": "Return active Cursor objects within the application",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "client",
+              "Type": "context",
+              "Desc": null,
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "array",
+            "Desc": "Array of Cursor objects"
+          }
+        }, 
+        {
+          "Name": "log",
+          "Desc": "Log message in application Log view",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "category",
+              "Type": "string",
+              "Desc": "Category of message",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "severity",
+              "Type": "string",
+              "Desc": "Severity of message, Hard, Soft or Transient",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "message",
+              "Type": "string",
+              "Desc": "Message to log",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "message_dialog",
+          "Desc": "Present a message box in the Application for the user to interact with",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "title",
+              "Type": "string",
+              "Desc": "Title of message box",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "message",
+              "Type": "string",
+              "Desc": "Contents of message box",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "buttons",
+              "Type": "array",
+              "Desc": "Array of buttons to show in dialog box",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "string",
+            "Desc": "Label of button selected by user"
+          }
+        }, 
+        {
+          "Name": "list_dialog",
+          "Desc": "Present a dialog to the user containing a list of items that the user can select from",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "title",
+              "Type": "string",
+              "Desc": "Title of list dialog",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "message",
+              "Type": "string",
+              "Desc": "Message to show in list dialog",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "items",
+              "Type": "array",
+              "Desc": "Array of items to show in list",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "any",
+            "Desc": "Key of selected object, or NULL if no selection"
+          }
+        }
+      ],
+      "URIs": null
+    }, 
+    {
+      "Name": "AudioSync",
+      "Desc": null,
+      "Signals": [ 
+        "AudioSyncProgress"
+      ],
+      "Methods": [ 
+        {
+          "Name": "create",
+          "Desc": "Create a new audio sync operation object",
+          "Static": 1,
+          "Args": [ 
+            {
+              "Name": "client",
+              "Type": "context",
+              "Desc": null,
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "AudioSync",
+            "Desc": "AudioSync object"
+          }
+        }, 
+        {
+          "Name": "audio_sync",
+          "Desc": "Perform audio sync operation using the given audio sync settings",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "scene",
+              "Type": "Scene",
+              "Desc": "Target scene to AudioSync into",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "settings",
+              "Type": "AudioSyncSettings",
+              "Desc": "",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "shot_ids",
+              "Type": "array",
+              "Desc": "Array of Shot IDs to apply audio sync operation to",
+              "Nullable": 1
+            }
+          ],
+          "Result": {
+            "Type": "int",
+            "Desc": "Number of shots updated by audio sync operation"
+          }
+        }, 
+        {
+          "Name": "get_log",
+          "Desc": "Return log of progress information",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "array",
+            "Desc": "Array of audio sync progress information"
           }
         }
       ],
@@ -277,15 +393,15 @@
           }
         }, 
         {
-          "Name": "get_record_timecode",
-          "Desc": "Get cursor's position in the timeline as a timecode",
+          "Name": "get_viewing_format_dims",
+          "Desc": "Get basic geometry (width, height and aspect ratio) of the cursor's current viewing format",
           "Static": null,
           "Args": {
 
           },
           "Result": {
-            "Type": "timecode",
-            "Desc": "Record timecode"
+            "Type": "struct",
+            "Desc": "Viewing format dimensions"
           }
         }, 
         {
@@ -301,42 +417,6 @@
           }
         }, 
         {
-          "Name": "get_viewing_format_dims",
-          "Desc": "Get basic geometry (width, height and aspect ratio) of the cursor's current viewing format",
-          "Static": null,
-          "Args": {
-
-          },
-          "Result": {
-            "Type": "struct",
-            "Desc": "Viewing format dimensions"
-          }
-        }, 
-        {
-          "Name": "get_viewing_format_mask_name",
-          "Desc": "Get current viewing format mask name",
-          "Static": null,
-          "Args": {
-
-          },
-          "Result": {
-            "Type": "FormatMask",
-            "Desc": ""
-          }
-        }, 
-        {
-          "Name": "get_viewing_format_mask",
-          "Desc": "Get current viewing format mask rectangle",
-          "Static": null,
-          "Args": {
-
-          },
-          "Result": {
-            "Type": "FormatMask",
-            "Desc": ""
-          }
-        }, 
-        {
           "Name": "get_age",
           "Desc": "Get the cursor's 'age'. The age is an integer, incremented whenever an attribute which could result in a visual change to the image display has been modfied.",
           "Static": null,
@@ -347,17 +427,173 @@
             "Type": "int",
             "Desc": "Cursor age value"
           }
+        }
+      ],
+      "URIs": null
+    }, 
+    {
+      "Name": "DynamicDialog",
+      "Desc": null,
+      "Signals": [ 
+        "SettingsChanged", 
+        "TimerCallback"
+      ],
+      "Methods": [ 
+        {
+          "Name": "create",
+          "Desc": "Create a Dialog object",
+          "Static": 1,
+          "Args": [ 
+            {
+              "Name": "title",
+              "Type": "string",
+              "Desc": "Title of dialog",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "defns",
+              "Type": "array",
+              "Desc": "Array of items to show in dialog",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "settings",
+              "Type": "struct",
+              "Desc": "Dictionary of initial settings for dialog items",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "DynamicDialog",
+            "Desc": ""
+          }
         }, 
         {
-          "Name": "is_using_truelight",
-          "Desc": "Is Truelight currently in use (ie. a profile has been selected & Truelight is enabled) in this cursor.",
+          "Name": "modal",
+          "Desc": "Display a Dialog object and return the settings",
+          "Static": 1,
+          "Args": [ 
+            {
+              "Name": "title",
+              "Type": "string",
+              "Desc": "Title of dialog",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "defns",
+              "Type": "array",
+              "Desc": "Array of items to show in dialog",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "settings",
+              "Type": "struct",
+              "Desc": "Dictionary of initial settings for dialog items",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "width",
+              "Type": "int",
+              "Desc": "Desired width of dialog box",
+              "Nullable": 1
+            }, 
+            {
+              "Name": "height",
+              "Type": "int",
+              "Desc": "Desired height of dialog box",
+              "Nullable": 1
+            }
+          ],
+          "Result": {
+            "Type": "struct",
+            "Desc": "Settings chosen by user, or NULL if dialog was cancelled"
+          }
+        }, 
+        {
+          "Name": "show_modal",
+          "Desc": "Show dialog to user",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "width",
+              "Type": "int",
+              "Desc": "Desired width of dialog box",
+              "Nullable": 1
+            }, 
+            {
+              "Name": "height",
+              "Type": "int",
+              "Desc": "Desired height of dialog box",
+              "Nullable": 1
+            }
+          ],
+          "Result": {
+            "Type": "struct",
+            "Desc": "Settings chosen by user, or NULL if dialog was cancelled"
+          }
+        }, 
+        {
+          "Name": "get_settings",
+          "Desc": "Return current dialog settings",
           "Static": null,
           "Args": {
 
           },
           "Result": {
-            "Type": "int",
-            "Desc": "Flag indicating if Truelight is in use"
+            "Type": "struct",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "set_settings",
+          "Desc": "Set current dialog settings",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "settings",
+              "Type": "struct",
+              "Desc": "",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "set_timer_callback",
+          "Desc": "Set time until callback signal TimerCallback will be sent",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "delay",
+              "Type": "int",
+              "Desc": "Time until signal in milliseconds",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "repeat",
+              "Type": "int",
+              "Desc": "Flag indicating signal should repeat until cancel_timer_callback is called",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "cancel_timer_callback",
+          "Desc": "Cancel any pending timer callback",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "none",
+            "Desc": null
           }
         }
       ],
@@ -595,6 +831,29 @@
           "Result": {
             "Type": "array",
             "Desc": "Array of Export progress information"
+          }
+        }, 
+        {
+          "Name": "get_presets",
+          "Desc": "Return array of presets.    Note:  this function is provided to make it easier to discover what settings are required when you want a particular export format (in particular for stills where it may not be obvious how to choose quality / compression settings etc).  It is not, currently, intended to be a full-fledged interface to the Baselight presets.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "scene",
+              "Type": "Scene",
+              "Desc": "Scene to read presets from",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "export_type",
+              "Type": "string",
+              "Desc": "Type of Export to request presets from",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "array",
+            "Desc": ""
           }
         }
       ],
@@ -1828,6 +2087,339 @@
             "Type": "timecode",
             "Desc": "Record timecode"
           }
+        }, 
+        {
+          "Name": "get_properties",
+          "Desc": "Return dictionary of properties for this Mark object",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "struct",
+            "Desc": "Dictionary containing property keys and values"
+          }
+        }, 
+        {
+          "Name": "set_properties",
+          "Desc": "Set the property values for the given dictionary of keys & values. Setting a value to NULL will remove it from the property set.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "props",
+              "Type": "struct",
+              "Desc": "Dictionary of property keys & values",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }
+      ],
+      "URIs": null
+    }, 
+    {
+      "Name": "Menu",
+      "Desc": null,
+      "Signals": [ 
+        "MenuUpdate"
+      ],
+      "Methods": [ 
+        {
+          "Name": "create",
+          "Desc": "Create new Menu object",
+          "Static": 1,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "Menu",
+            "Desc": "Menu object"
+          }
+        }, 
+        {
+          "Name": "add_item",
+          "Desc": "Add MenuItem to menu",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "item",
+              "Type": "MenuItem",
+              "Desc": "Item to add to menu",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "index",
+              "Type": "int",
+              "Desc": "Index to insert item at. Use 0 to append to front. Use -1 to append to end.",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_num_items",
+          "Desc": "Get number of items in menu",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "Number of items in menu"
+          }
+        }, 
+        {
+          "Name": "get_item_at",
+          "Desc": "Get MenuItem at given index within menu",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "index",
+              "Type": "int",
+              "Desc": "Index of menu item",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "MenuItem",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "get_index_of_item",
+          "Desc": "Return the index of the given MenuItem within this Menu",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "item",
+              "Type": "MenuItem",
+              "Desc": "Item to find index for",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "int",
+            "Desc": "Index of MenuItem, -1 if not found"
+          }
+        }, 
+        {
+          "Name": "remove_item_at",
+          "Desc": "Remove menu item at the given index",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "index",
+              "Type": "int",
+              "Desc": "Index of menu item",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "remove_item",
+          "Desc": "Remove menu item from menu",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "item",
+              "Type": "MenuItem",
+              "Desc": "MenuItem to remove",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "remove_all_items",
+          "Desc": "Remove all menu items from menu",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }
+      ],
+      "URIs": null
+    }, 
+    {
+      "Name": "MenuItem",
+      "Desc": null,
+      "Signals": [ 
+        "MenuItemUpdate", 
+        "MenuItemSelected"
+      ],
+      "Methods": [ 
+        {
+          "Name": "create",
+          "Desc": "Create a new MenuItem object",
+          "Static": 1,
+          "Args": [ 
+            {
+              "Name": "title",
+              "Type": "string",
+              "Desc": "Title of MenuItem",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "key",
+              "Type": "any",
+              "Desc": "A value which can be used as a key to identify this menu item",
+              "Nullable": 1
+            }
+          ],
+          "Result": {
+            "Type": "MenuItem",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "register",
+          "Desc": "Register this menu item to insert it into the application's UI",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "location",
+              "Type": "string",
+              "Desc": "Where to register menu item",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_title",
+          "Desc": "Get menu item title",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "string",
+            "Desc": "Menu item title"
+          }
+        }, 
+        {
+          "Name": "set_title",
+          "Desc": "Set menu item title",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "title",
+              "Type": "string",
+              "Desc": "New menu item title",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_enabled",
+          "Desc": "Get menu item enabled state",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "Enabled state"
+          }
+        }, 
+        {
+          "Name": "set_enabled",
+          "Desc": "Set menu item enabled state",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "enabled",
+              "Type": "int",
+              "Desc": "Enabled state",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_hidden",
+          "Desc": "Get menu item hidden state",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "Hidden state"
+          }
+        }, 
+        {
+          "Name": "set_hidden",
+          "Desc": "Set menu item hidden state",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "hidden",
+              "Type": "int",
+              "Desc": "Hidden state",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_sub_menu",
+          "Desc": "Get sub-menu for this menu item",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "Menu",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "set_sub_menu",
+          "Desc": "Set sub-menu for this menu item",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "submenu",
+              "Type": "Menu",
+              "Desc": "Menu object containing sub-menu items",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
         }
       ],
       "URIs": null
@@ -1895,6 +2487,114 @@
           "Result": {
             "Type": "array",
             "Desc": "Array of multi-paste progress information"
+          }
+        }
+      ],
+      "URIs": null
+    }, 
+    {
+      "Name": "ProgressDialog",
+      "Desc": null,
+      "Signals": [ 
+        "CancelOperation"
+      ],
+      "Methods": [ 
+        {
+          "Name": "create",
+          "Desc": "Create a new ProgressDialog",
+          "Static": 1,
+          "Args": [ 
+            {
+              "Name": "title",
+              "Type": "string",
+              "Desc": "Title of progress dialog",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "msg",
+              "Type": "string",
+              "Desc": "Message to display in progress dialog",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "cancellable",
+              "Type": "int",
+              "Desc": "Flag indicating that progress dialog has cancel button",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "ProgressDialog",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "show",
+          "Desc": "Show the progress dialog",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "delay",
+              "Type": "float",
+              "Desc": "Only show progress dialog after a delay, in seconds",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "set_title",
+          "Desc": "Set the title of the progress dialog",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "title",
+              "Type": "string",
+              "Desc": "New title for dialog",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "set_progress",
+          "Desc": "Update the progress & message displayed in dialog",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "progress",
+              "Type": "float",
+              "Desc": "Progress value between 0.0 and 1.0",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "message",
+              "Type": "string",
+              "Desc": "Progress message to display",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "hide",
+          "Desc": "Hide the progress dialog",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "none",
+            "Desc": null
           }
         }
       ],
@@ -2129,6 +2829,331 @@
           "Args": {
 
           },
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "new_operation",
+          "Desc": "Create a new custom operation and return its ID",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "client",
+              "Type": "context",
+              "Desc": null,
+              "Nullable": 0
+            }, 
+            {
+              "Name": "opType",
+              "Type": "string",
+              "Desc": "Key identifying the operation type",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "desc",
+              "Type": "string",
+              "Desc": "Description of operation to present in queue",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "params",
+              "Type": "struct",
+              "Desc": "Parameters for operation. May contain any simple key/value parameters.",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "tasks",
+              "Type": "array",
+              "Desc": "Array of tasks for this operation. If you wish to add more tasks to the operation, leave this parameter empty and use add_tasks_to_operation() instead, followed by set_operation_ready().",
+              "Nullable": 1
+            }, 
+            {
+              "Name": "dependsOn",
+              "Type": "set",
+              "Desc": "Set of operation IDs that this operation depends on",
+              "Nullable": 1
+            }
+          ],
+          "Result": {
+            "Type": "int",
+            "Desc": "Operation ID"
+          }
+        }, 
+        {
+          "Name": "add_tasks_to_operation",
+          "Desc": "Add more tasks to the given operation",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opid",
+              "Type": "int",
+              "Desc": "Operation ID",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "tasks",
+              "Type": "array",
+              "Desc": "Array of tasks for this operation",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "set_operation_ready",
+          "Desc": "Mark operation as ready to process. Should be called after calling add_tasks_to_operation().",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opid",
+              "Type": "int",
+              "Desc": "Operation ID",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_next_operation_of_type",
+          "Desc": "Find the next operation for the given operation type that is ready to execute",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opType",
+              "Type": "string",
+              "Desc": "Key identifying operation type",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "wait",
+              "Type": "int",
+              "Desc": "Flag indicating whether the method should block until a task is available",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "int",
+            "Desc": "Operation ID"
+          }
+        }, 
+        {
+          "Name": "get_operation_params",
+          "Desc": "Get params for given operation ID",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opid",
+              "Type": "int",
+              "Desc": "Operation ID",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "struct",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "get_next_task",
+          "Desc": "Get the next task ready to execute for the given operation ID",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opid",
+              "Type": "int",
+              "Desc": "Operation ID",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "QueueOpTask",
+            "Desc": "Description of task to execute"
+          }
+        }, 
+        {
+          "Name": "set_task_progress",
+          "Desc": "Set task progress",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opid",
+              "Type": "int",
+              "Desc": "Operation ID",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "taskseq",
+              "Type": "int",
+              "Desc": "Task Sequence Number",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "progress",
+              "Type": "float",
+              "Desc": "Task progress between 0.0 and 1.0",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "set_task_done",
+          "Desc": "Mark task as completed",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opid",
+              "Type": "int",
+              "Desc": "Operation ID",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "taskseq",
+              "Type": "int",
+              "Desc": "Task Sequence ID",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "msg",
+              "Type": "string",
+              "Desc": "Task Message",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "set_task_failed",
+          "Desc": "Mark task as failed",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opid",
+              "Type": "int",
+              "Desc": "Operation ID",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "taskseq",
+              "Type": "int",
+              "Desc": "Task Sequence ID",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "msg",
+              "Type": "string",
+              "Desc": "Task Message",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "detail",
+              "Type": "string",
+              "Desc": "Detailed information on failure",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "frame",
+              "Type": "int",
+              "Desc": "Frame number of failure",
+              "Nullable": 1
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "add_operation_log",
+          "Desc": "Add log entry for operation",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opid",
+              "Type": "int",
+              "Desc": "Operation ID",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "type",
+              "Type": "string",
+              "Desc": "Type of log entry",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "msg",
+              "Type": "string",
+              "Desc": "Log Message",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "detail",
+              "Type": "string",
+              "Desc": "Detailed information on failure",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "add_task_log",
+          "Desc": "Add log entry for operation",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "opid",
+              "Type": "int",
+              "Desc": "Operation ID",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "taskseq",
+              "Type": "int",
+              "Desc": "Task Sequence ID",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "type",
+              "Type": "string",
+              "Desc": "Type of log entry",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "msg",
+              "Type": "string",
+              "Desc": "Log Message",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "detail",
+              "Type": "string",
+              "Desc": "Detailed information on failure",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "frame",
+              "Type": "int",
+              "Desc": "Frame number within task for log entry",
+              "Nullable": 1
+            }
+          ],
           "Result": {
             "Type": "none",
             "Desc": null
@@ -3094,6 +4119,30 @@
           }
         }, 
         {
+          "Name": "is_read_only",
+          "Desc": "Has this scene interface been opened 'read only'. Interfaces opened read only cannot modify their scene using the standard start_delta, make changes, end_delta paradigm. At any given time, multiple interfaces may reference/open the same scene in read only mode. However, at most only a single interface may reference a scene in read/write mode ",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "1 if the interface is read only, 0 if not (read/write)"
+          }
+        }, 
+        {
+          "Name": "is_read_only_for_host",
+          "Desc": "Is the scene opened 'read only' for the host application. Note: This will be false if any interface has opened the scene in read/write mode (or the host has explicitly opened the scene read/write itself)",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "1 if the scene is read only for the host, 0 if not"
+          }
+        }, 
+        {
           "Name": "get_formats",
           "Desc": "Return FormatSet for formats defined within this Scene",
           "Static": null,
@@ -3218,23 +4267,6 @@
           }
         }, 
         {
-          "Name": "get_record_timecode_for_frame",
-          "Desc": "Get record timecode for a given (timeline) frame number",
-          "Static": null,
-          "Args": [ 
-            {
-              "Name": "frame_num",
-              "Type": "int",
-              "Desc": "Timeline frame number",
-              "Nullable": 0
-            }
-          ],
-          "Result": {
-            "Type": "timecode",
-            "Desc": "Record timecode"
-          }
-        }, 
-        {
           "Name": "get_shot_index_range",
           "Desc": "Get index range of shots intersecting the (end exclusive) timeline frame range supplied ",
           "Static": null,
@@ -3270,23 +4302,6 @@
           }
         }, 
         {
-          "Name": "get_shot_id_at",
-          "Desc": "Return the ID of the shot at the timeline frame number supplied",
-          "Static": null,
-          "Args": [ 
-            {
-              "Name": "frame",
-              "Type": "int",
-              "Desc": "Timeline frame number",
-              "Nullable": 0
-            }
-          ],
-          "Result": {
-            "Type": "int",
-            "Desc": "ID of shot at frame, or -1 if none found"
-          }
-        }, 
-        {
           "Name": "get_shot_id",
           "Desc": "Return the ID for the shot at the given index within the Scene",
           "Static": null,
@@ -3305,7 +4320,7 @@
         }, 
         {
           "Name": "get_shot_ids",
-          "Desc": "Get an array of shots in the supplied indexed range. Each array entry is an object containing basic information for that shot. Explicitly, each shot entry will contain the following keys:  * ShotId - A shot idenfifier (which can be used to obtain a Shot object via get_shot() if required). * StartFrame - The shot's timeline start frame * EndFrame - The shot's timeline end frame * PosterFrame - The shot's timeline poster frame  Returns new array shot list on success, NULL on error.",
+          "Desc": "Get an array of shots in the supplied indexed range. Each array entry is an object containing basic information for that shot. Explicitly, each shot entry will contain the following keys:  * ShotId - A shot idenfifier (which can be used to obtain a Shot object via get_shot() if required). * StartFrame - The shot's timeline start frame * EndFrame - The shot's timeline end frame  Returns new array shot list on success, NULL on error.",
           "Static": null,
           "Args": [ 
             {
@@ -3831,6 +4846,23 @@
             "Type": "array",
             "Desc": "Array of shot info objects"
           }
+        }, 
+        {
+          "Name": "set_transient_write_lock_deltas",
+          "Desc": "Use to enable (or disable) creation of deltas in a scene where FLAPI does not have the write lock.  In particular, this is needed for FLAPI scripts running inside the main application that wish to modify the current scene.   When you open such a delta, you are preventing anything else from being able to make normal scene modifications.  You should therefore ensure you hold it open for as short a time as possible.  Note also that you should not disable transient deltas while a transient delta is in progress.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "enable",
+              "Type": "int",
+              "Desc": "If non-zero, creation of deltas when FLAPI does not have the write lock will be enabled",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
         }
       ],
       "URIs": null
@@ -3937,7 +4969,7 @@
               "Name": "value",
               "Type": "any",
               "Desc": "New value for the given SceneSettings key",
-              "Nullable": 0
+              "Nullable": 1
             }
           ],
           "Result": {
@@ -4482,18 +5514,6 @@
           }
         }, 
         {
-          "Name": "get_poster_frame",
-          "Desc": "Get the poster frame of the shot within the scene that contains it. ",
-          "Static": null,
-          "Args": {
-
-          },
-          "Result": {
-            "Type": "float",
-            "Desc": "Poster frame number of the shot."
-          }
-        }, 
-        {
           "Name": "get_start_timecode",
           "Desc": "Get the start record timecode of the shot",
           "Static": null,
@@ -4825,11 +5845,16 @@
         }, 
         {
           "Name": "get_client_event_list",
-          "Desc": "Get array of client events (notes/flags) for this shot. The array is chronologically sorted (oldest first). Each event entry is a dictionary describing the event.",
+          "Desc": "Get array of client events (notes/flags) for either an entire shot, or a specific frame of a shot. The array returned is chronologically sorted (oldest first). Each event entry is a dictionary describing the event.",
           "Static": null,
-          "Args": {
-
-          },
+          "Args": [ 
+            {
+              "Name": "list_frame",
+              "Type": "int",
+              "Desc": "Identifies which event list to return; either for the entire shot (if no list_frame supplied), or for a specific, shot start relative frame number",
+              "Nullable": 1
+            }
+          ],
           "Result": {
             "Type": "array",
             "Desc": "Array of client events for the shot."
@@ -4837,7 +5862,7 @@
         }, 
         {
           "Name": "add_client_note",
-          "Desc": "Add a client note to this shot's client event list.",
+          "Desc": "Add a client note to either the client event list for an entire shot, or to the client event list at a specific frame number.",
           "Static": null,
           "Args": [ 
             {
@@ -4851,16 +5876,22 @@
               "Type": "string",
               "Desc": "Note text.",
               "Nullable": 0
+            }, 
+            {
+              "Name": "event_list_frame",
+              "Type": "int",
+              "Desc": "Client event list frame number, or NULL/None/null for the entire shot's client event list",
+              "Nullable": 1
             }
           ],
           "Result": {
             "Type": "int",
-            "Desc": "Event list identifier which can be used to edit/delete the note later."
+            "Desc": "Event identifier which can be used to edit/delete the note later."
           }
         }, 
         {
           "Name": "add_client_flag",
-          "Desc": "Add a new client flag entry to this shot's client data event list. A shot's event list only supports a single flag event for a given client name; If one already exists, a call to this method will replace it with a new one. ",
+          "Desc": "Add a new client flag entry to either the client event list for an entire shot, or to the client event list at a specific frame number. A client event list only supports a single flag event for a given client name; If one already exists, a call to this method will replace it with a new one. ",
           "Static": null,
           "Args": [ 
             {
@@ -4868,11 +5899,17 @@
               "Type": "string",
               "Desc": "Name of client flagging the shot.",
               "Nullable": 0
+            }, 
+            {
+              "Name": "event_list_frame",
+              "Type": "int",
+              "Desc": "Client event list frame number, or NULL/None/null for the entire shot's client event list",
+              "Nullable": 1
             }
           ],
           "Result": {
             "Type": "int",
-            "Desc": "Event list identifier which can be used to remove the flag later."
+            "Desc": "Event identifier which can be used to remove the flag later."
           }
         }, 
         {
@@ -4890,6 +5927,104 @@
           "Result": {
             "Type": "int",
             "Desc": "1 on success, 0 if no event found."
+          }
+        }, 
+        {
+          "Name": "set_client_event_metadata",
+          "Desc": "Set custom metadata key/value pairs for the client event with the supplied ID.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "client_event_id",
+              "Type": "int",
+              "Desc": "ID of client event",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "metadata",
+              "Type": "struct",
+              "Desc": "Key/value pairs containing the metadata for the client event.",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_client_event_metadata",
+          "Desc": "Get custom metadata key/value pairs for the client event with the supplied ID.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "client_event_id",
+              "Type": "int",
+              "Desc": "ID of client event",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "md_keys",
+              "Type": "set",
+              "Desc": "Set of metadata keys whose values are required, or NULL/None/null for all metadata.",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "struct",
+            "Desc": "Key/value pairs containing the metadata for the client event."
+          }
+        }, 
+        {
+          "Name": "delete_client_event_metadata",
+          "Desc": "Delete a single metadata key/value item from the client event with the supplied ID.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "client_event_id",
+              "Type": "int",
+              "Desc": "ID of client event",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "metadata_key",
+              "Type": "any",
+              "Desc": "Key of metadata item to remove from client event.",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_client_event_list_frames",
+          "Desc": "Get array of (shot start relative) frame numbers of frames with client event lists",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "array",
+            "Desc": "Array of frames with client event lists"
+          }
+        }, 
+        {
+          "Name": "delete_frame_client_event_list",
+          "Desc": "Delete the entire client event list at the given shot frame (if any).",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "list_frame",
+              "Type": "int",
+              "Desc": "Frame number of frame containing the event list",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
           }
         }, 
         {
@@ -5412,6 +6547,35 @@
             "Type": "none",
             "Desc": null
           }
+        }, 
+        {
+          "Name": "get_audio_settings",
+          "Desc": "Return the audio settings defined for this shot. Returns NULL if the shot has no audio defined.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "AudioSequenceSettings",
+            "Desc": "Audio settings for shot"
+          }
+        }, 
+        {
+          "Name": "set_audio_settings",
+          "Desc": "Set the audio settings for this shot. ",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "audio_settings",
+              "Type": "AudioSequenceSettings",
+              "Desc": "New audio settings for shot",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
         }
       ],
       "URIs": null
@@ -5429,15 +6593,15 @@
           "Static": 1,
           "Args": [ 
             {
-              "Name": "client",
-              "Type": "context",
-              "Desc": null,
-              "Nullable": 0
-            }, 
-            {
               "Name": "shot_if",
               "Type": "Shot",
               "Desc": "Shot interface object",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "graded",
+              "Type": "int",
+              "Desc": "Graded/ungraded flag",
               "Nullable": 0
             }, 
             {
@@ -5451,40 +6615,103 @@
             "Type": "string",
             "Desc": "Thumbnail URI"
           }
-        }, 
+        }
+      ],
+      "URIs": null
+    }, 
+    {
+      "Name": "Timer",
+      "Desc": null,
+      "Signals": [ 
+        "TimerTick"
+      ],
+      "Methods": [ 
         {
-          "Name": "get_scrub_uri_template",
-          "Desc": "Get a scrub image URI template (prefix & suffix strings). This can be used while scrubbing to generate image URIs without additional roundtrips/calls to the server.",
+          "Name": "create",
+          "Desc": "Create a new Timer object",
           "Static": 1,
           "Args": [ 
             {
-              "Name": "client",
-              "Type": "context",
-              "Desc": null,
+              "Name": "interval",
+              "Type": "int",
+              "Desc": "Number of milliseconds between timer ticks firing",
               "Nullable": 0
             }, 
             {
-              "Name": "scene_if",
-              "Type": "Scene",
-              "Desc": "Scene interface object",
-              "Nullable": 0
-            }, 
-            {
-              "Name": "shot_id",
-              "Type": "Shot",
-              "Desc": "ID of shot in scene",
-              "Nullable": 0
-            }, 
-            {
-              "Name": "options",
-              "Type": "struct",
-              "Desc": "Stucture containing optional settings used to control the type of scrub image rendered.",
+              "Name": "repeat",
+              "Type": "int",
+              "Desc": "Flag indicating whether timer should repeat after interval elapses",
               "Nullable": 0
             }
           ],
           "Result": {
-            "Type": "array",
-            "Desc": "Template array containing 2 strings; a URI prefix & suffix. To form a completeURI, the scrub frame number required should be inserted between these 2 strings."
+            "Type": "Timer",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "start",
+          "Desc": "Start timer running",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "is_started",
+          "Desc": "Inquire if timer is started",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "Flag indicating whether timer is started"
+          }
+        }, 
+        {
+          "Name": "stop",
+          "Desc": "Stop timer firing",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_interval",
+          "Desc": "Return interval between timer ticks firing",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "Interval in milliseconds"
+          }
+        }, 
+        {
+          "Name": "set_interval",
+          "Desc": "Set interval between timer ticks firing",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "interval",
+              "Type": "int",
+              "Desc": "Interval in milliseconds",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
           }
         }
       ],
@@ -5599,6 +6826,248 @@
     }
   ],
   "Constants": [ 
+    {
+      "Name": "AUDIOSEQ_TYPE",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Type of Audio in an Audio Sequence",
+      "Values": [ 
+        {
+          "Desc": "No Audio",
+          "Key": "AUDIOSEQTYPE_NONE",
+          "Value": "AST_NONE"
+        }, 
+        {
+          "Desc": "Audio File",
+          "Key": "AUDIOSEQTYPE_FILE",
+          "Value": "AST_FILE"
+        }, 
+        {
+          "Desc": "Audio Stems",
+          "Key": "AUDIOSEQTYPE_STEMS",
+          "Value": "AST_STEMS"
+        }, 
+        {
+          "Desc": "Audio from Movie",
+          "Key": "AUDIOSEQTYPE_MOVIE",
+          "Value": "AST_MOVIE"
+        }, 
+        {
+          "Desc": "Audio is generated Tone",
+          "Key": "AUDIOSEQTYPE_TONE",
+          "Value": "AST_TONE"
+        }
+      ]
+    }, 
+    {
+      "Name": "AUDIOSYNCSTATUS",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Status info related to audio sync progress",
+      "Values": [ 
+        {
+          "Desc": "Failure during audio sync operation",
+          "Key": "AUDIOSYNCSTATUS_FAIL",
+          "Value": "FAIL"
+        }, 
+        {
+          "Desc": "Warning during audio sync operation",
+          "Key": "AUDIOSYNCSTATUS_WARN",
+          "Value": "WARN"
+        }, 
+        {
+          "Desc": "Info from audio sync operation",
+          "Key": "AUDIOSYNCSTATUS_INFO",
+          "Value": "INFO"
+        }, 
+        {
+          "Desc": "Note from audio sync operation",
+          "Key": "AUDIOSYNCSTATUS_NOTE",
+          "Value": "NOTE"
+        }, 
+        {
+          "Desc": "Filesystem scanning progress",
+          "Key": "AUDIOSYNCSTATUS_SCAN",
+          "Value": "SCAN"
+        }
+      ]
+    }, 
+    {
+      "Name": "AUDIOSYNC_CRITERIA",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Values for AudioSyncSettings Criteria",
+      "Values": [ 
+        {
+          "Desc": "Timecode",
+          "Key": "AUDIOSYNC_CRITERIA_TIMECODE",
+          "Value": "Timecode"
+        }, 
+        {
+          "Desc": "Source Timecode",
+          "Key": "AUDIOSYNC_CRITERIA_SRCTIMECODE",
+          "Value": "SrcTimecode"
+        }, 
+        {
+          "Desc": "Date & Source Timecode",
+          "Key": "AUDIOSYNC_CRITERIA_DATESRCTIMECODE",
+          "Value": "DateSrcTimecode"
+        }, 
+        {
+          "Desc": "Scene & Take",
+          "Key": "AUDIOSYNC_CRITERIA_SCENETAKE",
+          "Value": "SceneTake"
+        }, 
+        {
+          "Desc": "Shot Scene & Take",
+          "Key": "AUDIOSYNC_CRITERIA_SHOTSCENETAKE",
+          "Value": "ShotSceneTake"
+        }
+      ]
+    }, 
+    {
+      "Name": "AUDIOSYNC_FPS",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Values for AudioSyncSettings FPS",
+      "Values": [ 
+        {
+          "Desc": "23.976 fps",
+          "Key": "AUDIOSYNC_FPS_23976",
+          "Value": "23976"
+        }, 
+        {
+          "Desc": "24 fps",
+          "Key": "AUDIOSYNC_FPS_24000",
+          "Value": "24000"
+        }, 
+        {
+          "Desc": "25 fps",
+          "Key": "AUDIOSYNC_FPS_25000",
+          "Value": "25000"
+        }, 
+        {
+          "Desc": "29.97 fps",
+          "Key": "AUDIOSYNC_FPS_29970",
+          "Value": "29970"
+        }, 
+        {
+          "Desc": "29.97 fps DF",
+          "Key": "AUDIOSYNC_FPS_2997DF",
+          "Value": "2997DF"
+        }, 
+        {
+          "Desc": "30 fps",
+          "Key": "AUDIOSYNC_FPS_30000",
+          "Value": "30000"
+        }
+      ]
+    }, 
+    {
+      "Name": "AUDIOSYNC_METADATA",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Values for AudioSyncSettings Metadata",
+      "Values": [ 
+        {
+          "Desc": "Scene & Take",
+          "Key": "AUDIOSYNC_METADATA_SCENETAKE",
+          "Value": "SceneTake"
+        }, 
+        {
+          "Desc": "Date",
+          "Key": "AUDIOSYNC_METADATA_DATE",
+          "Value": "Date"
+        }
+      ]
+    }, 
+    {
+      "Name": "AUDIOSYNC_RATIO",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Values for AudioSyncSettings Ratio",
+      "Values": [ 
+        {
+          "Desc": "1:1",
+          "Key": "AUDIOSYNC_RATIO_1_TO_1",
+          "Value": "1:1"
+        }, 
+        {
+          "Desc": "1001:1000",
+          "Key": "AUDIOSYNC_RATIO_1001_TO_1000",
+          "Value": "1001:1000"
+        }, 
+        {
+          "Desc": "1000:1001",
+          "Key": "AUDIOSYNC_RATIO_1000_TO_1001",
+          "Value": "1000:1001"
+        }, 
+        {
+          "Desc": "25:24",
+          "Key": "AUDIOSYNC_RATIO_25_TO_24",
+          "Value": "25:24"
+        }, 
+        {
+          "Desc": "24:25",
+          "Key": "AUDIOSYNC_RATIO_24_TO_25",
+          "Value": "24:25"
+        }
+      ]
+    }, 
+    {
+      "Name": "AUDIOSYNC_READLTC",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Values for AudioSyncSettings ReadLTC",
+      "Values": [ 
+        {
+          "Desc": "No",
+          "Key": "AUDIOSYNC_READLTC_NO",
+          "Value": "No"
+        }, 
+        {
+          "Desc": "From Channel",
+          "Key": "AUDIOSYNC_READLTC_CHANNEL",
+          "Value": "Channel"
+        }, 
+        {
+          "Desc": "From Track",
+          "Key": "AUDIOSYNC_READLTC_TRACK",
+          "Value": "Track"
+        }
+      ]
+    }, 
+    {
+      "Name": "AUDIOSYNC_SUBSEARCH",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Values for AudioSyncSettings SubSearch",
+      "Values": [ 
+        {
+          "Desc": "All Sub-Directories",
+          "Key": "AUDIOSYNC_SUBSEARCH_ALL",
+          "Value": "All"
+        }, 
+        {
+          "Desc": "Sub-Directories Named",
+          "Key": "AUDIOSYNC_SUBSEARCH_NAMED",
+          "Value": "Named"
+        }, 
+        {
+          "Desc": "Nearest Sub-Directory Named",
+          "Key": "AUDIOSYNC_SUBSEARCH_NEAREST",
+          "Value": "Nearest"
+        }
+      ]
+    }, 
     {
       "Name": "AUDIO_RATE",
       "Type": "int",
@@ -5852,17 +7321,17 @@
       "Desc": "Values for CubeExportSettings ExtendedRanges",
       "Values": [ 
         {
-          "Desc": "",
+          "Desc": "No",
           "Key": "CUBEEXPORT_EXTENDEDRANGES_NO",
           "Value": "No"
         }, 
         {
-          "Desc": "",
+          "Desc": "Linear",
           "Key": "CUBEEXPORT_EXTENDEDRANGES_LINEAR",
           "Value": "Linear"
         }, 
         {
-          "Desc": "",
+          "Desc": "Log",
           "Key": "CUBEEXPORT_EXTENDEDRANGES_LOG",
           "Value": "Log"
         }
@@ -6132,17 +7601,17 @@
           "Value": -1
         }, 
         {
-          "Desc": "",
+          "Desc": "1024",
           "Key": "CUBEEXPORT_LUTRESOLUTION_1024",
           "Value": 1024
         }, 
         {
-          "Desc": "",
+          "Desc": "4096",
           "Key": "CUBEEXPORT_LUTRESOLUTION_4096",
           "Value": 4096
         }, 
         {
-          "Desc": "",
+          "Desc": "16384",
           "Key": "CUBEEXPORT_LUTRESOLUTION_16384",
           "Value": 16384
         }
@@ -6156,17 +7625,17 @@
       "Desc": "Values for CubeExportSettings NumLUTs",
       "Values": [ 
         {
-          "Desc": "",
+          "Desc": "1",
           "Key": "CUBEEXPORT_NUMLUTS_1",
           "Value": 1
         }, 
         {
-          "Desc": "",
+          "Desc": "2",
           "Key": "CUBEEXPORT_NUMLUTS_2",
           "Value": 2
         }, 
         {
-          "Desc": "",
+          "Desc": "3",
           "Key": "CUBEEXPORT_NUMLUTS_3",
           "Value": 3
         }
@@ -6231,6 +7700,85 @@
       ]
     }, 
     {
+      "Name": "DIALOG_ITEM_TYPE",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Type for a DynamicDialogItem used in a DynamicDialog",
+      "Values": [ 
+        {
+          "Desc": "String",
+          "Key": "DIT_STRING",
+          "Value": "String"
+        }, 
+        {
+          "Desc": "Integer",
+          "Key": "DIT_INTEGER",
+          "Value": "Integer"
+        }, 
+        {
+          "Desc": "Floating-point number",
+          "Key": "DIT_FLOAT",
+          "Value": "Float"
+        }, 
+        {
+          "Desc": "Timecode",
+          "Key": "DIT_TIMECODE",
+          "Value": "Timecode"
+        }, 
+        {
+          "Desc": "Dropdown",
+          "Key": "DIT_DROPDOWN",
+          "Value": "Dropdown"
+        }, 
+        {
+          "Desc": "File Path",
+          "Key": "DIT_FILEPATH",
+          "Value": "File"
+        }, 
+        {
+          "Desc": "Image Path",
+          "Key": "DIT_IMAGEPATH",
+          "Value": "Image"
+        }, 
+        {
+          "Desc": "Directory Path",
+          "Key": "DIT_DIRECTORY",
+          "Value": "Directory"
+        }, 
+        {
+          "Desc": "Shot Selection",
+          "Key": "DIT_SHOT_SELECTION",
+          "Value": "ShotSelection"
+        }, 
+        {
+          "Desc": "Static Text",
+          "Key": "DIT_STATIC_TEXT",
+          "Value": "StaticText"
+        }, 
+        {
+          "Desc": "Shot Category",
+          "Key": "DIT_SHOT_CATEGORY",
+          "Value": "ShotCategory"
+        }, 
+        {
+          "Desc": "Shot Category Set",
+          "Key": "DIT_SHOT_CATEGORY_SET",
+          "Value": "CategorySet"
+        }, 
+        {
+          "Desc": "Shot Category",
+          "Key": "DIT_MARK_CATEGORY",
+          "Value": "MarkCategory"
+        }, 
+        {
+          "Desc": "Mark Category Set",
+          "Key": "DIT_MARK_CATEGORY_SET",
+          "Value": "MarkCategorySet"
+        }
+      ]
+    }, 
+    {
       "Name": "EXPORTSTATUS",
       "Type": "string",
       "Enum": 1,
@@ -6261,6 +7809,35 @@
           "Desc": "Filesystem scanning progress",
           "Key": "EXPORTSTATUS_SCAN",
           "Value": "SCAN"
+        }
+      ]
+    }, 
+    {
+      "Name": "EXPORTTYPE",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Type of Exporter",
+      "Values": [ 
+        {
+          "Desc": "Stills Exporter",
+          "Key": "EXPORTTYPE_STILL",
+          "Value": "Still"
+        }, 
+        {
+          "Desc": "BLG Exporter",
+          "Key": "EXPORTTYPE_BLG",
+          "Value": "BLG"
+        }, 
+        {
+          "Desc": "Cube Exporter",
+          "Key": "EXPORTTYPE_CUBE",
+          "Value": "Cube"
+        }, 
+        {
+          "Desc": "CDL Exporter",
+          "Key": "EXPORTTYPE_CDL",
+          "Value": "CDL"
         }
       ]
     }, 
@@ -6320,12 +7897,12 @@
       "Desc": "Values for Exporter Overwrite field",
       "Values": [ 
         {
-          "Desc": "",
+          "Desc": "Skip",
           "Key": "EXPORT_OVERWRITE_SKIP",
           "Value": "Skip"
         }, 
         {
-          "Desc": "",
+          "Desc": "Replace",
           "Key": "EXPORT_OVERWRITE_REPLACE",
           "Value": "Replace"
         }
@@ -6595,6 +8172,30 @@
       ]
     }, 
     {
+      "Name": "LOG_SEVERITY",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Log Message Severity",
+      "Values": [ 
+        {
+          "Desc": "Hard error",
+          "Key": "LOGSEVERITY_HARD",
+          "Value": "ERR_HARD"
+        }, 
+        {
+          "Desc": "Soft error",
+          "Key": "LOGSEVERITY_SOFT",
+          "Value": "ERR_SOFT"
+        }, 
+        {
+          "Desc": "Information or transient message",
+          "Key": "LOGSEVERITY_INFO",
+          "Value": "ERR_INFO_TRANSIENT"
+        }
+      ]
+    }, 
+    {
       "Name": "LUT_LOCATION",
       "Type": "string",
       "Enum": 1,
@@ -6634,6 +8235,40 @@
           "Desc": "Strip mark, position stored as time in seconds relative to start of strip",
           "Key": "MARKTYPE_STRIP",
           "Value": "Strip"
+        }
+      ]
+    }, 
+    {
+      "Name": "MENU_LOCATION",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Location within application of new menu or menu item",
+      "Values": [ 
+        {
+          "Desc": "Main application menu, ie Baselight or Daylight",
+          "Key": "MENULOCATION_APP_MENU",
+          "Value": "ML_APPMENU"
+        }, 
+        {
+          "Desc": "Scene menu",
+          "Key": "MENULOCATION_SCENE_MENU",
+          "Value": "ML_SCENE"
+        }, 
+        {
+          "Desc": "Edit menu",
+          "Key": "MENULOCATION_EDIT_MENU",
+          "Value": "ML_EDIT"
+        }, 
+        {
+          "Desc": "Job Manager",
+          "Key": "MENULOCATION_JOB_MANAGER",
+          "Value": "ML_JOB_MANAGER"
+        }, 
+        {
+          "Desc": "Shots View",
+          "Key": "MENULOCATION_SHOT_VIEW",
+          "Value": "ML_SHOTS_VIEW"
         }
       ]
     }, 
@@ -6751,7 +8386,7 @@
       "Desc": "Values for MultiPasteSettings EDLApplyASCCDL",
       "Values": [ 
         {
-          "Desc": "",
+          "Desc": "No",
           "Key": "MULTIPASTE_EDLAPPLYASCCDL_NO",
           "Value": "No"
         }, 
@@ -7256,6 +8891,30 @@
           "Desc": "Low proxy resolution",
           "Key": "RES_LOW",
           "Value": "GMPR_LOW"
+        }
+      ]
+    }, 
+    {
+      "Name": "QUEUE_LOG_TYPE",
+      "Type": "string",
+      "Enum": 1,
+      "Value": null,
+      "Desc": "Message type for log entry queue operation log",
+      "Values": [ 
+        {
+          "Desc": "Information",
+          "Key": "QUEUELOGTYPE_INFO",
+          "Value": "info"
+        }, 
+        {
+          "Desc": "Warning",
+          "Key": "QUEUELOGTYPE_WARN",
+          "Value": "warn"
+        }, 
+        {
+          "Desc": "Error/failure",
+          "Key": "QUEUELOGTYPE_FAIL",
+          "Value": "fail"
         }
       ]
     }, 
@@ -7843,6 +9502,180 @@
       ]
     }, 
     {
+      "Name": "AudioSequenceSettings",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "Type",
+          "Type": "string",
+          "Desc": "Type of Audio Sequence",
+          "Values": null
+        }, 
+        {
+          "Name": "Filename",
+          "Type": "string",
+          "Desc": "Filename for audio",
+          "Values": null
+        }, 
+        {
+          "Name": "Stems",
+          "Type": "array",
+          "Desc": "",
+          "Values": null
+        }, 
+        {
+          "Name": "Offset",
+          "Type": "Rational",
+          "Desc": "Audio Offset in seconds",
+          "Values": null
+        }, 
+        {
+          "Name": "Ratio",
+          "Type": "string",
+          "Desc": "Audio ratio.  Allowed values are \"1:1\", \"24:25\", \"25:24\", \"1000:1001\", \"1001:1000\", \"23.98:23.976\"",
+          "Values": null
+        }
+      ]
+    }, 
+    {
+      "Name": "AudioSyncProgress",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "Status",
+          "Type": "string",
+          "Desc": null,
+          "Values": null
+        }, 
+        {
+          "Name": "Summary",
+          "Type": "string",
+          "Desc": "String summarising the progress information",
+          "Values": null
+        }, 
+        {
+          "Name": "ShotID",
+          "Type": "int",
+          "Desc": "Shot ID that this progress information relates to",
+          "Values": null
+        }, 
+        {
+          "Name": "Frame",
+          "Type": "int",
+          "Desc": "Frame number within timeline",
+          "Values": null
+        }
+      ]
+    }, 
+    {
+      "Name": "AudioSyncSettings",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "Criteria",
+          "Type": "int",
+          "Desc": "Search For",
+          "Values": null
+        }, 
+        {
+          "Name": "Timecode",
+          "Type": "timecode",
+          "Desc": "Value for Timecode",
+          "Values": null
+        }, 
+        {
+          "Name": "Scene",
+          "Type": "string",
+          "Desc": "Value for Scene",
+          "Values": null
+        }, 
+        {
+          "Name": "Take",
+          "Type": "string",
+          "Desc": "Value for Take",
+          "Values": null
+        }, 
+        {
+          "Name": "Directory",
+          "Type": "string",
+          "Desc": "Directory",
+          "Values": null
+        }, 
+        {
+          "Name": "SubSearch",
+          "Type": "int",
+          "Desc": "Search in",
+          "Values": null
+        }, 
+        {
+          "Name": "Subdirs",
+          "Type": "string",
+          "Desc": "Value for Subdirs",
+          "Values": null
+        }, 
+        {
+          "Name": "FPS",
+          "Type": "int",
+          "Desc": "Audio TC FPS",
+          "Values": null
+        }, 
+        {
+          "Name": "Offset",
+          "Type": "float",
+          "Desc": "Offset",
+          "Values": null
+        }, 
+        {
+          "Name": "Metadata",
+          "Type": "int",
+          "Desc": "Read Metadata",
+          "Values": null
+        }, 
+        {
+          "Name": "ClapDetect",
+          "Type": "int",
+          "Desc": "Clap Detect, flag indicating true or false",
+          "Values": null
+        }, 
+        {
+          "Name": "ClapDetectThreshold",
+          "Type": "float",
+          "Desc": "Threshold",
+          "Values": null
+        }, 
+        {
+          "Name": "Ratio",
+          "Type": "int",
+          "Desc": "Ratio",
+          "Values": null
+        }, 
+        {
+          "Name": "ReadLTC",
+          "Type": "int",
+          "Desc": "Read LTC",
+          "Values": null
+        }, 
+        {
+          "Name": "LTCIndex",
+          "Type": "int",
+          "Desc": "Number",
+          "Values": null
+        }, 
+        {
+          "Name": "LTCColumn",
+          "Type": "string",
+          "Desc": "Into Column",
+          "Values": null
+        }, 
+        {
+          "Name": "AutoSync",
+          "Type": "int",
+          "Desc": "Value for AutoSync, flag indicating true or false",
+          "Values": null
+        }
+      ]
+    }, 
+    {
       "Name": "BLGExportSettings",
       "Desc": null,
       "Fields": [ 
@@ -8059,7 +9892,7 @@
         {
           "Name": "CDLLayerCustom",
           "Type": "int",
-          "Desc": "CDL Layer n",
+          "Desc": "Layer Number",
           "Values": null
         }
       ]
@@ -8095,66 +9928,6 @@
       ]
     }, 
     {
-      "Name": "ClientViewClientSettings",
-      "Desc": null,
-      "Fields": [ 
-        {
-          "Name": "StreamIndex",
-          "Type": "int",
-          "Desc": "Stream index, or -1 if streaming disabled",
-          "Values": null
-        }, 
-        {
-          "Name": "StreamConfigsAge",
-          "Type": "int",
-          "Desc": "'Age' value incremented when a stream's configuration value changes. ",
-          "Values": null
-        }, 
-        {
-          "Name": "NotesEnabled",
-          "Type": "int",
-          "Desc": "Flag set if the Client View can add/edit notes and flags",
-          "Values": null
-        }, 
-        {
-          "Name": "LaserEnabled",
-          "Type": "int",
-          "Desc": "Flag set if the Client View has a laser pointer (if streaming enabled)",
-          "Values": null
-        }, 
-        {
-          "Name": "Debug",
-          "Type": "int",
-          "Desc": "",
-          "Values": null
-        }
-      ]
-    }, 
-    {
-      "Name": "ClientViewStreamSettings",
-      "Desc": null,
-      "Fields": [ 
-        {
-          "Name": "Resolution",
-          "Type": "string",
-          "Desc": "Stream resolution string eg. '1920x1080'",
-          "Values": null
-        }, 
-        {
-          "Name": "Bitrate",
-          "Type": "int",
-          "Desc": "Integer bitrate in Mbit/s",
-          "Values": null
-        }, 
-        {
-          "Name": "ColourSpace",
-          "Type": "string",
-          "Desc": "Either 'P3', 'sRGB' or 'HDR'",
-          "Values": null
-        }
-      ]
-    }, 
-    {
       "Name": "ColourSpaceInfo",
       "Desc": null,
       "Fields": [ 
@@ -8174,30 +9947,6 @@
           "Name": "Type",
           "Type": "string",
           "Desc": "Type of Colour Space (\"scene\",\"display\",\"any\")",
-          "Values": null
-        }
-      ]
-    }, 
-    {
-      "Name": "ConnectionInfo",
-      "Desc": null,
-      "Fields": [ 
-        {
-          "Name": "ConnectionID",
-          "Type": "int",
-          "Desc": "Connection ID. Note: This can be obtained for a specific connection via a FLAPI Connection's 'get_connection_id()' method",
-          "Values": null
-        }, 
-        {
-          "Name": "UserName",
-          "Type": "string",
-          "Desc": "Connected user/client name",
-          "Values": null
-        }, 
-        {
-          "Name": "UsageType",
-          "Type": "string",
-          "Desc": "Usage type declared by a connection ('Unknown' if none explicitly set)",
           "Values": null
         }
       ]
@@ -8515,6 +10264,96 @@
       ]
     }, 
     {
+      "Name": "DialogItem",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "Key",
+          "Type": "string",
+          "Desc": "Key used to identify value for item in settings dictionary",
+          "Values": null
+        }, 
+        {
+          "Name": "Label",
+          "Type": "string",
+          "Desc": "Label to show for item",
+          "Values": null
+        }, 
+        {
+          "Name": "Type",
+          "Type": "string",
+          "Desc": "Type of dialog item",
+          "Values": null
+        }, 
+        {
+          "Name": "Help",
+          "Type": "string",
+          "Desc": "Help text describing this dialog item",
+          "Values": null
+        }, 
+        {
+          "Name": "Default",
+          "Type": "any",
+          "Desc": "Default value for this item",
+          "Values": null
+        }, 
+        {
+          "Name": "Options",
+          "Type": "array",
+          "Desc": "Array of items to show in list",
+          "Values": null
+        }, 
+        {
+          "Name": "RegExp",
+          "Type": "string",
+          "Desc": "Regular expression to filter files shown in browsers",
+          "Values": null
+        }, 
+        {
+          "Name": "Password",
+          "Type": "int",
+          "Desc": "Password mode for String type",
+          "Values": null
+        }, 
+        {
+          "Name": "IntMin",
+          "Type": "int",
+          "Desc": "Minimum value for Integer type",
+          "Values": null
+        }, 
+        {
+          "Name": "IntMax",
+          "Type": "int",
+          "Desc": "Maximum value for Integer type",
+          "Values": null
+        }, 
+        {
+          "Name": "FloatMin",
+          "Type": "float",
+          "Desc": "Minimum value for Float type",
+          "Values": null
+        }, 
+        {
+          "Name": "FloatMax",
+          "Type": "float",
+          "Desc": "Maximum value for Float type",
+          "Values": null
+        }, 
+        {
+          "Name": "FloatSnap",
+          "Type": "float",
+          "Desc": "Minimum interval between Float values",
+          "Values": null
+        }, 
+        {
+          "Name": "Style",
+          "Type": "any",
+          "Desc": "Define the style for this dialog item",
+          "Values": null
+        }
+      ]
+    }, 
+    {
       "Name": "EnumInfo",
       "Desc": null,
       "Fields": [ 
@@ -8699,43 +10538,43 @@
       "Desc": null,
       "Fields": [ 
         {
-          "Name": "Sx",
+          "Name": "sx",
           "Type": "float",
           "Desc": "X scaling factor",
           "Values": null
         }, 
         {
-          "Name": "Sy",
+          "Name": "sy",
           "Type": "float",
           "Desc": "Y scaling factor",
           "Values": null
         }, 
         {
-          "Name": "Tx",
+          "Name": "tx",
           "Type": "float",
           "Desc": "X translation",
           "Values": null
         }, 
         {
-          "Name": "Ty",
+          "Name": "ty",
           "Type": "float",
           "Desc": "Y translation",
           "Values": null
         }, 
         {
-          "Name": "Inside",
+          "Name": "inside",
           "Type": "int",
           "Desc": "Flag indicating whether mapping is inside or outside of destination format",
           "Values": null
         }, 
         {
-          "Name": "SrcMask",
+          "Name": "src_mask",
           "Type": "string",
           "Desc": "Name of source mask",
           "Values": null
         }, 
         {
-          "Name": "DstMask",
+          "Name": "dst_mask",
           "Type": "string",
           "Desc": "Name of destination mask",
           "Values": null
@@ -9273,6 +11112,12 @@
           "Type": "ScenePath",
           "Desc": "Path of template scene from which to copy settings",
           "Values": null
+        }, 
+        {
+          "Name": "blg_template",
+          "Type": "string",
+          "Desc": "Path of BLG file from which to copy settings",
+          "Values": null
         }
       ]
     }, 
@@ -9433,6 +11278,24 @@
       ]
     }, 
     {
+      "Name": "Rational",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "Numerator",
+          "Type": "int",
+          "Desc": "Numerator of the rational number",
+          "Values": null
+        }, 
+        {
+          "Name": "Denominator",
+          "Type": "int",
+          "Desc": "Denominator of the rational number",
+          "Values": null
+        }
+      ]
+    }, 
+    {
       "Name": "RenderCodecInfo",
       "Desc": null,
       "Fields": [ 
@@ -9548,6 +11411,12 @@
           "Name": "ImageOptions",
           "Type": "struct",
           "Desc": "Dictionary containing image codec parameters and their values",
+          "Values": null
+        }, 
+        {
+          "Name": "FastStart",
+          "Type": "int",
+          "Desc": "Flag indicating that we want to optimise the resulting movie for fast-start network playback",
           "Values": null
         }, 
         {
@@ -10058,12 +11927,6 @@
           "Name": "EndFrame",
           "Type": "int",
           "Desc": "The shot's timeline end frame",
-          "Values": null
-        }, 
-        {
-          "Name": "PosterFrame",
-          "Type": "int",
-          "Desc": "The shot's timeline poster frame",
           "Values": null
         }
       ]

@@ -16,6 +16,7 @@ import websocket
 import json
 import random
 import subprocess
+import traceback
 
 if sys.version_info[0] > 2:
     import enum
@@ -186,7 +187,7 @@ Library.register_decoder( "framenumber", FrameNumber.from_dict )
 #
 # Thrown when an exception occurs
 
-class FLAPIException(BaseException):
+class FLAPIException(Exception):
     
     def __init__( self, msg ):
         self.msg = msg
@@ -289,7 +290,7 @@ class Interface:
                     result = r
             except Exception as ex:
                 print( "Failed to dispatch signal '%s' to handler '%s'" % (signal, h) )
-                print( "Error: %s" % ex )
+                traceback.print_exc(file=sys.stdout)
                 sys.stdout.flush()
 
         return result
@@ -705,8 +706,6 @@ class Connection:
                     raise FLAPIException( "'signal' params has no signal name")
 
                 sigargs = params.get("args")
-                if sigargs == None:
-                    raise FLAPIException( "'signal' params has no signal args")
 
                 sigres = None
                 if obj != None:
@@ -824,11 +823,12 @@ class Connection:
 
     # Register a plugin script with the host application
     #
-    def register_script(self, scriptPath):
+    def register_script(self, scriptPath, status):
         msg = {
             "jsonrpc": "2.0",
             "method": "register_script",
-            "path": scriptPath
+            "path": scriptPath,
+            "status" : status
         }
 
         return self.send_message( msg, False, None )
@@ -836,6 +836,230 @@ class Connection:
 
 ###############################################################################
 # Constants
+#  AUDIOSEQ_TYPE : Type of Audio in an Audio Sequence
+#    AUDIOSEQTYPE_NONE : No Audio
+#    AUDIOSEQTYPE_FILE : Audio File
+#    AUDIOSEQTYPE_STEMS : Audio Stems
+#    AUDIOSEQTYPE_MOVIE : Audio from Movie
+#    AUDIOSEQTYPE_TONE : Audio is generated Tone
+if sys.version_info[0] >= 3:
+    class AUDIOSEQ_TYPE(enum.Enum):
+        AUDIOSEQTYPE_NONE="AST_NONE"
+        AUDIOSEQTYPE_FILE="AST_FILE"
+        AUDIOSEQTYPE_STEMS="AST_STEMS"
+        AUDIOSEQTYPE_MOVIE="AST_MOVIE"
+        AUDIOSEQTYPE_TONE="AST_TONE"
+        def describe(self):
+            descs = {
+                AUDIOSEQ_TYPE.AUDIOSEQTYPE_NONE: "No Audio",
+                AUDIOSEQ_TYPE.AUDIOSEQTYPE_FILE: "Audio File",
+                AUDIOSEQ_TYPE.AUDIOSEQTYPE_STEMS: "Audio Stems",
+                AUDIOSEQ_TYPE.AUDIOSEQTYPE_MOVIE: "Audio from Movie",
+                AUDIOSEQ_TYPE.AUDIOSEQTYPE_TONE: "Audio is generated Tone",
+            }
+            return descs.get(self)
+
+        def as_dict():
+            return {x:x.describe() for x in AUDIOSEQ_TYPE}
+
+AUDIOSEQTYPE_NONE="AST_NONE"
+AUDIOSEQTYPE_FILE="AST_FILE"
+AUDIOSEQTYPE_STEMS="AST_STEMS"
+AUDIOSEQTYPE_MOVIE="AST_MOVIE"
+AUDIOSEQTYPE_TONE="AST_TONE"
+#  AUDIOSYNCSTATUS : Status info related to audio sync progress
+#    AUDIOSYNCSTATUS_FAIL : Failure during audio sync operation
+#    AUDIOSYNCSTATUS_WARN : Warning during audio sync operation
+#    AUDIOSYNCSTATUS_INFO : Info from audio sync operation
+#    AUDIOSYNCSTATUS_NOTE : Note from audio sync operation
+#    AUDIOSYNCSTATUS_SCAN : Filesystem scanning progress
+if sys.version_info[0] >= 3:
+    class AUDIOSYNCSTATUS(enum.Enum):
+        AUDIOSYNCSTATUS_FAIL="FAIL"
+        AUDIOSYNCSTATUS_WARN="WARN"
+        AUDIOSYNCSTATUS_INFO="INFO"
+        AUDIOSYNCSTATUS_NOTE="NOTE"
+        AUDIOSYNCSTATUS_SCAN="SCAN"
+        def describe(self):
+            descs = {
+                AUDIOSYNCSTATUS.AUDIOSYNCSTATUS_FAIL: "Failure during audio sync operation",
+                AUDIOSYNCSTATUS.AUDIOSYNCSTATUS_WARN: "Warning during audio sync operation",
+                AUDIOSYNCSTATUS.AUDIOSYNCSTATUS_INFO: "Info from audio sync operation",
+                AUDIOSYNCSTATUS.AUDIOSYNCSTATUS_NOTE: "Note from audio sync operation",
+                AUDIOSYNCSTATUS.AUDIOSYNCSTATUS_SCAN: "Filesystem scanning progress",
+            }
+            return descs.get(self)
+
+        def as_dict():
+            return {x:x.describe() for x in AUDIOSYNCSTATUS}
+
+AUDIOSYNCSTATUS_FAIL="FAIL"
+AUDIOSYNCSTATUS_WARN="WARN"
+AUDIOSYNCSTATUS_INFO="INFO"
+AUDIOSYNCSTATUS_NOTE="NOTE"
+AUDIOSYNCSTATUS_SCAN="SCAN"
+#  AUDIOSYNC_CRITERIA : Values for AudioSyncSettings Criteria
+#    AUDIOSYNC_CRITERIA_TIMECODE : Timecode
+#    AUDIOSYNC_CRITERIA_SRCTIMECODE : Source Timecode
+#    AUDIOSYNC_CRITERIA_DATESRCTIMECODE : Date & Source Timecode
+#    AUDIOSYNC_CRITERIA_SCENETAKE : Scene & Take
+#    AUDIOSYNC_CRITERIA_SHOTSCENETAKE : Shot Scene & Take
+if sys.version_info[0] >= 3:
+    class AUDIOSYNC_CRITERIA(enum.Enum):
+        AUDIOSYNC_CRITERIA_TIMECODE="Timecode"
+        AUDIOSYNC_CRITERIA_SRCTIMECODE="SrcTimecode"
+        AUDIOSYNC_CRITERIA_DATESRCTIMECODE="DateSrcTimecode"
+        AUDIOSYNC_CRITERIA_SCENETAKE="SceneTake"
+        AUDIOSYNC_CRITERIA_SHOTSCENETAKE="ShotSceneTake"
+        def describe(self):
+            descs = {
+                AUDIOSYNC_CRITERIA.AUDIOSYNC_CRITERIA_TIMECODE: "Timecode",
+                AUDIOSYNC_CRITERIA.AUDIOSYNC_CRITERIA_SRCTIMECODE: "Source Timecode",
+                AUDIOSYNC_CRITERIA.AUDIOSYNC_CRITERIA_DATESRCTIMECODE: "Date & Source Timecode",
+                AUDIOSYNC_CRITERIA.AUDIOSYNC_CRITERIA_SCENETAKE: "Scene & Take",
+                AUDIOSYNC_CRITERIA.AUDIOSYNC_CRITERIA_SHOTSCENETAKE: "Shot Scene & Take",
+            }
+            return descs.get(self)
+
+        def as_dict():
+            return {x:x.describe() for x in AUDIOSYNC_CRITERIA}
+
+AUDIOSYNC_CRITERIA_TIMECODE="Timecode"
+AUDIOSYNC_CRITERIA_SRCTIMECODE="SrcTimecode"
+AUDIOSYNC_CRITERIA_DATESRCTIMECODE="DateSrcTimecode"
+AUDIOSYNC_CRITERIA_SCENETAKE="SceneTake"
+AUDIOSYNC_CRITERIA_SHOTSCENETAKE="ShotSceneTake"
+#  AUDIOSYNC_FPS : Values for AudioSyncSettings FPS
+#    AUDIOSYNC_FPS_23976 : 23.976 fps
+#    AUDIOSYNC_FPS_24000 : 24 fps
+#    AUDIOSYNC_FPS_25000 : 25 fps
+#    AUDIOSYNC_FPS_29970 : 29.97 fps
+#    AUDIOSYNC_FPS_2997DF : 29.97 fps DF
+#    AUDIOSYNC_FPS_30000 : 30 fps
+if sys.version_info[0] >= 3:
+    class AUDIOSYNC_FPS(enum.Enum):
+        AUDIOSYNC_FPS_23976="23976"
+        AUDIOSYNC_FPS_24000="24000"
+        AUDIOSYNC_FPS_25000="25000"
+        AUDIOSYNC_FPS_29970="29970"
+        AUDIOSYNC_FPS_2997DF="2997DF"
+        AUDIOSYNC_FPS_30000="30000"
+        def describe(self):
+            descs = {
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_23976: "23.976 fps",
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_24000: "24 fps",
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_25000: "25 fps",
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_29970: "29.97 fps",
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_2997DF: "29.97 fps DF",
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_30000: "30 fps",
+            }
+            return descs.get(self)
+
+        def as_dict():
+            return {x:x.describe() for x in AUDIOSYNC_FPS}
+
+AUDIOSYNC_FPS_23976="23976"
+AUDIOSYNC_FPS_24000="24000"
+AUDIOSYNC_FPS_25000="25000"
+AUDIOSYNC_FPS_29970="29970"
+AUDIOSYNC_FPS_2997DF="2997DF"
+AUDIOSYNC_FPS_30000="30000"
+#  AUDIOSYNC_METADATA : Values for AudioSyncSettings Metadata
+#    AUDIOSYNC_METADATA_SCENETAKE : Scene & Take
+#    AUDIOSYNC_METADATA_DATE : Date
+if sys.version_info[0] >= 3:
+    class AUDIOSYNC_METADATA(enum.Enum):
+        AUDIOSYNC_METADATA_SCENETAKE="SceneTake"
+        AUDIOSYNC_METADATA_DATE="Date"
+        def describe(self):
+            descs = {
+                AUDIOSYNC_METADATA.AUDIOSYNC_METADATA_SCENETAKE: "Scene & Take",
+                AUDIOSYNC_METADATA.AUDIOSYNC_METADATA_DATE: "Date",
+            }
+            return descs.get(self)
+
+        def as_dict():
+            return {x:x.describe() for x in AUDIOSYNC_METADATA}
+
+AUDIOSYNC_METADATA_SCENETAKE="SceneTake"
+AUDIOSYNC_METADATA_DATE="Date"
+#  AUDIOSYNC_RATIO : Values for AudioSyncSettings Ratio
+#    AUDIOSYNC_RATIO_1_TO_1 : 1:1
+#    AUDIOSYNC_RATIO_1001_TO_1000 : 1001:1000
+#    AUDIOSYNC_RATIO_1000_TO_1001 : 1000:1001
+#    AUDIOSYNC_RATIO_25_TO_24 : 25:24
+#    AUDIOSYNC_RATIO_24_TO_25 : 24:25
+if sys.version_info[0] >= 3:
+    class AUDIOSYNC_RATIO(enum.Enum):
+        AUDIOSYNC_RATIO_1_TO_1="1:1"
+        AUDIOSYNC_RATIO_1001_TO_1000="1001:1000"
+        AUDIOSYNC_RATIO_1000_TO_1001="1000:1001"
+        AUDIOSYNC_RATIO_25_TO_24="25:24"
+        AUDIOSYNC_RATIO_24_TO_25="24:25"
+        def describe(self):
+            descs = {
+                AUDIOSYNC_RATIO.AUDIOSYNC_RATIO_1_TO_1: "1:1",
+                AUDIOSYNC_RATIO.AUDIOSYNC_RATIO_1001_TO_1000: "1001:1000",
+                AUDIOSYNC_RATIO.AUDIOSYNC_RATIO_1000_TO_1001: "1000:1001",
+                AUDIOSYNC_RATIO.AUDIOSYNC_RATIO_25_TO_24: "25:24",
+                AUDIOSYNC_RATIO.AUDIOSYNC_RATIO_24_TO_25: "24:25",
+            }
+            return descs.get(self)
+
+        def as_dict():
+            return {x:x.describe() for x in AUDIOSYNC_RATIO}
+
+AUDIOSYNC_RATIO_1_TO_1="1:1"
+AUDIOSYNC_RATIO_1001_TO_1000="1001:1000"
+AUDIOSYNC_RATIO_1000_TO_1001="1000:1001"
+AUDIOSYNC_RATIO_25_TO_24="25:24"
+AUDIOSYNC_RATIO_24_TO_25="24:25"
+#  AUDIOSYNC_READLTC : Values for AudioSyncSettings ReadLTC
+#    AUDIOSYNC_READLTC_NO : No
+#    AUDIOSYNC_READLTC_CHANNEL : From Channel
+#    AUDIOSYNC_READLTC_TRACK : From Track
+if sys.version_info[0] >= 3:
+    class AUDIOSYNC_READLTC(enum.Enum):
+        AUDIOSYNC_READLTC_NO="No"
+        AUDIOSYNC_READLTC_CHANNEL="Channel"
+        AUDIOSYNC_READLTC_TRACK="Track"
+        def describe(self):
+            descs = {
+                AUDIOSYNC_READLTC.AUDIOSYNC_READLTC_NO: "No",
+                AUDIOSYNC_READLTC.AUDIOSYNC_READLTC_CHANNEL: "From Channel",
+                AUDIOSYNC_READLTC.AUDIOSYNC_READLTC_TRACK: "From Track",
+            }
+            return descs.get(self)
+
+        def as_dict():
+            return {x:x.describe() for x in AUDIOSYNC_READLTC}
+
+AUDIOSYNC_READLTC_NO="No"
+AUDIOSYNC_READLTC_CHANNEL="Channel"
+AUDIOSYNC_READLTC_TRACK="Track"
+#  AUDIOSYNC_SUBSEARCH : Values for AudioSyncSettings SubSearch
+#    AUDIOSYNC_SUBSEARCH_ALL : All Sub-Directories
+#    AUDIOSYNC_SUBSEARCH_NAMED : Sub-Directories Named
+#    AUDIOSYNC_SUBSEARCH_NEAREST : Nearest Sub-Directory Named
+if sys.version_info[0] >= 3:
+    class AUDIOSYNC_SUBSEARCH(enum.Enum):
+        AUDIOSYNC_SUBSEARCH_ALL="All"
+        AUDIOSYNC_SUBSEARCH_NAMED="Named"
+        AUDIOSYNC_SUBSEARCH_NEAREST="Nearest"
+        def describe(self):
+            descs = {
+                AUDIOSYNC_SUBSEARCH.AUDIOSYNC_SUBSEARCH_ALL: "All Sub-Directories",
+                AUDIOSYNC_SUBSEARCH.AUDIOSYNC_SUBSEARCH_NAMED: "Sub-Directories Named",
+                AUDIOSYNC_SUBSEARCH.AUDIOSYNC_SUBSEARCH_NEAREST: "Nearest Sub-Directory Named",
+            }
+            return descs.get(self)
+
+        def as_dict():
+            return {x:x.describe() for x in AUDIOSYNC_SUBSEARCH}
+
+AUDIOSYNC_SUBSEARCH_ALL="All"
+AUDIOSYNC_SUBSEARCH_NAMED="Named"
+AUDIOSYNC_SUBSEARCH_NEAREST="Nearest"
 #  AUDIO_RATE : Audio Sample Rate
 #    AUDIO_RATE_44100 : 44.1 kHz
 #    AUDIO_RATE_48000 : 48 kHz
@@ -1071,9 +1295,9 @@ CUBEEXPORT_CUBERESOLUTION_32=32
 CUBEEXPORT_CUBERESOLUTION_33=33
 CUBEEXPORT_CUBERESOLUTION_64=64
 #  CUBEEXPORT_EXTENDEDRANGES : Values for CubeExportSettings ExtendedRanges
-#    CUBEEXPORT_EXTENDEDRANGES_NO : 
-#    CUBEEXPORT_EXTENDEDRANGES_LINEAR : 
-#    CUBEEXPORT_EXTENDEDRANGES_LOG : 
+#    CUBEEXPORT_EXTENDEDRANGES_NO : No
+#    CUBEEXPORT_EXTENDEDRANGES_LINEAR : Linear
+#    CUBEEXPORT_EXTENDEDRANGES_LOG : Log
 if sys.version_info[0] >= 3:
     class CUBEEXPORT_EXTENDEDRANGES(enum.Enum):
         CUBEEXPORT_EXTENDEDRANGES_NO="No"
@@ -1081,9 +1305,9 @@ if sys.version_info[0] >= 3:
         CUBEEXPORT_EXTENDEDRANGES_LOG="Log"
         def describe(self):
             descs = {
-                CUBEEXPORT_EXTENDEDRANGES.CUBEEXPORT_EXTENDEDRANGES_NO: "",
-                CUBEEXPORT_EXTENDEDRANGES.CUBEEXPORT_EXTENDEDRANGES_LINEAR: "",
-                CUBEEXPORT_EXTENDEDRANGES.CUBEEXPORT_EXTENDEDRANGES_LOG: "",
+                CUBEEXPORT_EXTENDEDRANGES.CUBEEXPORT_EXTENDEDRANGES_NO: "No",
+                CUBEEXPORT_EXTENDEDRANGES.CUBEEXPORT_EXTENDEDRANGES_LINEAR: "Linear",
+                CUBEEXPORT_EXTENDEDRANGES.CUBEEXPORT_EXTENDEDRANGES_LOG: "Log",
             }
             return descs.get(self)
 
@@ -1311,9 +1535,9 @@ CUBEEXPORT_LUTFORMAT_SONY="Sony"
 CUBEEXPORT_LUTFORMAT_SONY_BVME="Sony_BVME"
 #  CUBEEXPORT_LUTRESOLUTION : Values for CubeExportSettings LUTResolution
 #    CUBEEXPORT_LUTRESOLUTION_DEFAULT : Default
-#    CUBEEXPORT_LUTRESOLUTION_1024 : 
-#    CUBEEXPORT_LUTRESOLUTION_4096 : 
-#    CUBEEXPORT_LUTRESOLUTION_16384 : 
+#    CUBEEXPORT_LUTRESOLUTION_1024 : 1024
+#    CUBEEXPORT_LUTRESOLUTION_4096 : 4096
+#    CUBEEXPORT_LUTRESOLUTION_16384 : 16384
 if sys.version_info[0] >= 3:
     class CUBEEXPORT_LUTRESOLUTION(enum.Enum):
         CUBEEXPORT_LUTRESOLUTION_DEFAULT=-1
@@ -1323,9 +1547,9 @@ if sys.version_info[0] >= 3:
         def describe(self):
             descs = {
                 CUBEEXPORT_LUTRESOLUTION.CUBEEXPORT_LUTRESOLUTION_DEFAULT: "Default",
-                CUBEEXPORT_LUTRESOLUTION.CUBEEXPORT_LUTRESOLUTION_1024: "",
-                CUBEEXPORT_LUTRESOLUTION.CUBEEXPORT_LUTRESOLUTION_4096: "",
-                CUBEEXPORT_LUTRESOLUTION.CUBEEXPORT_LUTRESOLUTION_16384: "",
+                CUBEEXPORT_LUTRESOLUTION.CUBEEXPORT_LUTRESOLUTION_1024: "1024",
+                CUBEEXPORT_LUTRESOLUTION.CUBEEXPORT_LUTRESOLUTION_4096: "4096",
+                CUBEEXPORT_LUTRESOLUTION.CUBEEXPORT_LUTRESOLUTION_16384: "16384",
             }
             return descs.get(self)
 
@@ -1337,9 +1561,9 @@ CUBEEXPORT_LUTRESOLUTION_1024=1024
 CUBEEXPORT_LUTRESOLUTION_4096=4096
 CUBEEXPORT_LUTRESOLUTION_16384=16384
 #  CUBEEXPORT_NUMLUTS : Values for CubeExportSettings NumLUTs
-#    CUBEEXPORT_NUMLUTS_1 : 
-#    CUBEEXPORT_NUMLUTS_2 : 
-#    CUBEEXPORT_NUMLUTS_3 : 
+#    CUBEEXPORT_NUMLUTS_1 : 1
+#    CUBEEXPORT_NUMLUTS_2 : 2
+#    CUBEEXPORT_NUMLUTS_3 : 3
 if sys.version_info[0] >= 3:
     class CUBEEXPORT_NUMLUTS(enum.Enum):
         CUBEEXPORT_NUMLUTS_1=1
@@ -1347,9 +1571,9 @@ if sys.version_info[0] >= 3:
         CUBEEXPORT_NUMLUTS_3=3
         def describe(self):
             descs = {
-                CUBEEXPORT_NUMLUTS.CUBEEXPORT_NUMLUTS_1: "",
-                CUBEEXPORT_NUMLUTS.CUBEEXPORT_NUMLUTS_2: "",
-                CUBEEXPORT_NUMLUTS.CUBEEXPORT_NUMLUTS_3: "",
+                CUBEEXPORT_NUMLUTS.CUBEEXPORT_NUMLUTS_1: "1",
+                CUBEEXPORT_NUMLUTS.CUBEEXPORT_NUMLUTS_2: "2",
+                CUBEEXPORT_NUMLUTS.CUBEEXPORT_NUMLUTS_3: "3",
             }
             return descs.get(self)
 
@@ -1486,6 +1710,10 @@ DIAGWEIGHT_HEAVY="DM_HEAVY"
 #    DIT_DIRECTORY : Directory Path
 #    DIT_SHOT_SELECTION : Shot Selection
 #    DIT_STATIC_TEXT : Static Text
+#    DIT_SHOT_CATEGORY : Shot Category
+#    DIT_SHOT_CATEGORY_SET : Shot Category Set
+#    DIT_MARK_CATEGORY : Shot Category
+#    DIT_MARK_CATEGORY_SET : Mark Category Set
 if sys.version_info[0] >= 3:
     class DIALOG_ITEM_TYPE(enum.Enum):
         DIT_STRING="String"
@@ -1498,6 +1726,10 @@ if sys.version_info[0] >= 3:
         DIT_DIRECTORY="Directory"
         DIT_SHOT_SELECTION="ShotSelection"
         DIT_STATIC_TEXT="StaticText"
+        DIT_SHOT_CATEGORY="ShotCategory"
+        DIT_SHOT_CATEGORY_SET="CategorySet"
+        DIT_MARK_CATEGORY="MarkCategory"
+        DIT_MARK_CATEGORY_SET="MarkCategorySet"
         def describe(self):
             descs = {
                 DIALOG_ITEM_TYPE.DIT_STRING: "String",
@@ -1510,6 +1742,10 @@ if sys.version_info[0] >= 3:
                 DIALOG_ITEM_TYPE.DIT_DIRECTORY: "Directory Path",
                 DIALOG_ITEM_TYPE.DIT_SHOT_SELECTION: "Shot Selection",
                 DIALOG_ITEM_TYPE.DIT_STATIC_TEXT: "Static Text",
+                DIALOG_ITEM_TYPE.DIT_SHOT_CATEGORY: "Shot Category",
+                DIALOG_ITEM_TYPE.DIT_SHOT_CATEGORY_SET: "Shot Category Set",
+                DIALOG_ITEM_TYPE.DIT_MARK_CATEGORY: "Shot Category",
+                DIALOG_ITEM_TYPE.DIT_MARK_CATEGORY_SET: "Mark Category Set",
             }
             return descs.get(self)
 
@@ -1526,6 +1762,10 @@ DIT_IMAGEPATH="Image"
 DIT_DIRECTORY="Directory"
 DIT_SHOT_SELECTION="ShotSelection"
 DIT_STATIC_TEXT="StaticText"
+DIT_SHOT_CATEGORY="ShotCategory"
+DIT_SHOT_CATEGORY_SET="CategorySet"
+DIT_MARK_CATEGORY="MarkCategory"
+DIT_MARK_CATEGORY_SET="MarkCategorySet"
 #  EXPORTSTATUS : Status info related to Export progress
 #    EXPORTSTATUS_FAIL : Failure during export operation
 #    EXPORTSTATUS_WARN : Warning during export operation
@@ -1557,6 +1797,33 @@ EXPORTSTATUS_WARN="WARN"
 EXPORTSTATUS_INFO="INFO"
 EXPORTSTATUS_NOTE="NOTE"
 EXPORTSTATUS_SCAN="SCAN"
+#  EXPORTTYPE : Type of Exporter
+#    EXPORTTYPE_STILL : Stills Exporter
+#    EXPORTTYPE_BLG : BLG Exporter
+#    EXPORTTYPE_CUBE : Cube Exporter
+#    EXPORTTYPE_CDL : CDL Exporter
+if sys.version_info[0] >= 3:
+    class EXPORTTYPE(enum.Enum):
+        EXPORTTYPE_STILL="Still"
+        EXPORTTYPE_BLG="BLG"
+        EXPORTTYPE_CUBE="Cube"
+        EXPORTTYPE_CDL="CDL"
+        def describe(self):
+            descs = {
+                EXPORTTYPE.EXPORTTYPE_STILL: "Stills Exporter",
+                EXPORTTYPE.EXPORTTYPE_BLG: "BLG Exporter",
+                EXPORTTYPE.EXPORTTYPE_CUBE: "Cube Exporter",
+                EXPORTTYPE.EXPORTTYPE_CDL: "CDL Exporter",
+            }
+            return descs.get(self)
+
+        def as_dict():
+            return {x:x.describe() for x in EXPORTTYPE}
+
+EXPORTTYPE_STILL="Still"
+EXPORTTYPE_BLG="BLG"
+EXPORTTYPE_CUBE="Cube"
+EXPORTTYPE_CDL="CDL"
 #  EXPORT_CATEGORYMATCH : Values for Exporter CategoryMatch field
 #    EXPORT_CATEGORYMATCH_ALL : All Categories
 #    EXPORT_CATEGORYMATCH_ANY : Any Category
@@ -1604,16 +1871,16 @@ EXPORT_FRAMES_POSTER="Poster"
 EXPORT_FRAMES_MARKED="Marked"
 EXPORT_FRAMES_CURRENT="Current"
 #  EXPORT_OVERWRITE : Values for Exporter Overwrite field
-#    EXPORT_OVERWRITE_SKIP : 
-#    EXPORT_OVERWRITE_REPLACE : 
+#    EXPORT_OVERWRITE_SKIP : Skip
+#    EXPORT_OVERWRITE_REPLACE : Replace
 if sys.version_info[0] >= 3:
     class EXPORT_OVERWRITE(enum.Enum):
         EXPORT_OVERWRITE_SKIP="Skip"
         EXPORT_OVERWRITE_REPLACE="Replace"
         def describe(self):
             descs = {
-                EXPORT_OVERWRITE.EXPORT_OVERWRITE_SKIP: "",
-                EXPORT_OVERWRITE.EXPORT_OVERWRITE_REPLACE: "",
+                EXPORT_OVERWRITE.EXPORT_OVERWRITE_SKIP: "Skip",
+                EXPORT_OVERWRITE.EXPORT_OVERWRITE_REPLACE: "Replace",
             }
             return descs.get(self)
 
@@ -1894,7 +2161,7 @@ if sys.version_info[0] >= 3:
     class LOG_SEVERITY(enum.Enum):
         LOGSEVERITY_HARD="ERR_HARD"
         LOGSEVERITY_SOFT="ERR_SOFT"
-        LOGSEVERITY_INFO="ERR_INFO"
+        LOGSEVERITY_INFO="ERR_INFO_TRANSIENT"
         def describe(self):
             descs = {
                 LOG_SEVERITY.LOGSEVERITY_HARD: "Hard error",
@@ -1908,7 +2175,7 @@ if sys.version_info[0] >= 3:
 
 LOGSEVERITY_HARD="ERR_HARD"
 LOGSEVERITY_SOFT="ERR_SOFT"
-LOGSEVERITY_INFO="ERR_INFO"
+LOGSEVERITY_INFO="ERR_INFO_TRANSIENT"
 #  LUT_LOCATION : Specify where LUT data should be found for a LUT operator
 #    LUTLOCATION_FILE : LUT is stored in an external file
 #    LUTLOCATION_EMBEDDED : LUT is embedded in source image file
@@ -2083,7 +2350,7 @@ MULTIPASTE_DESTSHOTS_OVERWRITEALLEXCEPTCATS="OverwriteAllExceptCats"
 MULTIPASTE_DESTSHOTS_RETAINALL="RetainAll"
 MULTIPASTE_DESTSHOTS_RETAINALLEXCEPTCATS="RetainAllExceptCats"
 #  MULTIPASTE_EDLAPPLYASCCDL : Values for MultiPasteSettings EDLApplyASCCDL
-#    MULTIPASTE_EDLAPPLYASCCDL_NO : 
+#    MULTIPASTE_EDLAPPLYASCCDL_NO : No
 #    MULTIPASTE_EDLAPPLYASCCDL_CDL : Yes
 if sys.version_info[0] >= 3:
     class MULTIPASTE_EDLAPPLYASCCDL(enum.Enum):
@@ -2091,7 +2358,7 @@ if sys.version_info[0] >= 3:
         MULTIPASTE_EDLAPPLYASCCDL_CDL="CDL"
         def describe(self):
             descs = {
-                MULTIPASTE_EDLAPPLYASCCDL.MULTIPASTE_EDLAPPLYASCCDL_NO: "",
+                MULTIPASTE_EDLAPPLYASCCDL.MULTIPASTE_EDLAPPLYASCCDL_NO: "No",
                 MULTIPASTE_EDLAPPLYASCCDL.MULTIPASTE_EDLAPPLYASCCDL_CDL: "Yes",
             }
             return descs.get(self)
@@ -3107,13 +3374,13 @@ VIDEOLUT_SOFTCLIP="softclip"
 # Value Types
 from .APIPermissionInfo import APIPermissionInfo
 from .APIUserInfo import APIUserInfo
+from .AudioSequenceSettings import AudioSequenceSettings
+from .AudioSyncProgress import AudioSyncProgress
+from .AudioSyncSettings import AudioSyncSettings
 from .BLGExportSettings import BLGExportSettings
 from .CDLExportSettings import CDLExportSettings
 from .CategoryInfo import CategoryInfo
-from .ClientViewClientSettings import ClientViewClientSettings
-from .ClientViewStreamSettings import ClientViewStreamSettings
 from .ColourSpaceInfo import ColourSpaceInfo
-from .ConnectionInfo import ConnectionInfo
 from .CubeExportSettings import CubeExportSettings
 from .CustomerInfo import CustomerInfo
 from .DRTInfo import DRTInfo
@@ -3145,6 +3412,7 @@ from .QueueLogItem import QueueLogItem
 from .QueueOp import QueueOp
 from .QueueOpStatus import QueueOpStatus
 from .QueueOpTask import QueueOpTask
+from .Rational import Rational
 from .RenderCodecInfo import RenderCodecInfo
 from .RenderCodecParameterInfo import RenderCodecParameterInfo
 from .RenderCodecParameterValue import RenderCodecParameterValue
@@ -3164,7 +3432,7 @@ from .VolumeInfo import VolumeInfo
 # Classes
 from .APITest import APITest
 from .Application import Application
-from .ClientViewManager import ClientViewManager
+from .AudioSync import AudioSync
 from .CurrentGrade import CurrentGrade
 from .Cursor import Cursor
 from .Diagnostics import Diagnostics
