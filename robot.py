@@ -8,9 +8,6 @@ import inspect
 import re
 import subprocess
 import uuid
-
-import gazu
-
 from pprint import pprint, pformat
 
 from python.config import get_config_data
@@ -108,12 +105,12 @@ if __name__ == "__main__":
     delivery_thread.start()
     '''
 
-    config = {}
-
     weblog_thread = threading.Thread(target=tailon, args=(config, ))
     weblog_thread.daemon = True
     weblog_thread.start()
 
+
+    import gazu
     gazu.set_host("http://192.168.15.99/api")
     gazu.log_in("admin@dirtylooks.co.uk", "dirtylooks")
 
