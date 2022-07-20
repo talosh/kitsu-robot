@@ -76,7 +76,7 @@ def get_config_data(config_folder_path):
             print('[WARNING] Unable to read config file %s' % config_file_path)
             print(e)
 
-        name, ext = os.path.splitext(config_file)
+        name, ext = os.path.splitext(str(config_file))
         from copy import deepcopy
         data[name] = deepcopy(config)
 
