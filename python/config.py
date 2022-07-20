@@ -68,21 +68,6 @@ def get_config_data(config_folder_path):
             config_file
         )
 
-        pprint (config_file_path)
-
-    sys.exit()
-
-
-
-
-    config_file_path = os.path.join(
-        config_folder_path,
-        'config.json'
-    )
-
-
-    config = None
-    if os.path.isfile(config_file_path):
         try:
             with open(config_file_path, 'r') as config_file:
                 config = json.load(config_file)
@@ -91,9 +76,8 @@ def get_config_data(config_folder_path):
             print('[WARNING] Unable to read config file %s' % config_file_path)
             print(e)
 
-    if not isinstance (config, dict):
-        pass
-    else:
-        for key in config.keys():
-            data[key] = config.get(key)
+        name, ext = os.path.splitext(config_file)
+        from copy import deepcopy
+        data[name] = deepcopy(config)
+
     return data
