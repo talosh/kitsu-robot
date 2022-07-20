@@ -35,7 +35,7 @@ def set_metadata_fields(config):
                             'departments': []
                         }
 
-                        for key in metadata_descriptor.keys:
+                        for key in metadata_descriptor.keys():
                             data[key] = metadata_descriptor[key]
 
                         gazu.client.post(descriptors_api_path, data)
