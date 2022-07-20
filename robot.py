@@ -111,8 +111,23 @@ if __name__ == "__main__":
     metadata_thread.daemon = True
     metadata_thread.start()
 
+    
+    import gazu
+    config = app_config
+    config_gazu = config.get('gazu')
+    host = config_gazu.get('host')
+    name = config_gazu.get('name')
+    password = config_gazu.get('password')
+    gazu.set_host(host)
+    gazu.log_in(name, password)
+
     while True:
         try:
+            projects = gazu.project.all_open_projects()
+            for project in projects:
+                sequences_api_path = '/data/projects/' + project.get('id') + '/sequences'
+                project_sequences_data = gazu.client.get(sequences_api_path)
+                pprint (project_sequences_data)
             time.sleep(4)
         except KeyboardInterrupt:
             sys.exit()
