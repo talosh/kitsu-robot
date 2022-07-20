@@ -62,10 +62,10 @@ def get_config_data(config_folder_path):
     if not config_files:
         return data
     
-    for config_file in config_files:
+    for config_file_name in config_files:
         config_file_path = os.path.join(
             config_folder_path,
-            config_file
+            config_file_name
         )
 
         try:
@@ -76,9 +76,7 @@ def get_config_data(config_folder_path):
             print('[WARNING] Unable to read config file %s' % config_file_path)
             print(e)
 
-        pprint (dir(config_file))
-
-        name, ext = os.path.splitext(config_file.name)
+        name, ext = os.path.splitext(config_file_name)
         from copy import deepcopy
         data[name] = deepcopy(config)
 
