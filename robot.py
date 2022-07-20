@@ -12,6 +12,7 @@ from pprint import pprint, pformat
 
 from python.config import get_config_data
 from python.tailon import tailon
+from python.metadata_fields import set_metadata_fields
 
 
 DEBUG=True
@@ -22,9 +23,6 @@ if __name__ == "__main__":
     app_location = os.path.dirname(os.path.abspath(__file__))
     config_folder_path = os.path.join(app_location, 'config')
     app_config = get_config_data(config_folder_path)
-
-    pprint (app_config)
-    sys.exit()
 
     '''
     print ('... starting robot ...')
@@ -109,37 +107,14 @@ if __name__ == "__main__":
     weblog_thread.daemon = True
     weblog_thread.start()
 
-
-    import gazu
-    gazu.set_host("http://192.168.15.99/api")
-    gazu.log_in("admin@dirtylooks.co.uk", "dirtylooks")
+    metadata_thread = threading.Thread(target=set_metadata_fields, args=(config, ))
+    metadata_thread.daemon = True
+    metadata_thread.start()
 
     while True:
         try:
-            # print ('[' + datetime.now().strftime("%Y%m%d %H:%M") + ']\n' + 'Hello from Kitsu-Robot' + '\n')
-            projects = gazu.project.all_open_projects()
-            for project in projects:
-                print ('name: %s' % project.get('name'))
-                descriptors_api_path = '/data/projects/' + project.get('id') + '/metadata-descriptors'
-                project_descriptor_data = gazu.client.get(descriptors_api_path)
-                project_descriptor_names = [x['name'] for x in project_descriptor_data]
-                pprint (project_descriptor_names)
-                pprint (project_descriptor_data)
-                if 'test' not in project_descriptor_names:
-                    data = {
-                        'name': 'test',
-                        'choices': [],
-                        'for_client': False,
-                        'entity_type': 'Shot',
-                        'departments': []
-                    }
-                    gazu.client.post(descriptors_api_path, data)
-            # data = gazu.client.fetch_all("shots")
-            # pprint (data)
-            # pprint (dir(gazu))
             time.sleep(4)
         except KeyboardInterrupt:
             sys.exit()
-
 
 "wookie:dlj0356_mr_malcolms_list:grade:reel_01_v*"
