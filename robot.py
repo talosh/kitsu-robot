@@ -103,11 +103,11 @@ if __name__ == "__main__":
     delivery_thread.start()
     '''
 
-    weblog_thread = threading.Thread(target=tailon, args=(config, ))
+    weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
     weblog_thread.daemon = True
     weblog_thread.start()
 
-    metadata_thread = threading.Thread(target=set_metadata_fields, args=(config, ))
+    metadata_thread = threading.Thread(target=set_metadata_fields, args=(app_config, ))
     metadata_thread.daemon = True
     metadata_thread.start()
 
