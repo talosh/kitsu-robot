@@ -27,8 +27,9 @@ if __name__ == "__main__":
     app_config = get_config_data(config_folder_path)
     app_config['verbose'] = VERBOSE
     app_config['debug'] = DEBUG
-
     app_config['log'] = Log(app_config)
+    app_config['log'].info('hello')
+
 
     '''
     print ('... starting robot ...')
