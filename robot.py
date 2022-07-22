@@ -16,6 +16,7 @@ from python.metadata_fields import set_metadata_fields
 from python.sequence import sequence_sync
 from python.util import Log
 
+VERBOSE=True
 DEBUG=True
 
 __version__ = 'v0.0.2'
@@ -24,6 +25,9 @@ if __name__ == "__main__":
     app_location = os.path.dirname(os.path.abspath(__file__))
     config_folder_path = os.path.join(app_location, 'config')
     app_config = get_config_data(config_folder_path)
+    app_config['verbose'] = VERBOSE
+    app_config['debug'] = DEBUG
+
     app_config['log'] = Log(app_config)
 
     '''
