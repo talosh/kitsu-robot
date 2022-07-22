@@ -127,11 +127,6 @@ if __name__ == "__main__":
 
     while True:
         try:
-            projects = gazu.project.all_open_projects()
-            for project in projects:
-                sequences_api_path = '/data/projects/' + project.get('id') + '/sequences'
-                project_sequences_data = gazu.client.get(sequences_api_path)
-                pprint (project_sequences_data)
             time.sleep(4)
         except KeyboardInterrupt:
             sys.exit()
