@@ -124,14 +124,6 @@ if __name__ == "__main__":
     sequence_sync_thread.daemon = True
     sequence_sync_thread.start()
     
-    import gazu
-    config = app_config
-    config_gazu = config.get('gazu')
-    host = config_gazu.get('host')
-    name = config_gazu.get('name')
-    password = config_gazu.get('password')
-    gazu.set_host(host)
-    gazu.log_in(name, password)
 
     while True:
         try:
