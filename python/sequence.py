@@ -32,6 +32,7 @@ def sequence_sync(config):
             return
 
 def link_baselight_sequences(config, baselight_linked_sequences):
+    log = config.get('log')
     for baselight_lnked_sequence in baselight_linked_sequences:
         data = baselight_lnked_sequence.get('data')
         if not isinstance(data, dict):
@@ -43,8 +44,10 @@ def link_baselight_sequences(config, baselight_linked_sequences):
         flapi_hosts = config.get('flapi_hosts')
         if not flapi_hosts:
             continue
-        flapi_hosts = {x['flapi_host']:x for x in flapi_hosts} 
-        pprint (flapi_hosts)
+        flapi_hosts = {x['flapi_host']:x for x in flapi_hosts}
+        if blpath_components[0] in flapi_hosts.keys():
+            log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
+
 
 '''
 
