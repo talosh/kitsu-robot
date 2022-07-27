@@ -36,13 +36,16 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     log = config.get('log')
     data = baselight_linked_sequence.get('data')
     if not isinstance(data, dict):
+        log.info('no baselight path found in sequence "%s"' % pformat(baselight_linked_sequence))
         return
     blpath = data.get('blpath')
     if not blpath:
+        log.info('no baselight path found in sequence "%s"' % pformat(baselight_linked_sequence))
         return
     blpath_components = blpath.split(':')
     flapi_hosts = config.get('flapi_hosts')
     if not flapi_hosts:
+        log.info('no flapi hosts defined in configuration')
         return
     flapi_hosts = {x['flapi_host']:x for x in flapi_hosts}
     if blpath_components[0] not in flapi_hosts.keys():
