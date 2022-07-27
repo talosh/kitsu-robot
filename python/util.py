@@ -60,7 +60,7 @@ class Log(object):
         if not self.is_verbose:
             return
         
-        msg = '[%s]: [VERBOSE]: %s' % (self.app_name, message)
+        msg = '[%s] [VERBOSE]: %s' % (self.app_name, message)
         print (msg)
         if self.logfile:
             try:
