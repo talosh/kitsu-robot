@@ -26,27 +26,29 @@ def sequence_sync(config):
                     if isinstance(data, dict):
                         if 'blpath' in data.keys():
                             baselight_linked_sequences.append(project_sequence)
-            link_baselight_sequences(config, baselight_linked_sequences)
+            for baselight_linked_sequence in baselight_linked_sequences:
+                link_baselight_sequence(config, baselight_linked_sequence)
             time.sleep(4)
         except KeyboardInterrupt:
             return
 
-def link_baselight_sequences(config, baselight_linked_sequences):
+def link_baselight_sequence(config, baselight_linked_sequence):
     log = config.get('log')
-    for baselight_lnked_sequence in baselight_linked_sequences:
-        data = baselight_lnked_sequence.get('data')
-        if not isinstance(data, dict):
-            continue
-        blpath = data.get('blpath')
-        if not blpath:
-            continue
-        blpath_components = blpath.split(':')
-        flapi_hosts = config.get('flapi_hosts')
-        if not flapi_hosts:
-            continue
-        flapi_hosts = {x['flapi_host']:x for x in flapi_hosts}
-        if blpath_components[0] in flapi_hosts.keys():
-            log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
+    data = baselight_linked_sequence.get('data')
+    if not isinstance(data, dict):
+        return
+    blpath = data.get('blpath')
+    if not blpath:
+        return
+    blpath_components = blpath.split(':')
+    flapi_hosts = config.get('flapi_hosts')
+    if not flapi_hosts:
+        return
+    flapi_hosts = {x['flapi_host']:x for x in flapi_hosts}
+    if blpath_components[0] not in flapi_hosts.keys():
+        log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
+        return
+
 
 
 '''
