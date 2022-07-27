@@ -41,6 +41,7 @@ def link_baselight_sequences(config, baselight_linked_sequences):
             continue
         blpath_components = blpath.split(':')
         pprint (blpath_components)
+        pprint (config)
 
 '''
 
