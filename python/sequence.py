@@ -106,8 +106,6 @@ def get_baselight_scene_shots(config, blpath):
 
     if '*' in bl_scene_name:
         log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
-        return []
-
 
     log.verbose('checking baselight scene: %s' % blpath)
     print (flapi_hostname)
@@ -116,7 +114,6 @@ def get_baselight_scene_shots(config, blpath):
 
     if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
         log.verbose('baselight scene %s does not exist' % blpath)
-        return []
     else:
         log.verbose('baselight scene %s exists' % blpath)
 
