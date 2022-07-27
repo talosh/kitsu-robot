@@ -65,6 +65,14 @@ def get_baselight_scene_shots(config, blpath):
         log.error('unable to import filmlight api python module from: %s' % flapi_module_path)
         log.error(e)
 
+    blpath_components = blpath.split(':')
+    flapi_hosts = config.get('flapi_hosts')
+    flapi_hosts = {x['flapi_host']:x for x in flapi_hosts}
+    flapi_host = flapi_hosts.get(blpath_components[0])
+    pprint (flapi_host)
+
+    # log.verbose('opening flapi connection to %s' % flapi_hostname)
+
 
 '''
 
