@@ -104,6 +104,9 @@ def get_baselight_scene_shots(config, blpath):
         return []
     log.verbose('connected to %s' % flapi_hostname)
 
+    if '*' in bl_scene_name:
+        log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
+        return []
 
 
     log.verbose('checking baselight scene: %s' % blpath)
