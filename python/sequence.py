@@ -99,3 +99,8 @@ def get_baselight_scene_shots(config, blpath):
         log.error(e)
         conn = None
         return []
+    log.verbose('connected to %s' % flapi_hostname)
+
+
+
+    conn.close()
