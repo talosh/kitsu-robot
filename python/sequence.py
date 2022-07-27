@@ -74,7 +74,7 @@ def get_baselight_scene_shots(config, blpath):
     flapi_token = flapi_host.get('flapi_tokenn')    
 
     if not all([flapi_hostname, flapi_user, flapi_token]):
-        log.info('missing data in flapi host configuration: %s ' % pformat(flapi_host))
+        log.info('missing data in flapi host configuration:\n %s' % pformat(flapi_host))
         return []
 
     # log.verbose('opening flapi connection to %s' % flapi_hostname)
