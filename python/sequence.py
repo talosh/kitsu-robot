@@ -74,8 +74,6 @@ def get_baselight_scene_shots(config, blpath):
     flapi_token = flapi_host.get('flapi_token')
     bl_jobname = blpath_components[1]
     bl_scene_name = blpath_components[-1]
-    print (bl_scene_name)
-    return []
     bl_scene_path = ':'.join(blpath_components[2:])
 
     if not all([flapi_hostname, flapi_user, flapi_token]):
