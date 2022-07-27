@@ -20,7 +20,7 @@ APP_NAME = 'KitsuRobot'
 VERBOSE=True
 DEBUG=True
 
-__version__ = 'v0.0.2'
+__version__ = 'v0.0.3'
 
 if __name__ == "__main__":
     app_location = os.path.dirname(os.path.abspath(__file__))
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     app_config['verbose'] = VERBOSE
     app_config['debug'] = DEBUG
     app_config['log'] = Log(app_config)
-    app_config['log'].info('hello')
+    app_config['log'].info('version %s' % __version__)
 
 
     '''
