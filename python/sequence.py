@@ -47,7 +47,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     if not flapi_hosts:
         log.info('no flapi hosts defined in configuration')
         return
-    flapi_hosts = {x['flapi_host']:x for x in flapi_hosts}
+    flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
     if blpath_components[0] not in flapi_hosts.keys():
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         return
@@ -67,7 +67,7 @@ def get_baselight_scene_shots(config, blpath):
 
     blpath_components = blpath.split(':')
     flapi_hosts = config.get('flapi_hosts')
-    flapi_hosts = {x['flapi_host']:x for x in flapi_hosts}
+    flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
     flapi_host = flapi_hosts.get(blpath_components[0])
     pprint (flapi_host)
 
