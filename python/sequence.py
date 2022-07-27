@@ -32,7 +32,15 @@ def sequence_sync(config):
             return
 
 def link_baselight_sequences(config, baselight_linked_sequences):
-    pprint (baselight_linked_sequences)
+    for baselight_lnked_sequence in baselight_linked_sequences:
+        data = baselight_lnked_sequence.get('data')
+        if not isinstance(data, dict):
+            continue
+        blpath = data.get('blpath')
+        if not blpath:
+            continue
+        blpath_components = blpath.split(':')
+        pprint (blpath_components)
 
 '''
 
