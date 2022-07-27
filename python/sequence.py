@@ -73,6 +73,9 @@ def get_baselight_scene_shots(config, blpath):
     flapi_user = flapi_host.get('flapi_user')
     flapi_token = flapi_host.get('flapi_token')
     bl_jobname = blpath_components[1]
+    bl_scene_name = blpath_components[-1]
+    print (bl_scene_name)
+    return []
     bl_scene_path = ':'.join(blpath_components[2:])
 
     if not all([flapi_hostname, flapi_user, flapi_token]):
@@ -103,11 +106,13 @@ def get_baselight_scene_shots(config, blpath):
         return []
     log.verbose('connected to %s' % flapi_hostname)
 
+
+
     log.verbose('checking baselight scene: %s' % blpath)
     print (flapi_hostname)
     print (bl_jobname)
     print (bl_scene_path)
-    
+
     if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
         log.verbose('baselight scene %s does not exist' % blpath)
         return []
