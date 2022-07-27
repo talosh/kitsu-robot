@@ -19,8 +19,12 @@ def sequence_sync(config):
             projects = gazu.project.all_open_projects()
             for project in projects:
                 sequences_api_path = '/data/projects/' + project.get('id') + '/sequences'
-                project_sequences_data = gazu.client.get(sequences_api_path)
-                pprint (project_sequences_data)
+                project_sequences = gazu.client.get(sequences_api_path)
+                for project_sequence in project_sequences:
+                    data = project_sequence.get('data')
+                    if isinstance(data, dict):
+                        if 'blpath' in data.keys():
+                            pprint (data)
             time.sleep(4)
         except KeyboardInterrupt:
             return
