@@ -16,6 +16,7 @@ def sequence_sync(config):
 
     while True:
         try:
+            baselight_linked_sequences = []
             projects = gazu.project.all_open_projects()
             for project in projects:
                 sequences_api_path = '/data/projects/' + project.get('id') + '/sequences'
@@ -24,10 +25,14 @@ def sequence_sync(config):
                     data = project_sequence.get('data')
                     if isinstance(data, dict):
                         if 'blpath' in data.keys():
-                            pprint (data)
+                            baselight_linked_sequences.append(project_sequence)
+            link_baselight_sequences(config, baselight_linked_sequences)
             time.sleep(4)
         except KeyboardInterrupt:
             return
+
+def link_baselight_sequences(config, baselight_linked_sequences):
+    pprint (baselight_linked_sequences)
 
 '''
 
