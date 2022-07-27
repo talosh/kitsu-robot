@@ -51,7 +51,19 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     if blpath_components[0] not in flapi_hosts.keys():
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         return
+    baselight_shots = get_baselight_scene_shots(config, blpath)
 
+def get_baselight_scene_shots(config, blpath):
+    log = config.get('log')
+    flapi_module_path = config.get('flapi_module_path')
+    log.verbose('importing flapi from %s' % flapi_module_path)
+    try:
+        if sys.path[0] != flapi_module_path:
+            sys.path.insert(0, flapi_module_path)
+        import flapi
+    except Exception as e:
+        log.error('unable to import filmlight api python module from: %s' % flapi_module_path)
+        log.error(e)
 
 
 '''
