@@ -81,20 +81,21 @@ def get_baselight_scene_shots(config, blpath):
     log.debug('flapi user: %s' % flapi_user)
     log.debug('flapi token: %s' % flapi_token)
 
-    # log.verbose('opening flapi connection to %s' % flapi_hostname)
-
-
-'''
-
-    flapi_module_path = config.get('flapi_module_path')
-    log.verbose('importing flapi from %s' % flapi_module_path)
-
+    log.verbose('opening flapi connection to %s' % flapi_hostname)
     try:
-        if sys.path[0] != flapi_module_path:
-            sys.path.insert(0, flapi_module_path)
-        import flapi
-    except Exception as e:
-        log.error('unable to import filmlight api python module from: %s' % flapi_module_path)
+        conn = flapi.Connection(
+            flapi_hostname,
+            username=flapi_user,
+            token=flapi_token
+        )
+        conn.connect()
+    except flapi.FLAPIException as e:
+        log.error('Unable to open flapi connection to %s' % self.flapi_hostname)
         log.error(e)
-
-'''
+        conn = None
+        return []
+    except Exception as e:
+        log.error('Unable to open flapi connection to %s' % self.flapi_hostname)
+        log.error(e)
+        conn = None
+        return []
