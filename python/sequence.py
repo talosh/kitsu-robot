@@ -106,9 +106,8 @@ def get_baselight_scene_shots(config, blpath):
     log.verbose('connected to %s' % flapi_hostname)
 
     log.verbose('checking baselight scene: %s' % blpath)
-    if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path)
-
-
+    if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
+        pass
 
 
     log.verbose('closing flapi connection to %s' % flapi_hostname)
