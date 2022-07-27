@@ -40,6 +40,7 @@ def link_baselight_sequences(config, baselight_linked_sequences):
         if not blpath:
             continue
         blpath_components = blpath.split(':')
+        flapi_hosts = config.get('flapi')
         pprint (blpath_components)
         pprint (config)
 
