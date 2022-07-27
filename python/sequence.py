@@ -90,12 +90,12 @@ def get_baselight_scene_shots(config, blpath):
         )
         conn.connect()
     except flapi.FLAPIException as e:
-        log.error('Unable to open flapi connection to %s' % self.flapi_hostname)
+        log.error('Unable to open flapi connection to %s' % flapi_hostname)
         log.error(e)
         conn = None
         return []
     except Exception as e:
-        log.error('Unable to open flapi connection to %s' % self.flapi_hostname)
+        log.error('Unable to open flapi connection to %s' % flapi_hostname)
         log.error(e)
         conn = None
         return []
@@ -103,4 +103,18 @@ def get_baselight_scene_shots(config, blpath):
 
 
 
-    conn.close()
+
+
+    log.verbose('closing flapi connection to %s' % flapi_hostname)
+    try:
+        conn.close()
+    except flapi.FLAPIException as e:
+        log.error('Unable to close flapi connection to %s' % flapi_hostname)
+        log.error(e)
+        conn = None
+    except Exception as e:
+        log.error('Unable to close flapi connection to %s' % flapi_hostname)
+        log.error(e)
+        conn = None
+    log.verbose('connection to %s closed' % flapi_hostname)
+
