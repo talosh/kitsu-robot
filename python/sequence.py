@@ -84,7 +84,7 @@ def get_baselight_scene_shots(config, blpath):
     import re
     try:
         re.compile(bl_scene_name)
-    except:
+    except re.error:
         print ('scene name is not regex')
 
     if '*' in bl_scene_name:
