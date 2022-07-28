@@ -78,6 +78,14 @@ def get_baselight_scene_shots(config, blpath):
     flapi_token = flapi_host.get('flapi_token')
 
     conn = fl_connect(config, flapi, flapi_host)
+    if not conn:
+        return []
+    
+    import re
+    try:
+        re.compile(bl_scene_name)
+    except:
+        print ('scene name is not regex')
 
     if '*' in bl_scene_name:
         log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
