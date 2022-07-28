@@ -96,8 +96,8 @@ def get_baselight_scene_shots(config, blpath):
             fl_disconnect(config, flapi, flapi_host, conn)
             return []
         else:
-            scene_name = matched_scenes[-1]
-            pprint (scene_name)
+            scene_name = sorted(matched_scenes)[-1]
+            log.verbose('Most recent scene: %s' % scene_name)
 
     else:
         log.verbose('checking baselight scene: %s' % blpath)
