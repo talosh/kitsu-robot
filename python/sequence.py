@@ -87,9 +87,11 @@ def get_baselight_scene_shots(config, blpath):
         log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
         existing_scenes = conn.JobManager.get_scenes(flapi_hostname, bl_jobname, bl_scenes_folder)
         pprint (existing_scenes)
+        matched_scenes = []
         for scene_name in existing_scenes:
-            match = re.findall(bl_scene_name, scene_name)
-            pprint (match)
+            if re.findall(bl_scene_name, scene_name):
+                matched_scenes.append(scene_name)
+        pprint (matched_scenes)
         return
 
     log.verbose('checking baselight scene: %s' % blpath)
