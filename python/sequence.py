@@ -74,7 +74,8 @@ def get_baselight_scene_shots(config, blpath):
     bl_scene_path = ':'.join(blpath_components[2:])
     bl_scenes_folder = ''.join(blpath_components[2:-1])
 
-    print (bl_scenes_folder)
+    pprint (bl_scenes_folder)
+    print (type(bl_scenes_folder))
     return
 
     flapi_hostname = flapi_host.get('flapi_hostname')
