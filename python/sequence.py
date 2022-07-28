@@ -86,23 +86,25 @@ def get_baselight_scene_shots(config, blpath):
         import re
         log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
         existing_scenes = conn.JobManager.get_scenes(flapi_hostname, bl_jobname, bl_scenes_folder)
-        pprint (existing_scenes)
         matched_scenes = []
         for scene_name in existing_scenes:
             if re.findall(bl_scene_name, scene_name):
                 matched_scenes.append(scene_name)
-        pprint (matched_scenes)
-        return
 
-    log.verbose('checking baselight scene: %s' % blpath)
-    print (flapi_hostname)
-    print (bl_jobname)
-    print (bl_scene_path)
+        if not matched_scenes:
+            log.verbose('no matching scenes found for: %s' % blpath)
+            fl_disconnect(config, flapi, flapi_host, conn)
+            return []
 
-    if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
-        log.verbose('baselight scene %s does not exist' % blpath)
     else:
-        log.verbose('baselight scene %s exists' % blpath)
+        log.verbose('checking baselight scene: %s' % blpath)
+
+        if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
+            log.verbose('baselight scene %s does not exist' % blpath)
+            fl_disconnect(config, flapi, flapi_host, conn)
+            return []
+        else:
+            log.verbose('baselight scene %s exists' % blpath)
 
     fl_disconnect(config, flapi, flapi_host, conn)
 
