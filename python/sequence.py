@@ -72,6 +72,10 @@ def get_baselight_scene_shots(config, blpath):
     bl_jobname = blpath_components[1]
     bl_scene_name = blpath_components[-1]
     bl_scene_path = ':'.join(blpath_components[2:])
+    bl_scenes_folder = blpath_components[2:-1]
+
+    print (bl_scenes_folder)
+    return
 
     flapi_hostname = flapi_host.get('flapi_hostname')
     flapi_user = flapi_host.get('flapi_user')
@@ -81,14 +85,9 @@ def get_baselight_scene_shots(config, blpath):
     if not conn:
         return []
     
-    import re
-    try:
-        re.compile(bl_scene_name)
-    except re.error:
-        print ('scene name is not regex')
-
     if '*' in bl_scene_name:
         log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
+        existing_scenes = conn.JobManager.get_scenes(flapi_hostname, bl_jobname, bl_scenes_folder)
 
     log.verbose('checking baselight scene: %s' % blpath)
     print (flapi_hostname)
