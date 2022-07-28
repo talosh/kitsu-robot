@@ -69,12 +69,37 @@ def get_baselight_scene_shots(config, blpath):
     flapi_hosts = config.get('flapi_hosts')
     flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
     flapi_host = flapi_hosts.get(blpath_components[0])
-    flapi_hostname = flapi_host.get('flapi_hostname')
-    flapi_user = flapi_host.get('flapi_user')
-    flapi_token = flapi_host.get('flapi_token')
     bl_jobname = blpath_components[1]
     bl_scene_name = blpath_components[-1]
     bl_scene_path = ':'.join(blpath_components[2:])
+
+    flapi_hostname = flapi_host.get('flapi_hostname')
+    flapi_user = flapi_host.get('flapi_user')
+    flapi_token = flapi_host.get('flapi_token')
+
+    conn = fl_connect(config, flapi, flapi_host)
+
+    if '*' in bl_scene_name:
+        log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
+
+    log.verbose('checking baselight scene: %s' % blpath)
+    print (flapi_hostname)
+    print (bl_jobname)
+    print (bl_scene_path)
+
+    if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
+        log.verbose('baselight scene %s does not exist' % blpath)
+    else:
+        log.verbose('baselight scene %s exists' % blpath)
+
+    fl_disconnect(config, flapi, flapi_host, conn)
+
+
+def fl_connect(config, flapi, flapi_host):
+    log = config.get('log')
+    flapi_hostname = flapi_host.get('flapi_hostname')
+    flapi_user = flapi_host.get('flapi_user')
+    flapi_token = flapi_host.get('flapi_token')
 
     if not all([flapi_hostname, flapi_user, flapi_token]):
         log.info('missing data in flapi host configuration:\n %s' % pformat(flapi_host))
@@ -96,27 +121,18 @@ def get_baselight_scene_shots(config, blpath):
         log.error('Unable to open flapi connection to %s' % flapi_hostname)
         log.error(e)
         conn = None
-        return []
     except Exception as e:
         log.error('Unable to open flapi connection to %s' % flapi_hostname)
         log.error(e)
         conn = None
-        return []
     log.verbose('connected to %s' % flapi_hostname)
+    return conn
 
-    if '*' in bl_scene_name:
-        log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
-
-    log.verbose('checking baselight scene: %s' % blpath)
-    print (flapi_hostname)
-    print (bl_jobname)
-    print (bl_scene_path)
-
-    if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
-        log.verbose('baselight scene %s does not exist' % blpath)
-    else:
-        log.verbose('baselight scene %s exists' % blpath)
-
+def fl_disconnect(config, flapi, flapi_host, conn):
+    log = config.get('log')
+    flapi_hostname = flapi_host.get('flapi_hostname')
+    flapi_user = flapi_host.get('flapi_user')
+    flapi_token = flapi_host.get('flapi_token')
 
     log.verbose('closing flapi connection to %s' % flapi_hostname)
     try:
