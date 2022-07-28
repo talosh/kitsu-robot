@@ -95,6 +95,9 @@ def get_baselight_scene_shots(config, blpath):
             log.verbose('no matching scenes found for: %s' % blpath)
             fl_disconnect(config, flapi, flapi_host, conn)
             return []
+        else:
+            scene_name = matched_scenes[-1]
+            pprint (scene_name)
 
     else:
         log.verbose('checking baselight scene: %s' % blpath)
