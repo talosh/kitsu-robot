@@ -72,7 +72,7 @@ def get_baselight_scene_shots(config, blpath):
     bl_jobname = blpath_components[1]
     bl_scene_name = blpath_components[-1]
     bl_scene_path = ':'.join(blpath_components[2:])
-    bl_scenes_folder = blpath_components[2:-1]
+    bl_scenes_folder = ''.join(blpath_components[2:-1])
 
     print (bl_scenes_folder)
     return
