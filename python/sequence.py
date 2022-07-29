@@ -83,6 +83,7 @@ def get_baselight_scene_shots(config, blpath):
         return []
 
     if '*' in bl_scene_name:
+        # find the most recent scene
         import re
         log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
         existing_scenes = conn.JobManager.get_scenes(flapi_hostname, bl_jobname, bl_scenes_folder)
@@ -96,10 +97,17 @@ def get_baselight_scene_shots(config, blpath):
             fl_disconnect(config, flapi, flapi_host, conn)
             return []
         else:
+            # TODO
+            # this to be changed to actually checking the most recently modified scene
+            # instead of just plain alphabetical sorting and taking the last one
+
             scene_name = sorted(matched_scenes)[-1]
-            log.verbose('Most recent scene: %s' % scene_name)
+            log.verbose('Alphabetically recent scene: %s' % scene_name)
+            bl_scene_path = bl_scenes_folder + ':' + scene_name
 
     else:
+        # we have full scene path and need to check if scene exists
+
         log.verbose('checking baselight scene: %s' % blpath)
 
         if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
@@ -108,6 +116,8 @@ def get_baselight_scene_shots(config, blpath):
             return []
         else:
             log.verbose('baselight scene %s exists' % blpath)
+
+    print (bl_scene_path)
 
     fl_disconnect(config, flapi, flapi_host, conn)
 
