@@ -90,9 +90,11 @@ def get_baselight_scene_shots(config, blpath):
     log.verbose( "Found %d shot(s)" % nshots )
 
     mddefns = scene.get_metadata_definitions()
+    for mdfn in mddefns:
+        print ('%s: %s' % (mdfn['Name'], mdfn['Type']))
+
     cat_keys = scene.get_strip_categories()
 
-    pprint (mddefns)
     pprint (cat_keys)
 
     scene.close_scene()
