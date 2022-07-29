@@ -89,6 +89,13 @@ def get_baselight_scene_shots(config, blpath):
     nshots = scene.get_num_shots()
     log.verbose( "Found %d shot(s)" % nshots )
 
+    md_keys = set()
+    mddefns = scene.get_metadata_definitions()
+    for mdfn in mddefns:
+        md_keys.add(mdfn.Key)
+
+    pprint (md_keys)
+
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
         for shot_ix, shot_inf in enumerate(shots):
@@ -96,12 +103,14 @@ def get_baselight_scene_shots(config, blpath):
             shot = scene.get_shot(shot_inf.ShotId)
 
             shot.release()
+    '''
     mddefns = scene.get_metadata_definitions()
     for mdfn in mddefns:
         print ('%15s: %s, %s' % (mdfn.Key, mdfn.Name, mdfn.Type))
 
     cat_keys = scene.get_strip_categories()
     pprint (cat_keys)
+    '''
 
     scene.close_scene()
     scene.release()
