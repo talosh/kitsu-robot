@@ -114,7 +114,7 @@ def fl_get_scene_path(config, flapi, conn, blpath):
             scene_name = sorted(matched_scenes)[-1]
             log.verbose('Alphabetically recent scene: %s' % scene_name)
             bl_scene_path = bl_scenes_folder + ':' + scene_name
-            blpath = flapi_host + ':' + bl_jobname + ':' + bl_scene_path
+            blpath = flapi_hostname + ':' + bl_jobname + ':' + bl_scene_path
 
     else:
         # we have full scene path and need to check if scene exists
