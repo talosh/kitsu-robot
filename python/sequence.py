@@ -52,6 +52,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         return
     baselight_shots = get_baselight_scene_shots(config, blpath)
+    pprint (baselight_shots)
 
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
@@ -86,6 +87,8 @@ def get_baselight_scene_shots(config, blpath):
         log.error( "Error loading scene: %s" % ex )
         return []
 
+    baselight_shots = []
+
     nshots = scene.get_num_shots()
     log.verbose( "Found %d shot(s)" % nshots )
 
@@ -94,13 +97,23 @@ def get_baselight_scene_shots(config, blpath):
     for mdfn in mddefns:
         md_keys.add(mdfn.Key)
 
-    pprint (md_keys)
-
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
         for shot_ix, shot_inf in enumerate(shots):
             # log.verbose("Shot %d:" % shot_ix)
             shot = scene.get_shot(shot_inf.ShotId)
+            shot_md = shot.get_metadata_strings(md_keys)
+            mark_ids = shot.get_mark_ids()
+            categories = shot.get_categories()
+
+            baselight_shots.append(
+                {
+                    'shot_id': shot_ix,
+                    'shot_md': shot_md,
+                    'mark_ids': mark_ids,
+                    'categories': categories
+                }
+            )
 
             shot.release()
     '''
@@ -116,6 +129,8 @@ def get_baselight_scene_shots(config, blpath):
     scene.release()
     
     fl_disconnect(config, flapi, flapi_host, conn)
+
+    return baselight_shots
 
 def fl_get_scene_path(config, flapi, conn, blpath):
     log = config.get('log')
