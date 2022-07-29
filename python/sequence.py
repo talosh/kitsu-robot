@@ -76,8 +76,9 @@ def get_baselight_scene_shots(config, blpath):
         return []
 
     scene_path = fl_get_scene_path(config, flapi, conn, blpath)
-    pprint (scene_path)
-
+    if not scene_path:
+        return []
+    
     fl_disconnect(config, flapi, flapi_host, conn)
 
 def fl_get_scene_path(config, flapi, conn, blpath):
