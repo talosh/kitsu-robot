@@ -89,6 +89,9 @@ def get_baselight_scene_shots(config, blpath):
     nshots = scene.get_num_shots()
     log.verbose( "Found %d shot(s)" % nshots )
 
+    mddefns = scene.get_metadata_definitions()
+    cat_keys = scene.get_strip_categories()
+
     scene.close_scene()
     scene.release()
     
