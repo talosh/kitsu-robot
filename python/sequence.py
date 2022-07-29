@@ -92,6 +92,9 @@ def get_baselight_scene_shots(config, blpath):
     mddefns = scene.get_metadata_definitions()
     cat_keys = scene.get_strip_categories()
 
+    pprint (mddefns)
+    pprint (cat_keys)
+
     scene.close_scene()
     scene.release()
     
