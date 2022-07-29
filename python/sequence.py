@@ -55,6 +55,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
 
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
+    
     flapi_module_path = config.get('flapi_module_path')
     log.verbose('importing flapi from %s' % flapi_module_path)
     try:
@@ -69,18 +70,28 @@ def get_baselight_scene_shots(config, blpath):
     flapi_hosts = config.get('flapi_hosts')
     flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
     flapi_host = flapi_hosts.get(blpath_components[0])
-    bl_jobname = blpath_components[1]
-    bl_scene_name = blpath_components[-1]
-    bl_scene_path = ':'.join(blpath_components[2:])
-    bl_scenes_folder = ''.join(blpath_components[2:-1])
-
-    flapi_hostname = flapi_host.get('flapi_hostname')
-    flapi_user = flapi_host.get('flapi_user')
-    flapi_token = flapi_host.get('flapi_token')
 
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
         return []
+
+    scene_path = fl_get_scene_path(config, flapi, conn, blpath)
+    pprint (scene_path)
+
+    fl_disconnect(config, flapi, flapi_host, conn)
+
+def fl_get_scene_path(config, flapi, conn, blpath):
+    log = config.get('log')
+
+    blpath_components = blpath.split(':')
+    flapi_hosts = config.get('flapi_hosts')
+    flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
+    flapi_host = flapi_hosts.get(blpath_components[0])
+    bl_jobname = blpath_components[1]
+    bl_scene_name = blpath_components[-1]
+    bl_scene_path = ':'.join(blpath_components[2:])
+    bl_scenes_folder = ''.join(blpath_components[2:-1])
+    flapi_hostname = flapi_host.get('flapi_hostname')
 
     if '*' in bl_scene_name:
         # find the most recent scene
@@ -94,8 +105,7 @@ def get_baselight_scene_shots(config, blpath):
 
         if not matched_scenes:
             log.verbose('no matching scenes found for: %s' % blpath)
-            fl_disconnect(config, flapi, flapi_host, conn)
-            return []
+            return None
         else:
             # TODO
             # this to be changed to actually checking the most recently modified scene
@@ -104,6 +114,7 @@ def get_baselight_scene_shots(config, blpath):
             scene_name = sorted(matched_scenes)[-1]
             log.verbose('Alphabetically recent scene: %s' % scene_name)
             bl_scene_path = bl_scenes_folder + ':' + scene_name
+            blpath = flapi_host + ':' + bl_jobname + ':' + bl_scene_path
 
     else:
         # we have full scene path and need to check if scene exists
@@ -112,14 +123,18 @@ def get_baselight_scene_shots(config, blpath):
 
         if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
             log.verbose('baselight scene %s does not exist' % blpath)
-            fl_disconnect(config, flapi, flapi_host, conn)
-            return []
+            return None
         else:
             log.verbose('baselight scene %s exists' % blpath)
 
-    print (bl_scene_path)
+    
+    try:
+        scene_path = conn.Scene.parse_path(blpath)
+    except flapi.FLAPIException as ex:
+        log.verbose('Can not parse scene: %s' % blpath)
+        return None
 
-    fl_disconnect(config, flapi, flapi_host, conn)
+    return scene_path
 
 
 def fl_connect(config, flapi, flapi_host):
