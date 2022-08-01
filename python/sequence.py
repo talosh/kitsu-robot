@@ -52,7 +52,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         return
     baselight_shots = get_baselight_scene_shots(config, blpath)
-    # pprint (baselight_shots)
+    pprint (baselight_shots)
     sys.exit()
 
 def get_baselight_scene_shots(config, blpath):
@@ -118,11 +118,12 @@ def get_baselight_scene_shots(config, blpath):
 
             shot.release()
 
+    '''
     test_tc = conn.Utilities.timecode_from_string('01:00:00:00')
     pprint (test_tc)
     pprint (str(test_tc))
     pprint (dir(test_tc))
-    sys.exit()
+    '''
 
     '''
     # show avaliable keys and their types
