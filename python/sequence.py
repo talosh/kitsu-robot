@@ -62,10 +62,8 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         return
     baselight_shots = get_baselight_scene_shots(config, blpath)
 
+    project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
     shots = shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
-    pprint (shots)
-
-    pprint (baselight_linked_sequence)
 
     for baselight_shot in baselight_shots:
         shot_md = baselight_shot.get('shot_md')
@@ -74,6 +72,12 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         rectc = shot_md.get('rectc')
         if not rectc:
             continue
+        new_shot = gazu.shot.new_shot(
+            project_dict, 
+            baselight_linked_sequence, 
+            str(rectc[0])
+        )
+
         # pprint(str(rectc[0]))        
     sys.exit()
 
