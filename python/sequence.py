@@ -118,7 +118,7 @@ def get_baselight_scene_shots(config, blpath):
 
             shot.release()
 
-    test_tc = flapi.Utilities.timecode_from_string('01:00:00:00', 24)
+    test_tc = flapi.Utilities.timecode_from_string('01:00:00:00')
     pprint (test_tc)
     pprint (dir(test_tc))
     sys.exit()
