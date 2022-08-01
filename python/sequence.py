@@ -120,6 +120,7 @@ def get_baselight_scene_shots(config, blpath):
 
     test_tc = conn.Utilities.timecode_from_string('01:00:00:00')
     pprint (test_tc)
+    pprint (str(test_tc))
     pprint (dir(test_tc))
     sys.exit()
 
