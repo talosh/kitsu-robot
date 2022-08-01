@@ -52,7 +52,8 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         return
     baselight_shots = get_baselight_scene_shots(config, blpath)
-    pprint (baselight_shots)
+    # pprint (baselight_shots)
+    sys.exit()
 
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
@@ -116,14 +117,13 @@ def get_baselight_scene_shots(config, blpath):
             )
 
             shot.release()
-    '''
+
     mddefns = scene.get_metadata_definitions()
     for mdfn in mddefns:
         print ('%15s: %s, %s' % (mdfn.Key, mdfn.Name, mdfn.Type))
 
     cat_keys = scene.get_strip_categories()
     pprint (cat_keys)
-    '''
 
     scene.close_scene()
     scene.release()
