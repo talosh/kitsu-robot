@@ -138,7 +138,7 @@ def get_baselight_scene_shots(config, blpath):
 
             baselight_shots.append(
                 {
-                    'shot_id': shot_ix,
+                    'shot_id': shot_ix + 1,
                     'shot_md': shot_md,
                     'mark_ids': mark_ids,
                     'categories': categories
