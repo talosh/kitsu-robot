@@ -34,6 +34,15 @@ def sequence_sync(config):
 
 def link_baselight_sequence(config, baselight_linked_sequence):
     log = config.get('log')
+
+    import gazu
+    config_gazu = config.get('gazu')
+    host = config_gazu.get('host')
+    name = config_gazu.get('name')
+    password = config_gazu.get('password')
+    gazu.set_host(host)
+    gazu.log_in(name, password)
+
     data = baselight_linked_sequence.get('data')
     if not isinstance(data, dict):
         log.info('no baselight path found in sequence "%s"' % pformat(baselight_linked_sequence))
@@ -52,6 +61,9 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         return
     baselight_shots = get_baselight_scene_shots(config, blpath)
+
+    shots = shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
+    pprint (shots)
 
     pprint (baselight_linked_sequence)
 
