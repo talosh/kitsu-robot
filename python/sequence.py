@@ -59,10 +59,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         rectc = shot_md.get('rectc')
         if not rectc:
             continue
-        pprint(type(rectc))
-        pprint(rectc)
-        pprint(dir(rectc))
-        
+        pprint(rectc[0])        
     sys.exit()
 
 def get_baselight_scene_shots(config, blpath):
