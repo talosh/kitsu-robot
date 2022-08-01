@@ -75,7 +75,8 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         new_shot = gazu.shot.new_shot(
             project_dict, 
             baselight_linked_sequence, 
-            str(rectc[0])
+            str(rectc[0]),
+            data = {'00.Shot-ID': baselight_shot.get('shot_id')}
         )
 
         pprint (new_shot)
