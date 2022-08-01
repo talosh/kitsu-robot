@@ -52,7 +52,11 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         return
     baselight_shots = get_baselight_scene_shots(config, blpath)
-    pprint (baselight_shots)
+    for baselight_shot in baselight_shots:
+        rectc = baselight_shot.get('rectc')
+        if not rectc:
+            continue
+        pprint(rectc[0])
     sys.exit()
 
 def get_baselight_scene_shots(config, blpath):
