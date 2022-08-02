@@ -73,7 +73,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
             project_dict, 
             baselight_linked_sequence, 
             shot_name,
-            shot_data
+            data = shot_data
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
 
@@ -107,10 +107,7 @@ def build_kitsu_shot_data(config, baselight_shot):
         value = str(shot_md.get(bl_key))
         if 'padding' in md_descriptors_by_bl_key[bl_key].keys():
             padding = md_descriptors_by_bl_key[bl_key].get('padding', 0)
-            print (type(value))
-            pprint (value)
-            value.zfill(4)
-            pprint (value)
+            value = value.zfill(padding)
         data[kitsu_key] = value
     return data
 
