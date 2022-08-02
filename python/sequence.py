@@ -85,7 +85,8 @@ def link_baselight_sequence(config, baselight_linked_sequence):
 def create_kitsu_shot_name(config, baselight_shot):
     shot_md = baselight_shot.get('shot_md')
     if not shot_md:
-        import uuid
+        pass
+    import uuid
     return ((str(uuid.uuid1()).replace('-', '')).upper())[:4]
     # str(rectc[0])
 
