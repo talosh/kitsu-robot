@@ -48,18 +48,26 @@
     },
     {
         "name": "11.Source TC Start",
+        "kitsu_key": "00_shot_id",
+        "bl_metadata_key": "event",
         "entity_type": "Shot"
     },
     {
         "name": "12.Source TC End",
+        "kitsu_key": "00_shot_id",
+        "bl_metadata_key": "event",
         "entity_type": "Shot"
     },
     {
         "name": "13.Record TC Start",
+        "kitsu_key": "00_shot_id",
+        "bl_metadata_key": "event",
         "entity_type": "Shot"
     },
     {
         "name": "14.Record TC End",
+        "kitsu_key": "00_shot_id",
+        "bl_metadata_key": "event",
         "entity_type": "Shot"
     },
     {
