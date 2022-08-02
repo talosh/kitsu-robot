@@ -73,7 +73,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         new_shot = gazu.shot.new_shot(
             project_dict, 
             baselight_linked_sequence, 
-            str(rectc[0]),
+            shot_name,
             data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
 
@@ -87,7 +87,7 @@ def create_kitsu_shot_name(config, baselight_shot):
     if not shot_md:
         import uuid
     return ((str(uuid.uuid1()).replace('-', '')).upper())[:4]
-
+    # str(rectc[0])
 
 
 def get_baselight_scene_shots(config, blpath):
