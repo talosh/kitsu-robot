@@ -67,7 +67,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
 
     for baselight_shot in baselight_shots:
         
-        shot_name = create_kitsu_shot_name()
+        shot_name = create_kitsu_shot_name(config, baselight_shot)
         # shot_data = build_kitsu_shot_data()
 
         new_shot = gazu.shot.new_shot(
