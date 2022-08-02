@@ -140,7 +140,8 @@ def get_baselight_scene_shots(config, blpath):
             shot = scene.get_shot(shot_inf.ShotId)
             shot_md = shot.get_metadata(md_keys)
             for key in md_keys:
-                print ('%15s: %s: %s:' % (key, type(shot_md[key]), shot_md[key]))
+                if type(shot_md[key]) is list:
+                    print ('%15s: %s: %s:' % (key, type(shot_md[key]), shot_md[key]))
             # shot_md = shot.get_metadata_strings(md_keys)
             mark_ids = shot.get_mark_ids()
             categories = shot.get_categories()
