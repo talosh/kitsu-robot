@@ -61,8 +61,8 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         return
     baselight_shots = get_baselight_scene_shots(config, blpath)
-    # pprint (baselight_shots)
-    # sys.exit()
+    pprint (baselight_shots)
+    sys.exit()
 
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
     shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
@@ -141,7 +141,9 @@ def get_baselight_scene_shots(config, blpath):
             shot_md = shot.get_metadata(md_keys)
             for key in md_keys:
                 if type(shot_md[key]) is list:
-                    print ('%15s: %s: %s:' % (key, type(shot_md[key]), shot_md[key]))
+                    for list_ix, list_inf in enumerate(shot_md[key]):
+                        shot_md[key + '.' + str(list_ix)] = list_inf
+                    # print ('%15s: %s: %s:' % (key, type(shot_md[key]), shot_md[key]))
             # shot_md = shot.get_metadata_strings(md_keys)
             mark_ids = shot.get_mark_ids()
             categories = shot.get_categories()
