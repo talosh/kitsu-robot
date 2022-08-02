@@ -1,7 +1,7 @@
 [
     {
         "name": "00.Shot-ID",
-        "kitsu_id": "00_shot_id",
+        "kitsu_key": "00_shot_id",
         "bl_metadata_key": "event",
         "padding": 4,
         "entity_type": "Shot"
