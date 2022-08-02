@@ -107,7 +107,7 @@ def build_kitsu_shot_data(config, baselight_shot):
         value = str(shot_md.get(bl_key))
         if 'padding' in md_descriptors_by_bl_key[bl_key].keys():
             padding = md_descriptors_by_bl_key[bl_key].get('padding', 0)
-            value.zfill(padding)
+            value.zfill(4)
             pprint (value)
         data[kitsu_key] = value
     return data
