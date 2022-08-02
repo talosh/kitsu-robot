@@ -93,9 +93,18 @@ def create_kitsu_shot_name(config, baselight_shot):
 
 def build_kitsu_shot_data(config, baselight_shot):
     data = {}
-    metadata_descriptors = config.get('metadata_descriptors')
+    md_descriptors = config.get('metadata_descriptors')
+    md_descriptors_by_bl_key = {}
+    for md_desc in md_descriptors:
+        bl_key = md_desc.get('bl_metadata_key')
+        if not bl_key:
+            continue
+        md_descriptors_by_bl_key[bl_key] = md_desc
+    pprint (md_descriptors_by_bl_key)
+    shot_md = baselight_shot.get('shot_md')
+
     return data
-    
+
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
     
