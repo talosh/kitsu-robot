@@ -83,13 +83,14 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     sys.exit()
 
 def create_kitsu_shot_name(config, baselight_shot):
+    import uuid
     shot_md = baselight_shot.get('shot_md')
     if not shot_md:
-        pass
-    import uuid
-    return ((str(uuid.uuid1()).replace('-', '')).upper())[:4]
-    # str(rectc[0])
-
+        return ((str(uuid.uuid1()).replace('-', '')).upper())[:4]
+    rectc_in = shot_md.get('rectc.0')
+    if not rectc_in:
+        return ((str(uuid.uuid1()).replace('-', '')).upper())[:4]
+    return str(rectc_in)
 
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
