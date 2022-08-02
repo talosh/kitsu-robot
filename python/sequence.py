@@ -63,12 +63,11 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     baselight_shots = get_baselight_scene_shots(config, blpath)
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
     shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
-    metadata_descriptors = config.get('metadata_descriptors')
 
     for baselight_shot in baselight_shots:
         
         shot_name = create_kitsu_shot_name(config, baselight_shot)
-        # shot_data = build_kitsu_shot_data()
+        shot_data = build_kitsu_shot_data(config, baselight_shot)
 
         new_shot = gazu.shot.new_shot(
             project_dict, 
@@ -92,6 +91,11 @@ def create_kitsu_shot_name(config, baselight_shot):
         return ((str(uuid.uuid1()).replace('-', '')).upper())[:4]
     return str(rectc_in)
 
+def build_kitsu_shot_data(config, baselight_shot):
+    data = {}
+    metadata_descriptors = config.get('metadata_descriptors')
+    return data
+    
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
     
