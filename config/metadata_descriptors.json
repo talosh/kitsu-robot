@@ -1,6 +1,7 @@
 [
     {
         "name": "00.Shot-ID",
+        "kitsu_id": "00_shot_id",
         "entity_type": "Shot"
     },
     {
