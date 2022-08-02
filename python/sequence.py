@@ -139,6 +139,10 @@ def get_baselight_scene_shots(config, blpath):
             # log.verbose("Shot %d:" % shot_ix)
             shot = scene.get_shot(shot_inf.ShotId)
             shot_md = shot.get_metadata(md_keys)
+            for key in md_keys:
+                print (key)
+                print (type(shot_md[key]))
+                pprint (shot_md[key])
             # shot_md = shot.get_metadata_strings(md_keys)
             mark_ids = shot.get_mark_ids()
             categories = shot.get_categories()
