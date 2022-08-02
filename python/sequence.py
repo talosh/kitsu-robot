@@ -101,7 +101,7 @@ def build_kitsu_shot_data(config, baselight_shot):
             continue
         md_descriptors_by_bl_key[bl_key] = md_desc
     shot_md = baselight_shot.get('shot_md')
-    for bl_key in md_descriptors_by_bl_key.keys:
+    for bl_key in md_descriptors_by_bl_key.keys():
         kitsu_key = md_descriptors_by_bl_key[bl_key].get('kitsu_key')
     return data
 
