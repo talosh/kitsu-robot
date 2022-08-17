@@ -66,7 +66,8 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
 
     for baselight_shot in baselight_shots:
-        
+        pprint (baselight_shot)
+
         shot_name = create_kitsu_shot_name(config, baselight_shot)
         shot_data = build_kitsu_shot_data(config, baselight_shot)
 
@@ -77,9 +78,6 @@ def link_baselight_sequence(config, baselight_linked_sequence):
             data = shot_data
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
-
-        pprint (new_shot)
-
         # pprint(str(rectc[0]))        
     sys.exit()
 
@@ -175,7 +173,8 @@ def get_baselight_scene_shots(config, blpath):
                     'shot_id': shot_ix + 1,
                     'shot_md': shot_md,
                     'mark_ids': mark_ids,
-                    'categories': categories
+                    'categories': categories,
+                    'thumbnail_url': conn.ThumbnailManager.get_poster_uri(shot, 1, {'DCSpace': 'sRGB'})
                 }
             )
 
