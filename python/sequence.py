@@ -130,6 +130,8 @@ def get_baselight_scene_shots(config, blpath):
     if not flapi_host:
         flapi_host = flapi_hosts.get(list(flapi_hosts.keys())[0])
 
+    pprint (flapi_host)
+
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
         return []
