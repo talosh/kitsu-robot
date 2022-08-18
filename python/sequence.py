@@ -170,7 +170,7 @@ def get_baselight_scene_shots(config, blpath):
             mark_ids = shot.get_mark_ids()
             categories = shot.get_categories()
 
-            thumbnail_url = flapi.ThumbnailManager.get_poster_uri(shot, 1, {'DCSpace': 'sRGB'})
+            thumbnail_url = conn.ThumbnailManager.get_poster_uri(shot, 1, {'DCSpace': 'sRGB'})
 
             pprint (thumbnail_url)
             sys.exit()
