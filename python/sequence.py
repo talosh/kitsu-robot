@@ -134,7 +134,7 @@ def get_baselight_scene_shots(config, blpath):
     if not conn:
         return []
 
-    scene_path = fl_get_scene_path(config, flapi, conn, blpath, flapi_host)
+    scene_path = fl_get_scene_path(config, flapi, conn, blpath)
     if not scene_path:
         return []
 
@@ -205,21 +205,21 @@ def get_baselight_scene_shots(config, blpath):
 
     return baselight_shots
 
-def fl_get_scene_path(config, flapi, conn, blpath, flapi_host):
+def fl_get_scene_path(config, flapi, conn, blpath):
     log = config.get('log')
 
     blpath_components = blpath.split(':')
+    bl_hostname = blpath_components[0]
     bl_jobname = blpath_components[1]
     bl_scene_name = blpath_components[-1]
     bl_scene_path = ':'.join(blpath_components[2:])
     bl_scenes_folder = ''.join(blpath_components[2:-1])
-    flapi_hostname = flapi_host.get('flapi_hostname')
 
     if '*' in bl_scene_name:
         # find the most recent scene
         import re
         log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
-        existing_scenes = conn.JobManager.get_scenes(flapi_hostname, bl_jobname, bl_scenes_folder)
+        existing_scenes = conn.JobManager.get_scenes(bl_hostname, bl_jobname, bl_scenes_folder)
         matched_scenes = []
         for scene_name in existing_scenes:
             if re.findall(bl_scene_name, scene_name):
@@ -236,14 +236,14 @@ def fl_get_scene_path(config, flapi, conn, blpath, flapi_host):
             scene_name = sorted(matched_scenes)[-1]
             log.verbose('Alphabetically recent scene: %s' % scene_name)
             bl_scene_path = bl_scenes_folder + ':' + scene_name
-            blpath = flapi_hostname + ':' + bl_jobname + ':' + bl_scene_path
+            blpath = bl_hostname + ':' + bl_jobname + ':' + bl_scene_path
 
     else:
         # we have full scene path and need to check if scene exists
 
         log.verbose('checking baselight scene: %s' % blpath)
 
-        if not conn.JobManager.scene_exists(flapi_hostname, bl_jobname, bl_scene_path):
+        if not conn.JobManager.scene_exists(bl_hostname, bl_jobname, bl_scene_path):
             log.verbose('baselight scene %s does not exist' % blpath)
             return None
         else:
