@@ -59,7 +59,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
     if blpath_components[0] not in flapi_hosts.keys():
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
-        return
+        # return
     baselight_shots = get_baselight_scene_shots(config, blpath)
     
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
