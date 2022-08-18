@@ -18,3 +18,5 @@ conn = flapi.Connection(
     token='3599641beb617f68485b447589af230d'
 )
 conn.connect()
+
+scene_path = conn.Scene.parse_path('fs.flux1:dlj0395_soviet_milk:grade:soviet_milk_grd_06')
