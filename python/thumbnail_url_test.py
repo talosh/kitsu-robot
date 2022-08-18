@@ -22,6 +22,17 @@ conn.connect()
 scene_path = conn.Scene.parse_path('fs.flux1:dlj0395_soviet_milk:grade:soviet_milk_grd_06')
 scene = conn.Scene.open_scene( scene_path, { flapi.OPENFLAG_READ_ONLY } )
 
+nshots = scene.get_num_shots()
+if nshots > 0:
+    shots = scene.get_shot_ids(0, nshots)
+    for shot_ix, shot_inf in enumerate(shots):
+        shot = scene.get_shot(shot_inf.ShotId)
+
+        thumbnail_url = conn.ThumbnailManager.get_poster_uri(shot, 1, {'DCSpace': 'sRGB'})
+        print (thumbnail_url)
+        
+        shot.release()
+
 scene.close_scene()
 scene.release()
 conn.close()
