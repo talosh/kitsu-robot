@@ -170,13 +170,15 @@ def get_baselight_scene_shots(config, blpath):
             mark_ids = shot.get_mark_ids()
             categories = shot.get_categories()
 
+            thumbnail_url = conn.ThumbnailManager.get_poster_uri(shot, 1, {'DCSpace': 'sRGB'})
+
             baselight_shots.append(
                 {
                     'shot_id': shot_ix + 1,
                     'shot_md': shot_md,
                     'mark_ids': mark_ids,
                     'categories': categories,
-                    'thumbnail_url': conn.ThumbnailManager.get_poster_uri(shot, 1, {'DCSpace': 'sRGB'})
+                    'thumbnail_url': thumbnail_url
                 }
             )
 
