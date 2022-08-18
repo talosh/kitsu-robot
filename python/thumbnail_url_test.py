@@ -20,3 +20,4 @@ conn = flapi.Connection(
 conn.connect()
 
 scene_path = conn.Scene.parse_path('fs.flux1:dlj0395_soviet_milk:grade:soviet_milk_grd_06')
+scene = conn.Scene.open_scene( scene_path, { flapi.OPENFLAG_READ_ONLY } )
