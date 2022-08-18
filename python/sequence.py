@@ -130,13 +130,11 @@ def get_baselight_scene_shots(config, blpath):
     if not flapi_host:
         flapi_host = flapi_hosts.get(list(flapi_hosts.keys())[0])
 
-    pprint (flapi_host)
-
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
         return []
 
-    scene_path = fl_get_scene_path(config, flapi, conn, blpath)
+    scene_path = fl_get_scene_path(config, flapi, conn, blpath, flapi_host)
     if not scene_path:
         return []
 
@@ -207,13 +205,10 @@ def get_baselight_scene_shots(config, blpath):
 
     return baselight_shots
 
-def fl_get_scene_path(config, flapi, conn, blpath):
+def fl_get_scene_path(config, flapi, conn, blpath, flapi_host):
     log = config.get('log')
 
     blpath_components = blpath.split(':')
-    flapi_hosts = config.get('flapi_hosts')
-    flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
-    flapi_host = flapi_hosts.get(blpath_components[0])
     bl_jobname = blpath_components[1]
     bl_scene_name = blpath_components[-1]
     bl_scene_path = ':'.join(blpath_components[2:])
