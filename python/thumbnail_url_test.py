@@ -28,9 +28,9 @@ if nshots > 0:
     for shot_ix, shot_inf in enumerate(shots):
         shot = scene.get_shot(shot_inf.ShotId)
 
-        thumbnail_url = conn.ThumbnailManager.get_poster_uri(shot, 1, {'DCSpace': 'sRGB'})
+        thumbnail_url = conn.ThumbnailManager.get_poster_uri(shot, 0, {'DCSpace': 'sRGB'})
         print (thumbnail_url)
-        
+
         shot.release()
 
 scene.close_scene()
