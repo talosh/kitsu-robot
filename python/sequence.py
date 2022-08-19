@@ -132,12 +132,11 @@ def add_kitsu_metadata_definition(config, blpath):
 
     md_names = set()
     mddefns = scene.get_metadata_definitions()
-    pprint (mddefns)
     for mdfn in mddefns:
         md_names.add(mdfn.Name)
 
     if 'kitsu-uid' in md_names:
-        log.verbose('kistu-uid metadata columnn already exists in scene: %s' % scene.get_scene_pathname())
+        log.verbose('kistu-uid metadata columnn already exists in scene: "%s"' % scene.get_scene_pathname())
         scene.close_scene()
         scene.release()    
         fl_disconnect(config, flapi, flapi_host, conn)
@@ -155,6 +154,7 @@ def add_kitsu_metadata_definition(config, blpath):
         log.error( "Error opening scene: %s" % ex )
         return False
 
+    log.verbose('Adding kistu-uid metadata columnn to scene: "%s"' % scene.get_scene_pathname())
     scene.start_delta('Add kitsu-id metadata column')
     scene.add_metadata_defn('kitsu-uid', 'String')
     scene.end_delta()
