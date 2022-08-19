@@ -65,6 +65,8 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
     shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
 
+    add_kitsu_metadata_definition(config, blpath)
+
     for baselight_shot in baselight_shots:
         shot_name = create_kitsu_shot_name(config, baselight_shot)
         shot_data = build_kitsu_shot_data(config, baselight_shot)
@@ -107,6 +109,7 @@ def build_kitsu_shot_data(config, baselight_shot):
         data[kitsu_key] = value
     return data
 
+
 def add_kitsu_metadata_definition(config, blpath):
     log = config.get('log')
     flapi = import_flapi(config)
@@ -114,6 +117,12 @@ def add_kitsu_metadata_definition(config, blpath):
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
         return
+    scene_path = fl_get_scene_path(config, flapi, conn, blpath)
+    if not scene_path:
+        return
+    pprint (scene_path)
+    sys.exit()
+
 
 def resolve_flapi_host(config, blpath):
     blpath_components = blpath.split(':')
@@ -123,6 +132,7 @@ def resolve_flapi_host(config, blpath):
     if not flapi_host:
         flapi_host = flapi_hosts.get(list(flapi_hosts.keys())[0])
     return flapi_host
+
 
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
