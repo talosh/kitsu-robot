@@ -132,6 +132,7 @@ def add_kitsu_metadata_definition(config, blpath):
 
     md_keys = set()
     mddefns = scene.get_metadata_definitions()
+    pprint (mddefns)
     for mdfn in mddefns:
         md_keys.add(mdfn.Key)
 
