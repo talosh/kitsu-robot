@@ -53,7 +53,10 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         # return
 
-    kitsu_uid_key = check_or_add_kitsu_metadata_definition(config, blpath)
+    kitsu_uid_metadata_obj = check_or_add_kitsu_metadata_definition(config, blpath)
+    if not kitsu_uid_metadata_obj:
+        return
+    pprint (kitsu_uid_metadata_obj)
     baselight_shots = get_baselight_scene_shots(config, blpath)
     
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
@@ -80,7 +83,6 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         )
         # pprint(str(rectc[0]))        
     
-    gazu.log_out()
 
 def create_kitsu_shot_name(config, baselight_shot):
     import uuid
@@ -140,9 +142,7 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
         scene.close_scene()
         scene.release()    
         fl_disconnect(config, flapi, flapi_host, conn)
-        metadata_object = md_names['kitsu-uid']
-        pprint (metadata_object)
-        return True
+        return md_names['kitsu-uid']
 
     # the scene has no kitsu-id metadata defined
     # try to re-open the scene in rw mode and add this definition
@@ -158,11 +158,12 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
 
     log.verbose('Adding kistu-uid metadata columnn to scene: "%s"' % scene.get_scene_pathname())
     scene.start_delta('Add kitsu-id metadata column')
-    scene.add_metadata_defn('kitsu-uid', 'String')
+    metadata_obj = scene.add_metadata_defn('kitsu-uid', 'String')
     scene.end_delta()
     scene.save_scene()
     scene.close_scene()
     scene.release()
+    return metadata_obj
 
 
 def resolve_flapi_host(config, blpath):
