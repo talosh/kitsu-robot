@@ -153,8 +153,10 @@ def get_baselight_scene_shots(config, blpath):
     md_keys = set()
     mddefns = scene.get_metadata_definitions()
     for mdfn in mddefns:
+        pprint (mdfn)
         md_keys.add(mdfn.Key)
 
+    
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
         for shot_ix, shot_inf in enumerate(shots):
@@ -170,10 +172,9 @@ def get_baselight_scene_shots(config, blpath):
             mark_ids = shot.get_mark_ids()
             categories = shot.get_categories()
 
-            thumbnail_url = conn.ThumbnailManager.get_poster_uri(shot, 1, {'DCSpace': 'sRGB'})
-
-            pprint (thumbnail_url)
-            sys.exit()
+            thumbnail_url = ''
+            # thumbnail_url = conn.ThumbnailManager.get_poster_uri(shot, 1, {'DCSpace': 'sRGB'})
+            # pprint (thumbnail_url)
 
             baselight_shots.append(
                 {
