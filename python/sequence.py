@@ -66,8 +66,6 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
 
     for baselight_shot in baselight_shots:
-        pprint (baselight_shot)
-
         shot_name = create_kitsu_shot_name(config, baselight_shot)
         shot_data = build_kitsu_shot_data(config, baselight_shot)
 
@@ -79,7 +77,6 @@ def link_baselight_sequence(config, baselight_linked_sequence):
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
         # pprint(str(rectc[0]))        
-    sys.exit()
 
 def create_kitsu_shot_name(config, baselight_shot):
     import uuid
@@ -110,9 +107,16 @@ def build_kitsu_shot_data(config, baselight_shot):
         data[kitsu_key] = value
     return data
 
+def add_kitsu_metadata_definition(config, blpath):
+    log = config.get('log')
+
+
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
+
+    flapi = import_flapi(config)
     
+    '''
     flapi_module_path = config.get('flapi_module_path')
     log.verbose('importing flapi from %s' % flapi_module_path)
     try:
@@ -122,7 +126,8 @@ def get_baselight_scene_shots(config, blpath):
     except Exception as e:
         log.error('unable to import filmlight api python module from: %s' % flapi_module_path)
         log.error(e)
-
+    '''
+    
     blpath_components = blpath.split(':')
     flapi_hosts = config.get('flapi_hosts')
     flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
@@ -156,7 +161,6 @@ def get_baselight_scene_shots(config, blpath):
         pprint (mdfn)
         md_keys.add(mdfn.Key)
 
-    
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
         for shot_ix, shot_inf in enumerate(shots):
@@ -317,3 +321,15 @@ def fl_disconnect(config, flapi, flapi_host, conn):
         conn = None
     log.verbose('connection to %s closed' % flapi_hostname)
 
+def import_flapi(config):
+    log = config.get('log')
+    flapi_module_path = config.get('flapi_module_path')
+    log.verbose('importing flapi from %s' % flapi_module_path)
+    try:
+        if sys.path[0] != flapi_module_path:
+            sys.path.insert(0, flapi_module_path)
+        import flapi
+        return flapi
+    except Exception as e:
+        log.error('unable to import filmlight api python module from: %s' % flapi_module_path)
+        log.error(e)
