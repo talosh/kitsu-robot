@@ -36,6 +36,10 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     log = config.get('log')
 
     import gazu
+
+    pprint (dir(gazu))
+    sys.exit()
+
     config_gazu = config.get('gazu')
     host = config_gazu.get('host')
     name = config_gazu.get('name')
@@ -62,11 +66,11 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         # return
 
     add_kitsu_metadata_definition(config, blpath)
-    sys.exit()
     baselight_shots = get_baselight_scene_shots(config, blpath)
     
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
-    shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
+    kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
+    shot_uids
 
 
     for baselight_shot in baselight_shots:
