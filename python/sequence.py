@@ -27,21 +27,13 @@ def sequence_sync(config):
                         if 'blpath' in data.keys():
                             baselight_linked_sequences.append(project_sequence)
             for baselight_linked_sequence in baselight_linked_sequences:
-                link_baselight_sequence(config, baselight_linked_sequence)
+                link_baselight_sequence(config, gazu, baselight_linked_sequence)
             time.sleep(4)
         except KeyboardInterrupt:
             return
 
-def link_baselight_sequence(config, baselight_linked_sequence):
+def link_baselight_sequence(config, gazu, baselight_linked_sequence):
     log = config.get('log')
-
-    import gazu
-    config_gazu = config.get('gazu')
-    host = config_gazu.get('host')
-    name = config_gazu.get('name')
-    password = config_gazu.get('password')
-    gazu.set_host(host)
-    gazu.log_in(name, password)
 
     data = baselight_linked_sequence.get('data')
     if not isinstance(data, dict):
@@ -71,8 +63,6 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         kitsu_shot_uids.add(kitsu_shot.get('id'))
     
     pprint (kitsu_shot_uids)
-
-    gazu.log_out()
     sys.exit()
     
     for baselight_shot in baselight_shots:
