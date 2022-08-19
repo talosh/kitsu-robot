@@ -95,8 +95,8 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
     for baselight_shot in new_shots:
         shot_name = create_kitsu_shot_name(config, baselight_shot)
         shot_data = build_kitsu_shot_data(config, baselight_shot)
-        shot_md = baselight_shot.get('shot_md')
-        pprint (shot_md)
+        shot_id = baselight_shot.get('shot_id')
+        pprint (shot_id)
         continue
 
         new_shot = gazu.shot.new_shot(
@@ -263,7 +263,8 @@ def get_baselight_scene_shots(config, blpath):
 
             baselight_shots.append(
                 {
-                    'shot_id': shot_ix + 1,
+                    'shot_ix': shot_ix + 1,
+                    'shot_id': shot_inf.ShotId,
                     'shot_md': shot_md,
                     'mark_ids': mark_ids,
                     'categories': categories,
