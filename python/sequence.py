@@ -69,8 +69,9 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         if not shot_md:
             continue
         kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
-        pprint (kitsu_uid)
-        continue
+        if kitsu_uid in kitsu_shot_uids:
+            continue
+
         shot_name = create_kitsu_shot_name(config, baselight_shot)
         shot_data = build_kitsu_shot_data(config, baselight_shot)
 
@@ -81,6 +82,8 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             data = shot_data
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
+
+        pprint (new_shot)
         # pprint(str(rectc[0]))        
     
 
