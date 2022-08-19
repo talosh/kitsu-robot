@@ -70,6 +70,7 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     for kitsu_shot in kitsu_shots:
         pprint (kitsu_shot)
 
+    gazu.log_out()
     sys.exit()
     
     for baselight_shot in baselight_shots:
