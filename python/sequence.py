@@ -62,6 +62,8 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         # return
 
     add_kitsu_metadata_definition(config, blpath)
+    sys.exit()
+    
     baselight_shots = get_baselight_scene_shots(config, blpath)
     
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
