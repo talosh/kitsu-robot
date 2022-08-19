@@ -61,7 +61,8 @@ def link_baselight_sequence(config, baselight_linked_sequence):
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         # return
 
-    add_kitsu_metadata_definition(config, blpath)    
+    add_kitsu_metadata_definition(config, blpath)
+    sys.exit()
     baselight_shots = get_baselight_scene_shots(config, blpath)
     
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
@@ -117,22 +118,29 @@ def add_kitsu_metadata_definition(config, blpath):
     flapi_host = resolve_flapi_host(config, blpath)
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
-        return
+        return False
     scene_path = fl_get_scene_path(config, flapi, conn, blpath)
     if not scene_path:
-        return
+        return False
 
     try:
-        log.verbose('loading scene: %s' % scene_path)
+        log.verbose('Opening scene: %s' % scene_path)
         scene = conn.Scene.open_scene( scene_path, { flapi.OPENFLAG_READ_ONLY } )
     except flapi.FLAPIException as ex:
-        log.error( "Error loading scene: %s" % ex )
-        return []
+        log.error( "Error opening scene: %s" % ex )
+        return False
 
-    scene.close_scene()
-    scene.release()    
-    fl_disconnect(config, flapi, flapi_host, conn)
-    sys.exit()
+    md_keys = set()
+    mddefns = scene.get_metadata_definitions()
+    for mdfn in mddefns:
+        md_keys.add(mdfn.Key)
+
+    if 'kitsu_id' not in md_keys:
+        log.verbose('kistu-id metadata columnt already exists in scene %s' % scene.get_scene_pathname())
+        scene.close_scene()
+        scene.release()    
+        fl_disconnect(config, flapi, flapi_host, conn)
+        return True
 
 
 def resolve_flapi_host(config, blpath):
