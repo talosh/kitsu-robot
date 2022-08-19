@@ -92,16 +92,14 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         log.error( "Error opening scene: %s" % ex )
         return None
 
+    scene.start_delta('Add kitsu metadata to shots')
+
     for baselight_shot in new_shots:
         shot_name = create_kitsu_shot_name(config, baselight_shot)
         shot_data = build_kitsu_shot_data(config, baselight_shot)
         shot_id = baselight_shot.get('shot_id')
         shot = scene.get_shot(shot_id)
-        pprint (shot)
-        shot.release()
         
-        continue
-
         new_shot = gazu.shot.new_shot(
             project_dict, 
             baselight_linked_sequence, 
@@ -110,10 +108,18 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
 
+        new_md_values = {
+            kitsu_uid_metadata_obj.Key: new_shot.get('id')
+        }
+
+        shot.set_metadata( new_md_values )
+
+        shot.release()
+
         # shot = scene.get_shot(shot_inf.ShotId)
 
 
-
+    scene.end_delta()
     scene.save_scene()
     scene.close_scene()
     scene.release()
