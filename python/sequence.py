@@ -163,7 +163,6 @@ def get_baselight_scene_shots(config, blpath):
     md_keys = set()
     mddefns = scene.get_metadata_definitions()
     for mdfn in mddefns:
-        pprint (mdfn)
         md_keys.add(mdfn.Key)
 
     if nshots > 0:
