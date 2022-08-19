@@ -92,6 +92,10 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         log.error( "Error opening scene: %s" % ex )
         return None
 
+    scene.save_scene()
+    scene.close_scene()
+    scene.release()
+
     fl_disconnect(config, flapi, flapi_host, conn)
     return
 
