@@ -130,13 +130,13 @@ def add_kitsu_metadata_definition(config, blpath):
         log.error( "Error opening scene: %s" % ex )
         return False
 
-    md_keys = set()
+    md_names = set()
     mddefns = scene.get_metadata_definitions()
     pprint (mddefns)
     for mdfn in mddefns:
-        md_keys.add(mdfn.Key)
+        md_names.add(mdfn.Name)
 
-    if 'kitsu-id' in md_keys:
+    if 'kitsu-uid' in md_names:
         log.verbose('kistu-id metadata columnt already exists in scene: %s' % scene.get_scene_pathname())
         scene.close_scene()
         scene.release()    
@@ -156,9 +156,7 @@ def add_kitsu_metadata_definition(config, blpath):
         return False
 
     scene.start_delta('Add kitsu-id metadata column')
-    kitsu_id_metadata_item = scene.add_metadata_defn('kitsu-id', 'String')
-    pprint (kitsu_id_metadata_item.Key)
-    scene.set_metadata_defn_property(kitsu_id_metadata_item.Key, 'Key', 'kitsu-id')
+    scene.add_metadata_defn('kitsu-uid', 'String')
     scene.end_delta()
     scene.save_scene()
     scene.close_scene()
