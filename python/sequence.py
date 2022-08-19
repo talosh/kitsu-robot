@@ -135,11 +135,13 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
     for mdfn in mddefns:
         md_names[mdfn.Name] = mdfn
 
-    if 'kitsu-uid' in md_names:
+    if 'kitsu-uid' in md_names.keys():
         log.verbose('kistu-uid metadata columnn already exists in scene: "%s"' % scene.get_scene_pathname())
         scene.close_scene()
         scene.release()    
         fl_disconnect(config, flapi, flapi_host, conn)
+        metadata_object = md_names['kitsu-uid']
+        pprint (metadata_object)
         return True
 
     # the scene has no kitsu-id metadata defined
