@@ -53,7 +53,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         # return
 
-    add_kitsu_metadata_definition(config, blpath)
+    kitsu_uid_key = check_or_add_kitsu_metadata_definition(config, blpath)
     baselight_shots = get_baselight_scene_shots(config, blpath)
     
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
@@ -112,28 +112,28 @@ def build_kitsu_shot_data(config, baselight_shot):
     return data
 
 
-def add_kitsu_metadata_definition(config, blpath):
+def check_or_add_kitsu_metadata_definition(config, blpath):
     log = config.get('log')
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
-        return False
+        return None
     scene_path = fl_get_scene_path(config, flapi, conn, blpath)
     if not scene_path:
-        return False
+        return None
 
     try:
         log.verbose('Opening scene: %s' % scene_path)
         scene = conn.Scene.open_scene( scene_path, { flapi.OPENFLAG_READ_ONLY } )
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
-        return False
+        return None
 
-    md_names = set()
+    md_names = {}
     mddefns = scene.get_metadata_definitions()
     for mdfn in mddefns:
-        md_names.add(mdfn.Name)
+        md_names[mdfn.Name] = mdfn
 
     if 'kitsu-uid' in md_names:
         log.verbose('kistu-uid metadata columnn already exists in scene: "%s"' % scene.get_scene_pathname())
@@ -152,7 +152,7 @@ def add_kitsu_metadata_definition(config, blpath):
         scene = conn.Scene.open_scene( scene_path )
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
-        return False
+        return None
 
     log.verbose('Adding kistu-uid metadata columnn to scene: "%s"' % scene.get_scene_pathname())
     scene.start_delta('Add kitsu-id metadata column')
