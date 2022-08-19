@@ -60,12 +60,13 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     if blpath_components[0] not in flapi_hosts.keys():
         log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
         # return
+
+    add_kitsu_metadata_definition(config, blpath)
     baselight_shots = get_baselight_scene_shots(config, blpath)
     
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
     shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
 
-    add_kitsu_metadata_definition(config, blpath)
 
     for baselight_shot in baselight_shots:
         shot_name = create_kitsu_shot_name(config, baselight_shot)
