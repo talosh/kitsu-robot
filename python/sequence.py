@@ -63,6 +63,8 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
     kitsu_shot_uids = set()
     for kitsu_shot in kitsu_shots:
         kitsu_shot_uids.add(kitsu_shot.get('id'))
+
+    new_shots = []
         
     for baselight_shot in baselight_shots:
         shot_md = baselight_shot.get('shot_md')
@@ -71,7 +73,21 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
         if kitsu_uid in kitsu_shot_uids:
             continue
+        new_shots.append(baselight_shot)
 
+    # try to open baselight scene and fill the shots back in with kitsu-related metadata
+    flapi = import_flapi(config)
+    flapi_host = resolve_flapi_host(config, blpath)
+    conn = fl_connect(config, flapi, flapi_host)
+    if not conn:
+        return None
+    scene_path = fl_get_scene_path(config, flapi, conn, blpath)
+    if not scene_path:
+        return None
+
+    return
+
+    for baselight_shot in new_shots:
         shot_name = create_kitsu_shot_name(config, baselight_shot)
         shot_data = build_kitsu_shot_data(config, baselight_shot)
 
@@ -83,7 +99,6 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
 
-        pprint (new_shot)
         # pprint(str(rectc[0]))        
     
 
