@@ -135,12 +135,27 @@ def add_kitsu_metadata_definition(config, blpath):
     for mdfn in mddefns:
         md_keys.add(mdfn.Key)
 
-    if 'kitsu_id' not in md_keys:
-        log.verbose('kistu-id metadata columnt already exists in scene %s' % scene.get_scene_pathname())
+    if 'kitsu-id' in md_keys:
+        log.verbose('kistu-id metadata columnt already exists in scene: %s' % scene.get_scene_pathname())
         scene.close_scene()
         scene.release()    
         fl_disconnect(config, flapi, flapi_host, conn)
         return True
+
+    # the scene has no kitsu-id metadata defined
+    # try to re-open the scene in rw mode and add this definition
+    scene.close_scene()
+    scene.release()
+
+    try:
+        log.verbose('Trying to open scene %s in read-write mode' % scene_path)
+        scene = conn.Scene.open_scene( scene_path )
+    except flapi.FLAPIException as ex:
+        log.error( "Error opening scene: %s" % ex )
+        return False
+
+    scene.close_scene()
+    scene.release()
 
 
 def resolve_flapi_host(config, blpath):
