@@ -154,6 +154,10 @@ def add_kitsu_metadata_definition(config, blpath):
         log.error( "Error opening scene: %s" % ex )
         return False
 
+    scene.start_delta('Add kitsu-id metadata column')
+    kitsu_id_metadata_item = scene.add_metadata_defn('kitsu-id', 'String')
+    scene.end_delta()
+
     scene.close_scene()
     scene.release()
 
