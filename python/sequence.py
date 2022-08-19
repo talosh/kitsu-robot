@@ -109,32 +109,27 @@ def build_kitsu_shot_data(config, baselight_shot):
 
 def add_kitsu_metadata_definition(config, blpath):
     log = config.get('log')
-
-
-def get_baselight_scene_shots(config, blpath):
-    log = config.get('log')
-
     flapi = import_flapi(config)
-    
-    '''
-    flapi_module_path = config.get('flapi_module_path')
-    log.verbose('importing flapi from %s' % flapi_module_path)
-    try:
-        if sys.path[0] != flapi_module_path:
-            sys.path.insert(0, flapi_module_path)
-        import flapi
-    except Exception as e:
-        log.error('unable to import filmlight api python module from: %s' % flapi_module_path)
-        log.error(e)
-    '''
-    
+    flapi_host = resolve_flapi_host(config, blpath)
+    conn = fl_connect(config, flapi, flapi_host)
+    if not conn:
+        return
+
+def resolve_flapi_host(config, blpath):
     blpath_components = blpath.split(':')
     flapi_hosts = config.get('flapi_hosts')
     flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
     flapi_host = flapi_hosts.get(blpath_components[0])
     if not flapi_host:
         flapi_host = flapi_hosts.get(list(flapi_hosts.keys())[0])
+    return flapi_host
 
+def get_baselight_scene_shots(config, blpath):
+    log = config.get('log')
+
+    flapi = import_flapi(config)
+    flapi_host = resolve_flapi_host(config, blpath)
+        
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
         return []
