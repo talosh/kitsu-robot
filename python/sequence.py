@@ -86,7 +86,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         return None
 
     try:
-        log.verbose('Opening scene: %s' % scene_path)
+        log.verbose('Trying to open scene %s in read-write mode' % scene_path)
         scene = conn.Scene.open_scene( scene_path )
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
