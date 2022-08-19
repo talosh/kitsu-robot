@@ -92,16 +92,12 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         log.error( "Error opening scene: %s" % ex )
         return None
 
-    scene.save_scene()
-    scene.close_scene()
-    scene.release()
-
-    fl_disconnect(config, flapi, flapi_host, conn)
-    return
-
     for baselight_shot in new_shots:
         shot_name = create_kitsu_shot_name(config, baselight_shot)
         shot_data = build_kitsu_shot_data(config, baselight_shot)
+        shot_md = baselight_shot.get('shot_md')
+        pprint (shot_md)
+        continue
 
         new_shot = gazu.shot.new_shot(
             project_dict, 
@@ -111,8 +107,16 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
 
-        # pprint(str(rectc[0]))        
-    
+        # shot = scene.get_shot(shot_inf.ShotId)
+
+
+
+    scene.save_scene()
+    scene.close_scene()
+    scene.release()
+
+    fl_disconnect(config, flapi, flapi_host, conn)
+    return    
 
 def create_kitsu_shot_name(config, baselight_shot):
     import uuid
