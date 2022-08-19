@@ -68,7 +68,9 @@ def link_baselight_sequence(config, baselight_linked_sequence):
     kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
     kitsu_shot_uids = set()
     for kitsu_shot in kitsu_shots:
-        pprint (kitsu_shot)
+        kitsu_shot_uids.add(kitsu_shot.get('id'))
+    
+    pprint (kitsu_shot_uids)
 
     gazu.log_out()
     sys.exit()
