@@ -85,6 +85,14 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
     if not scene_path:
         return None
 
+    try:
+        log.verbose('Opening scene: %s' % scene_path)
+        scene = conn.Scene.open_scene( scene_path )
+    except flapi.FLAPIException as ex:
+        log.error( "Error opening scene: %s" % ex )
+        return None
+
+    fl_disconnect(config, flapi, flapi_host, conn)
     return
 
     for baselight_shot in new_shots:
@@ -181,6 +189,7 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
     scene.save_scene()
     scene.close_scene()
     scene.release()
+    fl_disconnect(config, flapi, flapi_host, conn)
     return metadata_obj
 
 
