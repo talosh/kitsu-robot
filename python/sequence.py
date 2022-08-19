@@ -156,7 +156,7 @@ def add_kitsu_metadata_definition(config, blpath):
 
     scene.start_delta('Add kitsu-id metadata column')
     kitsu_id_metadata_item = scene.add_metadata_defn('kitsu-id', 'String')
-    pprint (kitsu_id_metadata_item)
+    scene.set_metadata_defn_property(kitsu_id_metadata_item.Key, 'Key', 'kitsu-id')
     scene.end_delta()
     scene.save_scene()
     scene.close_scene()
