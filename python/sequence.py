@@ -87,7 +87,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
 
     log.verbose( "Opening QueueManager connection" )
     qm = conn.QueueManager.create_local()
-
+    ex = conn.Export.create()
 
     try:
         log.verbose('Trying to open scene %s in read-write mode' % scene_path)
@@ -103,7 +103,20 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         shot_data = build_kitsu_shot_data(config, baselight_shot)
         shot_id = baselight_shot.get('shot_id')
         shot = scene.get_shot(shot_id)
-        
+        ex.select_shot(shot)
+        exSettings = flapi.StillExportSettings()
+        exSettings.ColourSpace = "sRGB"
+        exSettings.Format = "HD 1920x1080"
+        exSettings.Overwrite = flapi.EXPORT_OVERWRITE_REPLACE
+        exSettings.Directory = '/var/tmp'
+        exSettings.Frames = flapi.EXPORT_FRAMES_FIRST 
+        exSettings.Filename = shot_id
+        exSettings.Source = flapi.EXPORT_SOURCE_SELECTEDSHOTS
+
+        log.verbose( "Submitting to queue" )
+        exportInfo = ex.do_export_still( qm, scene, exSettings)
+        waitForExportToComplete(qm, exportInfo)
+
         new_shot = gazu.shot.new_shot(
             project_dict, 
             baselight_linked_sequence, 
@@ -132,6 +145,43 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
 
     fl_disconnect(config, flapi, flapi_host, conn)
     return    
+
+def waitForExportToComplete( qm, exportInfo ):
+    for msg in exportInfo.Log:
+        if (msg.startswith("Error")):
+            print("Export Submission Failed.  %s" % msg);
+            return
+
+    print( "Waiting on render job to complete" )
+    triesSinceChange = 0
+    lastProgress = -1
+    maxTries = 20
+    while True:
+        opstat = qm.get_operation_status( exportInfo.ID )
+        triesSinceChange +=1 
+        if opstat.Progress != lastProgress:
+            triesSinceChange = 0
+            lastProgress = opstat.Progress
+        dots = ""
+        if (triesSinceChange > 0):
+            dots = "..."[:(triesSinceChange%3)+1]
+        else:
+            print("")
+        print( "\r  Status: {Status} {Progress:.0%} {ProgressText} ".format(**vars(opstat)), end=""), 
+        print("%s    " % dots, end=""),
+        sys.stdout.flush()
+        if opstat.Status == "Done":
+            print( "\nExport complete" )
+            break
+        if triesSinceChange == maxTries:
+            print("\nStopped waiting for queue to complete.")
+            break
+        time.sleep(0.5)
+
+    exportLog = qm.get_operation_log( exportInfo.ID )
+    for l in exportLog:
+        print( "   %s %s: %s" % (l.Time, l.Message, l.Detail) )
+
 
 def create_kitsu_shot_name(config, baselight_shot):
     import uuid
