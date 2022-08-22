@@ -85,9 +85,13 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
     if not scene_path:
         return None
 
+    log.verbose( "Opening QueueManager connection" )
+    qm = conn.QueueManager.create_local()
+
+
     try:
         log.verbose('Trying to open scene %s in read-write mode' % scene_path)
-        scene = conn.Scene.open_scene( scene_path )
+        scene = conn.Scene.open_scene( scene_path, {  flapi.OPENFLAG_DISCARD  })
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
         return None
@@ -118,6 +122,8 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
 
         # shot = scene.get_shot(shot_inf.ShotId)
 
+    log.verbose( "Closing QueueManager" )
+    qm.release()
 
     scene.end_delta()
     scene.save_scene()
