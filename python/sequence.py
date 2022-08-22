@@ -111,7 +111,8 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         exSettings.Overwrite = flapi.EXPORT_OVERWRITE_REPLACE
         exSettings.Directory = '/var/tmp'
         exSettings.Frames = flapi.EXPORT_FRAMES_FIRST 
-        exSettings.Filename = "%{Job}/%{Clip}_%{TimelineFrame}"
+        # exSettings.Filename = "%{Job}/%{Clip}_%{TimelineFrame}"
+        exSettings.Filename = str(shot_id) + '.jpeg'
         exSettings.Source = flapi.EXPORT_SOURCE_SELECTEDSHOTS
 
         log.verbose( "Submitting to queue" )
