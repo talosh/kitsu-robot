@@ -86,8 +86,6 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         return None
 
     log.verbose( "Opening QueueManager connection" )
-    qm = conn.QueueManager.create_local()
-    ex = conn.Export.create()
 
     try:
         log.verbose('Trying to open scene %s in read-write mode' % scene_path)
@@ -103,6 +101,9 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         shot_data = build_kitsu_shot_data(config, baselight_shot)
         shot_id = baselight_shot.get('shot_id')
         shot = scene.get_shot(shot_id)
+        
+        qm = conn.QueueManager.create_local()
+        ex = conn.Export.create()
         ex.select_shot(shot)
         exSettings = flapi.StillExportSettings()
         exSettings.ColourSpace = "sRGB"
@@ -116,6 +117,9 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         log.verbose( "Submitting to queue" )
         exportInfo = ex.do_export_still( qm, scene, exSettings)
         waitForExportToComplete(qm, exportInfo)
+        del ex
+        log.verbose( "Closing QueueManager" )
+        qm.release()
 
         new_shot = gazu.shot.new_shot(
             project_dict, 
@@ -131,12 +135,12 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
 
         shot.set_metadata( new_md_values )
 
+        
+
         shot.release()
 
         # shot = scene.get_shot(shot_inf.ShotId)
 
-    log.verbose( "Closing QueueManager" )
-    qm.release()
 
     scene.end_delta()
     scene.save_scene()
