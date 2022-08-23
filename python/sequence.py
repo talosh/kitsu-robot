@@ -157,10 +157,6 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
                 flapi_host.get('flapi_hostname')    
             )
 
-        pprint (dir(gazu.shot))
-
-        sys.exit()
-
         new_shot = gazu.shot.new_shot(
             project_dict, 
             baselight_linked_sequence, 
@@ -174,8 +170,6 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         }
 
         shot.set_metadata( new_md_values )
-
-        
 
         shot.release()
 
