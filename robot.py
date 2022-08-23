@@ -31,6 +31,7 @@ if __name__ == "__main__":
     app_config['debug'] = DEBUG
     app_config['log'] = Log(app_config)
     app_config['log'].info('version %s' % __version__)
+    app_config['temp_folder'] = os.path.join(app_location, 'tmp')
 
 
     '''
@@ -110,12 +111,9 @@ if __name__ == "__main__":
     delivery_thread = threading.Thread(target=delivery_robot, args=(sg_cache, config))
     delivery_thread.daemon = True
     delivery_thread.start()
-    '''
-
+    '''    
     pprint (app_config)
     sys.exit()
-
-    
 
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
     weblog_thread.daemon = True
