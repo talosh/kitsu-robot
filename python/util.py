@@ -150,8 +150,6 @@ def rsync(user, host, remote_path, local_path, verbose = False):
     src_path = user + '@' + host + ':' + remote_path
     dest_path = local_path
 
-    if not src_path.endswith(os.path.sep):
-        src_path += os.path.sep
     if dest_path.endswith(os.path.sep):
         if not os.path.isdir(dest_path):
             try:
