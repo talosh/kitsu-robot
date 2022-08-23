@@ -78,6 +78,10 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
     # try to open baselight scene and fill the shots back in with kitsu-related metadata
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
+
+    pprint (flapi_host)
+    sys.exit()
+
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
         return None
@@ -121,6 +125,8 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         del ex
         log.verbose( "Closing QueueManager" )
         qm.release()
+
+
 
         new_shot = gazu.shot.new_shot(
             project_dict, 

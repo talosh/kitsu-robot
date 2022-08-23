@@ -1,5 +1,6 @@
 import os
 import sys
+import subprocess
 from pprint import pprint, pformat
 
 
@@ -131,3 +132,15 @@ def create_uid():
     import uuid
     uid = ((str(uuid.uuid1()).replace('-', '')).upper())
     return uid[:3]
+
+def remote_listdir(path, config):
+    cmd_ls_remote = [
+            'ssh',
+            config.get('server_user') + '@' + config.get('server_host'),
+            'ls', '-1',
+            path
+            ]
+
+    cmd_ls_remote_result = subprocess.run(cmd_ls_remote, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cmd_ls_remote_result = cmd_ls_remote_result.stdout.decode()
+    return cmd_ls_remote_result.split('\n')[:-1]
