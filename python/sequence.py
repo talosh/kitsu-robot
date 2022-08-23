@@ -321,6 +321,7 @@ def get_baselight_scene_shots(config, blpath):
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
         for shot_ix, shot_inf in enumerate(shots):
+            log.verbose( "\r Getting data from shot %d of %s" % (shot_ix + 1, nshots) )
             # log.verbose("Shot %d:" % shot_ix)
             shot = scene.get_shot(shot_inf.ShotId)
             shot_md = shot.get_metadata(md_keys)
