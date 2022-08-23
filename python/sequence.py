@@ -133,7 +133,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             )
 
         pprint (file_list)
-        sys,exit()
+        sys.exit()
 
         new_shot = gazu.shot.new_shot(
             project_dict, 
