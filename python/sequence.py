@@ -132,8 +132,15 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             flapi_host.get('flapi_hostname')
             )
 
-        pprint (file_list)
-        sys.exit()
+        if shot_id + '.jpg' in file_list:
+            # get it over here to upload thumbnail
+            thumbnail_remote_path = os.path.join(
+                config.get('remote_temp_folder', '/var/tmp'),
+                shot_id + '.jpg'
+            )
+            thumbnail_local_path = config.get('temp_folder', '/var/tmp')
+            pprint ((thumbnail_remote_path, thumbnail_local_path))
+
 
         new_shot = gazu.shot.new_shot(
             project_dict, 
@@ -328,7 +335,7 @@ def get_baselight_scene_shots(config, blpath):
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
         for shot_ix, shot_inf in enumerate(shots):
-            print( "\r Querying metadata from shot %d of %s" % (shot_ix + 1, nshots), end="" )
+            print( "\r Querying metadata for shot %d of %s" % (shot_ix + 1, nshots), end="" )
             # log.verbose("Shot %d:" % shot_ix)
             shot = scene.get_shot(shot_inf.ShotId)
             shot_md = shot.get_metadata(md_keys)
