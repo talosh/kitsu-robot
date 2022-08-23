@@ -132,7 +132,9 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             flapi_host.get('flapi_hostname')
             )
 
-        if shot_id + '.jpg' in file_list:
+        thumbnail_file_name = str(shot_id) + '.jpg'
+
+        if thumbnail_file_name in file_list:
             # get it over here to upload thumbnail
             thumbnail_remote_path = os.path.join(
                 config.get('remote_temp_folder', '/var/tmp'),
