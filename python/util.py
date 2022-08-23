@@ -162,7 +162,5 @@ def rsync(user, host, remote_path, local_path, verbose = False):
         cmd_rsync = rsync_path + ' -rLptvh ' + src_path + ' ' + dest_path
     else:
         cmd_rsync = rsync_path + ' -rLpt ' + src_path + ' ' + dest_path
-
-    print (cmd_rsync)
     os.system(cmd_rsync)
     return dest_path
