@@ -145,6 +145,19 @@ def remote_listdir(path, user, host):
     cmd_ls_remote_result = cmd_ls_remote_result.stdout.decode()
     return cmd_ls_remote_result.split('\n')[:-1]
 
+
+def remote_rm(path, user, host):
+    cmd_rm_remote = [
+            'ssh',
+            user + '@' + host,
+            'rm', '-rf',
+            path
+            ]
+    cmd_ls_remote_result = subprocess.run(cmd_rm_remote, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cmd_ls_remote_result = cmd_ls_remote_result.stdout.decode()
+    return cmd_ls_remote_result
+
+
 def rsync(user, host, remote_path, local_path, verbose = False):
 
     src_path = user + '@' + host + ':' + remote_path
