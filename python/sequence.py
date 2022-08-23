@@ -138,7 +138,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             # get it over here to upload thumbnail
             thumbnail_remote_path = os.path.join(
                 config.get('remote_temp_folder', '/var/tmp'),
-                shot_id + '.jpg'
+                thumbnail_file_name
             )
             thumbnail_local_path = config.get('temp_folder', '/var/tmp')
             pprint ((thumbnail_remote_path, thumbnail_local_path))
