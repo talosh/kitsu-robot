@@ -3,6 +3,7 @@ import sys
 import time
 
 from .util import remote_listdir
+from .util import rsync
 
 from pprint import pprint, pformat
 
@@ -143,7 +144,12 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             thumbnail_local_path = config.get('temp_folder', '/var/tmp')
             if not thumbnail_local_path.endswith(os.path.sep):
                 thumbnail_local_path = thumbnail_local_path + os.path.sep
-            pprint ((thumbnail_remote_path, thumbnail_local_path))
+            rsync(
+                flapi_host.get('flapi_user'),
+                flapi_host.get('flapi_hostname'),
+                thumbnail_remote_path,
+                thumbnail_local_path
+            )
         
         sys.exit()
 

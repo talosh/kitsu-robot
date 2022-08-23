@@ -144,3 +144,25 @@ def remote_listdir(path, user, host):
     cmd_ls_remote_result = subprocess.run(cmd_ls_remote, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     cmd_ls_remote_result = cmd_ls_remote_result.stdout.decode()
     return cmd_ls_remote_result.split('\n')[:-1]
+
+def rsync(user, host, remote_path, local_path, verbose = False):
+
+    src_path = user + '@' + host + ':' + remote_path
+    dest_path = local_path
+
+    if not src_path.endswith(os.path.sep):
+        src_path += os.path.sep
+    if dest_path.endswith(os.path.sep):
+        if not os.path.isdir(dest_path):
+            try:
+                os.makedirs(dest_path)
+            except Exception as e:
+                pprint (e)
+
+    rsync_path = '/usr/bin/rsync'
+    if verbose:
+        cmd_rsync = rsync_path + ' -rLptvh ' + src_path + ' ' + dest_path
+    else:
+        cmd_rsync = rsync_path + ' -rLpt ' + src_path + ' ' + dest_path
+    os.system(cmd_rsync)
+    return dest_path
