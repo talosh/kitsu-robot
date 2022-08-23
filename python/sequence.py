@@ -3,6 +3,7 @@ import sys
 import time
 
 from .util import remote_listdir
+from .util import remote_rm
 from .util import rsync
 
 from pprint import pprint, pformat
