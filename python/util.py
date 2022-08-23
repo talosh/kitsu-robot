@@ -133,10 +133,10 @@ def create_uid():
     uid = ((str(uuid.uuid1()).replace('-', '')).upper())
     return uid[:3]
 
-def remote_listdir(path, config):
+def remote_listdir(path, user, host):
     cmd_ls_remote = [
             'ssh',
-            config.get('server_user') + '@' + config.get('server_host'),
+            user + '@' + host,
             'ls', '-1',
             path
             ]

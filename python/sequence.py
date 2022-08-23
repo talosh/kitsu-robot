@@ -1,6 +1,9 @@
 import os
 import sys
 import time
+
+from .util import remote_listdir
+
 from pprint import pprint, pformat
 
 def sequence_sync(config):
@@ -79,9 +82,6 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
 
-    pprint (flapi_host)
-    sys.exit()
-
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
         return None
@@ -113,7 +113,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         exSettings.ColourSpace = "sRGB"
         exSettings.Format = "HD 1920x1080"
         exSettings.Overwrite = flapi.EXPORT_OVERWRITE_REPLACE
-        exSettings.Directory = '/var/tmp'
+        exSettings.Directory = config.get('remote_temp_folder', '/var/tmp')
         exSettings.Frames = flapi.EXPORT_FRAMES_FIRST 
         # exSettings.Filename = "%{Job}/%{Clip}_%{TimelineFrame}"
         exSettings.Filename = str(shot_id)
@@ -126,7 +126,14 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         log.verbose( "Closing QueueManager" )
         qm.release()
 
+        file_list = remote_listdir(
+            config.get('remote_temp_folder', '/var/tmp'),
+            flapi_host.get('flapi_user'),
+            flapi_host.get('flapi_hostname')
+            )
 
+        pprint (file_list)
+        sys,exit()
 
         new_shot = gazu.shot.new_shot(
             project_dict, 

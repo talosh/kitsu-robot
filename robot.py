@@ -32,7 +32,7 @@ if __name__ == "__main__":
     app_config['log'] = Log(app_config)
     app_config['log'].info('version %s' % __version__)
     app_config['temp_folder'] = os.path.join(app_location, 'tmp')
-
+    app_config['remote_temp_folder'] = '/var/tmp'
 
     '''
     print ('... starting robot ...')
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     delivery_thread.daemon = True
     delivery_thread.start()
     '''    
-    
+
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
     weblog_thread.daemon = True
     weblog_thread.start()
