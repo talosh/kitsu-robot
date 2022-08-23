@@ -115,6 +115,8 @@ if __name__ == "__main__":
     pprint (app_config)
     sys.exit()
 
+    
+
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
     weblog_thread.daemon = True
     weblog_thread.start()
