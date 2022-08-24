@@ -165,6 +165,12 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
 
+        task_types = gazu.task.all_task_types_for_shot(new_shot)
+
+        pprint (task_types)
+
+        sys.exit()
+
         new_md_values = {
             kitsu_uid_metadata_obj.Key: new_shot.get('id')
         }
