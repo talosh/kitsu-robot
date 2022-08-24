@@ -181,6 +181,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             )
         )
         gazu.task.set_main_preview(preview_file)
+        gazu.task.remove_task(task)
 
         pprint (dir(gazu.task))
         sys.exit()
