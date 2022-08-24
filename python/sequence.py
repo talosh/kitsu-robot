@@ -135,7 +135,6 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             )
 
         thumbnail_file_name = str(shot_id) + '.jpg'
-        thumbnail_local_path = ''
         if thumbnail_file_name in file_list:
             # get it over here to upload thumbnail
             thumbnail_remote_path = os.path.join(
@@ -172,16 +171,15 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         todo = gazu.task.get_task_status_by_short_name("todo")
         comment = gazu.task.add_comment(task, todo, "Add thumbnail")
 
-        if thumbnail_local_path:
-            preview_file = gazu.task.add_preview(
-                task,
-                comment,
-                os.path.join(
-                    thumbnail_local_path,
-                    thumbnail_file_name
-                )
+        preview_file = gazu.task.add_preview(
+            task,
+            comment,
+            os.path.join(
+                thumbnail_local_path,
+                thumbnail_file_name
             )
-            gazu.task.set_main_preview(preview_file)
+        )
+        gazu.task.set_main_preview(preview_file)
         # gazu.task.remove_task(task)
 
         new_md_values = {
