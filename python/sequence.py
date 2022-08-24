@@ -158,6 +158,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             )
         
         if not thumbnail_local_path:
+            log.verbose('No thumbnail generated, skipping shot creation...')
             continue
 
         new_shot = gazu.shot.new_shot(
