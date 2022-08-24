@@ -121,7 +121,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         exSettings.Filename = str(shot_id)
         exSettings.Source = flapi.EXPORT_SOURCE_SELECTEDSHOTS
 
-        log.verbose( "Submitting to queue" )
+        log.verbose( "\nSubmitting to queue" )
         exportInfo = ex.do_export_still( qm, scene, exSettings)
         waitForExportToComplete(qm, exportInfo)
         del ex
@@ -231,7 +231,8 @@ def waitForExportToComplete( qm, exportInfo ):
         if (triesSinceChange > 0):
             dots = "..."[:(triesSinceChange%3)+1]
         else:
-            print("")
+            pass
+            # print("")
         print( "\r  Status: {Status} {Progress:.0%} {ProgressText} ".format(**vars(opstat)), end=""), 
         print("%s    " % dots, end=""),
         sys.stdout.flush()
