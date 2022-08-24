@@ -121,7 +121,8 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         exSettings.Filename = str(shot_id)
         exSettings.Source = flapi.EXPORT_SOURCE_SELECTEDSHOTS
 
-        log.verbose( "\nSubmitting to queue" )
+        print ('')
+        log.verbose( "Submitting to queue" )
         exportInfo = ex.do_export_still( qm, scene, exSettings)
         waitForExportToComplete(qm, exportInfo)
         del ex
