@@ -166,7 +166,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
         )
 
         task_types = gazu.task.all_task_types()
-        shot_task_types = [t for t in task_types if t['for_entity'] is 'Shot']
+        shot_task_types = [t for t in task_types if t['for_entity'] == 'Shot']
         
         pprint (shot_task_types)
 
