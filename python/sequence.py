@@ -180,6 +180,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
                 thumbnail_file_name
             )
         )
+        gazu.task.set_main_preview(preview_file)
 
         pprint (preview_file)
         sys.exit()
