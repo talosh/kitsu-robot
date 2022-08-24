@@ -135,7 +135,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
             )
 
         thumbnail_file_name = str(shot_id) + '.jpg'
-        pprint (thumbnail_file_name)
+        thumbnail_local_path = ''
         if thumbnail_file_name in file_list:
             # get it over here to upload thumbnail
             thumbnail_remote_path = os.path.join(
@@ -156,6 +156,9 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
                 flapi_host.get('flapi_user'),
                 flapi_host.get('flapi_hostname')    
             )
+        
+        if not thumbnail_local_path:
+            continue
 
         new_shot = gazu.shot.new_shot(
             project_dict, 
