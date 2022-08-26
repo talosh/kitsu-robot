@@ -287,6 +287,7 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
     conn = fl_connect(config, flapi, flapi_host)
     if not conn:
         return None
+        
     scene_path = fl_get_scene_path(config, flapi, conn, blpath)
     if not scene_path:
         return None
@@ -434,55 +435,59 @@ def get_baselight_scene_shots(config, blpath):
 def fl_get_scene_path(config, flapi, conn, blpath):
     log = config.get('log')
 
-    blpath_components = blpath.split(':')
-    bl_hostname = blpath_components[0]
-    bl_jobname = blpath_components[1]
-    bl_scene_name = blpath_components[-1]
-    bl_scene_path = ':'.join(blpath_components[2:])
-    bl_scenes_folder = ''.join(blpath_components[2:-1])
-
-    if '*' in bl_scene_name:
-        # find the most recent scene
-        import re
-        log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
-        existing_scenes = conn.JobManager.get_scenes(bl_hostname, bl_jobname, bl_scenes_folder)
-        matched_scenes = []
-        for scene_name in existing_scenes:
-            if re.findall(bl_scene_name, scene_name):
-                matched_scenes.append(scene_name)
-
-        if not matched_scenes:
-            log.verbose('no matching scenes found for: %s' % blpath)
-            return None
-        else:
-            # TODO
-            # this to be changed to actually checking the most recently modified scene
-            # instead of just plain alphabetical sorting and taking the last one
-
-            scene_name = sorted(matched_scenes)[-1]
-            log.verbose('Alphabetically recent scene: %s' % scene_name)
-            bl_scene_path = bl_scenes_folder + ':' + scene_name
-            blpath = bl_hostname + ':' + bl_jobname + ':' + bl_scene_path
-
-    else:
-        # we have full scene path and need to check if scene exists
-
-        log.verbose('checking baselight scene: %s' % blpath)
-
-        if not conn.JobManager.scene_exists(bl_hostname, bl_jobname, bl_scene_path):
-            log.verbose('baselight scene %s does not exist' % blpath)
-            return None
-        else:
-            log.verbose('baselight scene %s exists' % blpath)
-
-    
     try:
-        scene_path = conn.Scene.parse_path(blpath)
-    except flapi.FLAPIException as ex:
-        log.verbose('Can not parse scene: %s' % blpath)
-        return None
+        blpath_components = blpath.split(':')
+        bl_hostname = blpath_components[0]
+        bl_jobname = blpath_components[1]
+        bl_scene_name = blpath_components[-1]
+        bl_scene_path = ':'.join(blpath_components[2:])
+        bl_scenes_folder = ''.join(blpath_components[2:-1])
 
-    return scene_path
+        if '*' in bl_scene_name:
+            # find the most recent scene
+            import re
+            log.verbose('finding most recent baselight scene for pattern: %s' % blpath)
+            existing_scenes = conn.JobManager.get_scenes(bl_hostname, bl_jobname, bl_scenes_folder)
+            matched_scenes = []
+            for scene_name in existing_scenes:
+                if re.findall(bl_scene_name, scene_name):
+                    matched_scenes.append(scene_name)
+
+            if not matched_scenes:
+                log.verbose('no matching scenes found for: %s' % blpath)
+                return None
+            else:
+                # TODO
+                # this to be changed to actually checking the most recently modified scene
+                # instead of just plain alphabetical sorting and taking the last one
+
+                scene_name = sorted(matched_scenes)[-1]
+                log.verbose('Alphabetically recent scene: %s' % scene_name)
+                bl_scene_path = bl_scenes_folder + ':' + scene_name
+                blpath = bl_hostname + ':' + bl_jobname + ':' + bl_scene_path
+
+        else:
+            # we have full scene path and need to check if scene exists
+
+            log.verbose('checking baselight scene: %s' % blpath)
+
+            if not conn.JobManager.scene_exists(bl_hostname, bl_jobname, bl_scene_path):
+                log.verbose('baselight scene %s does not exist' % blpath)
+                return None
+            else:
+                log.verbose('baselight scene %s exists' % blpath)
+
+        
+        try:
+            scene_path = conn.Scene.parse_path(blpath)
+        except flapi.FLAPIException as ex:
+            log.verbose('Can not parse scene: %s' % blpath)
+            return None
+
+        return scene_path
+    except:
+        log.verbose('unable to get scene path from: %s' % blpath)
+        return None
 
 
 def fl_connect(config, flapi, flapi_host):
