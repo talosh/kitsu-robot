@@ -34,6 +34,7 @@ def sequence_sync(config):
                             if blpath:
                                 baselight_linked_sequences.append(project_sequence)
             for baselight_linked_sequence in baselight_linked_sequences:
+                # collect common data queries
                 blpath = resolve_blpath(config, baselight_linked_sequence)
                 if not blpath:
                     continue
@@ -42,7 +43,9 @@ def sequence_sync(config):
                 if not baselight_shots:
                     continue
                 baselight_linked_sequence['baselight_shots'] = baselight_shots
-                pprint (baselight_linked_sequence)
+                kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
+                baselight_linked_sequence['kitsu_shots'] = kitsu_shots
+
                 # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 sync_shot_marks(config, gazu, baselight_linked_sequence)
             time.sleep(4)
