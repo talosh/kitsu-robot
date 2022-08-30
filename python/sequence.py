@@ -45,6 +45,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
     print (blpath)
     kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
     for kitsu_shot in kitsu_shots:
+        pprint (kitsu_shot)
         data = kitsu_shot.get('data')
         if not data:
             continue
@@ -54,7 +55,6 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         print (locator)
         if not (locator.startswith('[') and locator.enswith(']')):
             continue
-        pprint (kitsu_shot)
 
 
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
