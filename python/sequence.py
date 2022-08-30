@@ -50,7 +50,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         data = kitsu_shot.get('data')
         if not data:
             continue
-        if data.get('00_shot_id') == 'TFM_VFX_101_010'
+        if data.get('00_shot_id') == 'TFM_VFX_101_010':
             pprint (kitsu_shot)
         locator = data.get('01-locator')
         if not locator:
