@@ -97,8 +97,18 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         if not baselight_shot:
             continue
         shot = scene.get_shot(baselight_shot['shot_id'])
-        pprint (shot)
-        # mark_ids = shot.get_mark_ids()
+        mark_ids = shot.get_mark_ids()
+        if len(mark_ids) > 0:
+            for ix,m in enumerate(mark_ids):
+                mark = shot.get_mark(m)
+                print( "%20d: Frame %d Type '%s' Message '%s'" % (
+                        ix,
+                        mark.get_record_frame(),
+                        mark.get_category(),
+                        mark.get_note_text()
+                    )
+                )
+                mark.release()
 
         pprint (locator)
         shot.release()
