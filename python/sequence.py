@@ -65,6 +65,12 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
 
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
+    conn = fl_connect(config, flapi, flapi_host)
+    if not conn:
+        return None
+    scene_path = fl_get_scene_path(config, flapi, conn, blpath)
+    if not scene_path:
+        return None
 
 
     for kitsu_shot in kitsu_shots:
@@ -81,7 +87,9 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         except:
             return
         pprint (locator)
-        pprint (baselight_shots_by_kitsu_uid.get(kitsu_shot['id']))
+
+    fl_disconnect(config, flapi, flapi_host, conn)
+    return
 
 
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
@@ -241,7 +249,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     scene.release()
 
     fl_disconnect(config, flapi, flapi_host, conn)
-    return    
+    return
 
 
 def waitForExportToComplete( qm, exportInfo ):
