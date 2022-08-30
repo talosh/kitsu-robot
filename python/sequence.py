@@ -52,6 +52,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             continue
         if not (locator.startswith('[') and locator.enswith(']')):
             continue
+        pprint (kitsu_shot)
 
     sys.exit()
 
