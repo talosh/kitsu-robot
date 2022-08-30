@@ -123,6 +123,8 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                 )
                 mark.release()
 
+        pprint (existing_marks)
+
         for new_mark_info in locator:
             new_mark = {
                 'type': new_mark_info.get('type', mark_categories[0]),
@@ -130,6 +132,8 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                 'label': new_mark_info.get('label', '')
             }
             
+
+
             if new_mark not in existing_marks:
                 shot.add_mark(
                     src_start_frame + new_mark.get('frame', 0), 
