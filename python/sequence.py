@@ -32,8 +32,8 @@ def sequence_sync(config):
                         if 'blpath' in data.keys():
                             baselight_linked_sequences.append(project_sequence)
             for baselight_linked_sequence in baselight_linked_sequences:
-                populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
-                # sync_shot_marks(config, gazu, baselight_linked_sequence)
+                # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
+                sync_shot_marks(config, gazu, baselight_linked_sequence)
             time.sleep(4)
         except KeyboardInterrupt:
             return
