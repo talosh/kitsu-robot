@@ -53,9 +53,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         if not (locator.startswith('[') and locator.enswith(']')):
             continue
         pprint (kitsu_shot)
-
-    sys.exit()
-
+        
 
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
     log = config.get('log')
