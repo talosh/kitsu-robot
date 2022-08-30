@@ -55,15 +55,13 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         locator_string = data.get('01_locator')
         if not locator_string:
             continue
-        pprint (locator_string)
-
         if not (locator_string.startswith('[') and locator_string.endswith(']')):
             continue
-    try:
-        locator = json.loads(locator_string)
-    except:
-        return
-    pprint (locator)
+        try:
+            locator = json.loads(locator_string)
+        except:
+            return
+        pprint (locator)
 
 
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
