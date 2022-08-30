@@ -34,6 +34,10 @@ def sequence_sync(config):
                             if blpath:
                                 baselight_linked_sequences.append(project_sequence)
             for baselight_linked_sequence in baselight_linked_sequences:
+                blpath = resolve_blpath(config, baselight_linked_sequence)
+                if not blpath:
+                    continue
+                pprint (baselight_linked_sequence)
                 # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 sync_shot_marks(config, gazu, baselight_linked_sequence)
             time.sleep(4)
@@ -47,7 +51,6 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
 
 
     kitsu_uid_metadata_obj = check_or_add_kitsu_metadata_definition(config, blpath)
-    pprint (kitsu_uid_metadata_obj)
 
     baselight_shots = get_baselight_scene_shots(config, blpath)
 
@@ -65,7 +68,6 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             locator = json.loads(locator_string)
         except:
             return
-        pprint (locator)
 
 
 
