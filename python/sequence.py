@@ -32,31 +32,21 @@ def sequence_sync(config):
                         if 'blpath' in data.keys():
                             baselight_linked_sequences.append(project_sequence)
             for baselight_linked_sequence in baselight_linked_sequences:
-                link_baselight_sequence(config, gazu, baselight_linked_sequence)
+                populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
+                sync_shot_marks(config, gazu, baselight_linked_sequence)
             time.sleep(4)
         except KeyboardInterrupt:
             return
 
-def link_baselight_sequence(config, gazu, baselight_linked_sequence):
+def sync_shot_marks(config, gazu, baselight_linked_sequence):
     log = config.get('log')
 
-    data = baselight_linked_sequence.get('data')
-    if not isinstance(data, dict):
-        log.info('no baselight path found in sequence "%s"' % pformat(baselight_linked_sequence))
-        return
-    blpath = data.get('blpath')
-    if not blpath:
-        log.info('no baselight path found in sequence "%s"' % pformat(baselight_linked_sequence))
-        return
-    blpath_components = blpath.split(':')
-    flapi_hosts = config.get('flapi_hosts')
-    if not flapi_hosts:
-        log.info('no flapi hosts defined in configuration')
-        return
-    flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
-    if blpath_components[0] not in flapi_hosts.keys():
-        log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
-        # return
+
+
+def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
+    log = config.get('log')
+
+    blpath = resolve_blpath(config, baselight_linked_sequence)
 
     kitsu_uid_metadata_obj = check_or_add_kitsu_metadata_definition(config, blpath)
     if not kitsu_uid_metadata_obj:
@@ -212,6 +202,7 @@ def link_baselight_sequence(config, gazu, baselight_linked_sequence):
     fl_disconnect(config, flapi, flapi_host, conn)
     return    
 
+
 def waitForExportToComplete( qm, exportInfo ):
     for msg in exportInfo.Log:
         if (msg.startswith("Error")):
@@ -248,6 +239,31 @@ def waitForExportToComplete( qm, exportInfo ):
     exportLog = qm.get_operation_log( exportInfo.ID )
     for l in exportLog:
         print( "   %s %s: %s" % (l.Time, l.Message, l.Detail) )
+
+
+def resolve_blpath(config, baselight_linked_sequence):
+    log = config.get('log')
+    
+    data = baselight_linked_sequence.get('data')
+    if not isinstance(data, dict):
+        log.info('no baselight path found in sequence "%s"' % pformat(baselight_linked_sequence))
+        return ''
+    blpath = data.get('blpath')
+    if not blpath:
+        log.info('no baselight path found in sequence "%s"' % pformat(baselight_linked_sequence))
+        return ''
+    blpath_components = blpath.split(':')
+    flapi_hosts = config.get('flapi_hosts')
+    if not flapi_hosts:
+        log.info('no flapi hosts defined in configuration')
+        return ''
+    flapi_hosts = {x['flapi_hostname']:x for x in flapi_hosts}
+    if blpath_components[0] not in flapi_hosts.keys():
+        log.info('host "%s" is not defined in flapi_hosts config file' % blpath_components[0])
+        # return
+
+    return blpath
+
 
 
 def create_kitsu_shot_name(config, baselight_shot):
