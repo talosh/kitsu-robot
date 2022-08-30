@@ -132,9 +132,8 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
 
             pprint (existing_marks)
             pprint (pformat(new_mark))
-            
+
             if pformat(new_mark) not in existing_marks:
-                pprint (new_mark)
                 continue
                 shot.add_mark(
                     src_start_frame + new_mark.get('frame', 0), 
