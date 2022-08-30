@@ -109,8 +109,10 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                     )
                 )
                 mark.release()
+            return
 
-        pprint (locator)
+        for mark in locator:
+            shot.add_mark(locator.get('frame', 0), locator.get('category', 'default'), locator.get('label', ''))
         shot.release()
 
     scene.save_scene()
