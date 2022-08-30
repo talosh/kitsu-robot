@@ -248,6 +248,9 @@ def waitForExportToComplete( qm, exportInfo ):
     for l in exportLog:
         print( "   %s %s: %s" % (l.Time, l.Message, l.Detail) )
 
+    print( "Archiving operaton" )
+    qm.archive_operation ( exportInfo.ID )
+
 
 def resolve_blpath(config, baselight_linked_sequence):
     log = config.get('log')
