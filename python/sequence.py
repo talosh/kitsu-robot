@@ -53,10 +53,10 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         if not data:
             continue
         locator_string = data.get('01_locator')
-        pprint (locator_string)
-
         if not locator_string:
             continue
+        pprint (locator_string)
+
         if not (locator_string.startswith('[') and locator_string.endswith(']')):
             continue
     try:
