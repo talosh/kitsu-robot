@@ -43,6 +43,8 @@ def sequence_sync(config):
                 if not baselight_shots:
                     continue
                 baselight_linked_sequence['baselight_shots'] = baselight_shots
+                kitsu_uid_metadata_obj = check_or_add_kitsu_metadata_definition(config, blpath)
+                baselight_linked_sequence['kitsu_uid_metadata_obj'] = kitsu_uid_metadata_obj
                 kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
                 baselight_linked_sequence['kitsu_shots'] = kitsu_shots
 
@@ -55,14 +57,11 @@ def sequence_sync(config):
 def sync_shot_marks(config, gazu, baselight_linked_sequence):
     import json
     log = config.get('log')
-    blpath = resolve_blpath(config, baselight_linked_sequence)
+    blpath = baselight_linked_sequence.get('blpath')
+    baselight_shots = baselight_linked_sequence.get('baselight_shots')
+    kitsu_uid_metadata_obj = baselight_linked_sequence.get('kitsu_uid_metadata_obj')
+    kitsu_shots = baselight_linked_sequence.get('kitsu_shots')
 
-
-    kitsu_uid_metadata_obj = check_or_add_kitsu_metadata_definition(config, blpath)
-
-    
-
-    kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
     for kitsu_shot in kitsu_shots:
         data = kitsu_shot.get('data')
         if not data:
@@ -76,7 +75,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             locator = json.loads(locator_string)
         except:
             return
-
+        pprint (locator)
 
 
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
