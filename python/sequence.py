@@ -45,7 +45,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
     print (blpath)
     kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
     for kitsu_shot in kitsu_shots:
-        pprint (kitsu_shot)
+        pprint (kitsu_shot.get('name'))
         data = kitsu_shot.get('data')
         if not data:
             continue
