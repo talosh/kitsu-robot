@@ -103,7 +103,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         shot = scene.get_shot(baselight_shot['shot_id'])
         src_start_frame = shot.get_src_start_frame()
         mark_ids = shot.get_mark_ids()
-        pprint (mark_ids)
+        existing_marks = []
         if len(mark_ids) > 0:
             for ix,m in enumerate(mark_ids):
                 mark = shot.get_mark(m)
@@ -115,18 +115,29 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                     )
                 )
                 mark.release()
+                existing_marks.append(
+                    {
+                        'type': mark.get_category(),
+                        'frame': mark.get_record_frame(),
+                        'label': mark.get_note_text()
+                    }
+                )
+
+        for new_mark_info in locator:
+            new_mark = {
+                'type': new_mark.get('type', mark_categories[0]),
+                'frame': src_start_frame + new_mark.get('frame', 0),
+                'label': new_mark.get('label', '')
+            }
             
-            for mark_id in mark_ids:
-                shot.delete_mark(mark_id)
-
-        shot.release()        
-        continue
-
-        for new_mark in locator:
-            shot.add_mark(
-                src_start_frame + new_mark.get('frame', 0), 
-                new_mark.get('type', mark_categories[0]), 
-                new_mark.get('label', ''))
+            if new_mark not in existing_marks:
+                shot.add_mark(
+                    src_start_frame + new_mark.get('frame', 0), 
+                    new_mark.get('type', mark_categories[0]), 
+                    new_mark.get('label', ''))
+            else:
+                print ('mark exists')
+                pprint (new_mark)
         shot.release()
 
     scene.end_delta()
