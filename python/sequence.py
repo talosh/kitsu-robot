@@ -30,7 +30,9 @@ def sequence_sync(config):
                     data = project_sequence.get('data')
                     if isinstance(data, dict):
                         if 'blpath' in data.keys():
-                            baselight_linked_sequences.append(project_sequence)
+                            blpath = data.get('blpath')
+                            if blpath:
+                                baselight_linked_sequences.append(project_sequence)
             pprint (baselight_linked_sequences)
             for baselight_linked_sequence in baselight_linked_sequences:
                 # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
