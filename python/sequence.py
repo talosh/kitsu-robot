@@ -79,6 +79,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         log.error( "Error opening scene: %s" % ex )
         return
 
+    pprint (scene.get_mark_categories())
     scene.start_delta('Add marks')
 
     for kitsu_shot in kitsu_shots:
@@ -94,6 +95,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             locator = json.loads(locator_string)
         except:
             return
+
 
         baselight_shot = baselight_shots_by_kitsu_uid.get(kitsu_shot['id'])
         if not baselight_shot:
@@ -113,7 +115,6 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                 mark.release()
             return
         
-        pprint (scene.get_mark_categories())
 
         for new_mark in locator:
             shot.add_mark(new_mark.get('frame', 0), new_mark.get('type', 'default'), new_mark.get('label', ''))
