@@ -114,7 +114,6 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                         mark.get_note_text()
                     )
                 )
-                mark.release()
                 existing_marks.append(
                     {
                         'type': mark.get_category(),
@@ -122,6 +121,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                         'label': mark.get_note_text()
                     }
                 )
+                mark.release()
 
         for new_mark_info in locator:
             new_mark = {
