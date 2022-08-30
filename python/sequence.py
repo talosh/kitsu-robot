@@ -41,6 +41,14 @@ def sequence_sync(config):
 def sync_shot_marks(config, gazu, baselight_linked_sequence):
     log = config.get('log')
 
+    blpath = resolve_blpath(config, baselight_linked_sequence)
+    kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
+
+    pprint (blpath)
+    pprint (kitsu_shots)
+
+    sys.exit()
+
 
 
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
