@@ -107,7 +107,6 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         if len(mark_ids) > 0:
             for ix,m in enumerate(mark_ids):
                 mark = shot.get_mark(m)
-                shot.delete_mark(m)
                 print( "%20d: Frame %d Type '%s' Message '%s'" % (
                         ix,
                         mark.get_record_frame(),
@@ -116,6 +115,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                     )
                 )
                 mark.release()
+                shot.delete_mark(m)
             return
         
         continue
