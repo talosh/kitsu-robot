@@ -72,6 +72,12 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
     if not scene_path:
         return None
 
+    try:
+        log.verbose('Trying to open scene %s in read-write mode' % scene_path)
+        scene = conn.Scene.open_scene( scene_path, {  flapi.OPENFLAG_DISCARD  })
+    except flapi.FLAPIException as ex:
+        log.error( "Error opening scene: %s" % ex )
+        return
 
     for kitsu_shot in kitsu_shots:
         data = kitsu_shot.get('data')
@@ -87,6 +93,10 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         except:
             return
         pprint (locator)
+
+    scene.save_scene()
+    scene.close_scene()
+    scene.release()
 
     fl_disconnect(config, flapi, flapi_host, conn)
     return
