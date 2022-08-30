@@ -124,6 +124,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                 mark.release()
 
         pprint (existing_marks)
+        continue
 
         for new_mark_info in locator:
             new_mark = {
