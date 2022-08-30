@@ -33,7 +33,6 @@ def sequence_sync(config):
                             blpath = data.get('blpath')
                             if blpath:
                                 baselight_linked_sequences.append(project_sequence)
-            pprint (baselight_linked_sequences)
             for baselight_linked_sequence in baselight_linked_sequences:
                 # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 sync_shot_marks(config, gazu, baselight_linked_sequence)
@@ -56,6 +55,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             continue
         if not (locator.startswith('[') and locator.enswith(']')):
             continue
+        pprint (kitsu_shot)
 
 
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
