@@ -119,9 +119,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             for mark_id in mark_ids:
                 shot.delete_mark(mark_id)
 
-        shot.release()
-        return
-        
+        shot.release()        
         continue
 
         for new_mark in locator:
