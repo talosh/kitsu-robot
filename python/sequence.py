@@ -50,10 +50,10 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         data = kitsu_shot.get('data')
         if not data:
             continue
+        pprint (kitsu_shot)
         locator = data.get('01-locator')
         if not locator:
             continue
-        pprint (kitsu_shot)
         if not (locator.startswith('[') and locator.enswith(']')):
             continue
 
