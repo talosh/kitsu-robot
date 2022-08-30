@@ -92,6 +92,12 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             locator = json.loads(locator_string)
         except:
             return
+
+        baselight_shot = baselight_shots_by_kitsu_uid.get(kitsu_shot['id'])
+        print (baselight_shot)
+        # shot = scene.get_shot(shot_id)
+        # mark_ids = shot.get_mark_ids()
+
         pprint (locator)
 
     scene.save_scene()
