@@ -37,6 +37,7 @@ def sequence_sync(config):
                 blpath = resolve_blpath(config, baselight_linked_sequence)
                 if not blpath:
                     continue
+                baselight_linked_sequence['blpath'] = blpath
                 pprint (baselight_linked_sequence)
                 # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 sync_shot_marks(config, gazu, baselight_linked_sequence)
