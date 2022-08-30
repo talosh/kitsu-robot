@@ -130,7 +130,11 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                 'frame': start_frame + new_mark_info.get('frame', 0),
                 'label': new_mark_info.get('label', '')
             }
+
+            
+
             if pformat(new_mark) not in existing_marks:
+                continue
                 shot.add_mark(
                     start_frame + new_mark.get('frame', 0), 
                     new_mark.get('type', mark_categories[0]), 
