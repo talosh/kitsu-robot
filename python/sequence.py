@@ -42,13 +42,13 @@ def sequence_sync(config):
 
 def sync_shot_marks(config, gazu, baselight_linked_sequence):
     import json
-
     log = config.get('log')
+
+    kitsu_uid_metadata_obj = check_or_add_kitsu_metadata_definition(config, blpath)
+    pprint (kitsu_uid_metadata_obj)
 
     blpath = resolve_blpath(config, baselight_linked_sequence)
     baselight_shots = get_baselight_scene_shots(config, blpath)
-
-    pprint (baselight_shots)
 
     kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
     for kitsu_shot in kitsu_shots:
