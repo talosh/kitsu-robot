@@ -63,6 +63,10 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
     kitsu_shots = baselight_linked_sequence.get('kitsu_shots')
     baselight_shots_by_kitsu_uid = {x['shot_md'].get(kitsu_uid_metadata_obj.Key):x for x in baselight_shots}
 
+    flapi = import_flapi(config)
+    flapi_host = resolve_flapi_host(config, blpath)
+
+
     for kitsu_shot in kitsu_shots:
         data = kitsu_shot.get('data')
         if not data:
@@ -83,15 +87,15 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
     log = config.get('log')
 
-    blpath = resolve_blpath(config, baselight_linked_sequence)
+    blpath = baselight_linked_sequence.get('blpath')
 
-    kitsu_uid_metadata_obj = check_or_add_kitsu_metadata_definition(config, blpath)
+    kitsu_uid_metadata_obj = baselight_linked_sequence.get('kitsu_uid_metadata_obj')
     if not kitsu_uid_metadata_obj:
         return
-    baselight_shots = get_baselight_scene_shots(config, blpath)
-    
+    baselight_shots = baselight_linked_sequence.get('baselight_shots')
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
-    kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
+    kitsu_shots = baselight_linked_sequence.get('kitsu_shots')
+
     kitsu_shot_uids = set()
     for kitsu_shot in kitsu_shots:
         kitsu_shot_uids.add(kitsu_shot.get('id'))
