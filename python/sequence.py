@@ -41,6 +41,7 @@ def sequence_sync(config):
                 baselight_shots = get_baselight_scene_shots(config, blpath)
                 if not baselight_shots:
                     continue
+                baselight_linked_sequence['baselight_shots'] = baselight_shots
                 pprint (baselight_linked_sequence)
                 # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 sync_shot_marks(config, gazu, baselight_linked_sequence)
