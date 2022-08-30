@@ -115,7 +115,10 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                     )
                 )
                 mark.release()
-                shot.delete_mark(m)
+            
+            for mark_id in mark_ids:
+                shot.delete_mark(mark_id)
+
             return
         
         continue
