@@ -125,9 +125,9 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
 
         for new_mark_info in locator:
             new_mark = {
-                'type': new_mark.get('type', mark_categories[0]),
-                'frame': src_start_frame + new_mark.get('frame', 0),
-                'label': new_mark.get('label', '')
+                'type': new_mark_info.get('type', mark_categories[0]),
+                'frame': src_start_frame + new_mark_info.get('frame', 0),
+                'label': new_mark_info.get('label', '')
             }
             
             if new_mark not in existing_marks:
