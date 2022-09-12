@@ -36,6 +36,13 @@ def sequence_sync(config):
             for baselight_linked_sequence in baselight_linked_sequences:
                 # collect common data queries
                 blpath = resolve_blpath(config, baselight_linked_sequence)
+                
+                # debug filter block
+                if not 'dlj9001' in blpath:
+                    # pass
+                    continue
+                # end of debug filter block
+                
                 if not blpath:
                     continue
                 baselight_linked_sequence['blpath'] = blpath
@@ -48,7 +55,7 @@ def sequence_sync(config):
                 kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
                 baselight_linked_sequence['kitsu_shots'] = kitsu_shots
 
-                # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
+                populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 # sync_shot_marks(config, gazu, baselight_linked_sequence)
                 sync_version_numbers(config, gazu, baselight_linked_sequence)
             time.sleep(4)
