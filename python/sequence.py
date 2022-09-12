@@ -87,9 +87,16 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
         return None
 
     baselight_shots = baselight_linked_sequence.get('baselight_shots')
-    pprint (baselight_shots)
     kitsu_shots = baselight_linked_sequence.get('kitsu_shots')
     kitsu_uid_metadata_obj = baselight_linked_sequence.get('kitsu_uid_metadata_obj')
+
+    baselight_shots_by_kitsu_id = {}
+    for baselight_shot in baselight_shots:
+        shot_md = baselight_shot.get('shot_md')
+        kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
+        baselight_shots_by_kitsu_id[kitsu_uid] = baselight_shot
+
+    pprint (baselight_shots_by_kitsu_id)
 
     for kitsu_shot in kitsu_shots:
         pprint (kitsu_shot)
