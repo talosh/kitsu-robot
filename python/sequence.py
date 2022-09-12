@@ -39,8 +39,8 @@ def sequence_sync(config):
                 
                 # debug filter block
                 if not 'dlj9001' in blpath:
-                    # pass
-                    continue
+                    pass
+                    # continue
                 # end of debug filter block
                 
                 if not blpath:
@@ -57,7 +57,7 @@ def sequence_sync(config):
 
                 populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 # sync_shot_marks(config, gazu, baselight_linked_sequence)
-                sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence)
+                # sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence)
             time.sleep(4)
         except KeyboardInterrupt:
             return
@@ -96,10 +96,11 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
         kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
         baselight_shots_by_kitsu_id[kitsu_uid] = baselight_shot
 
-    pprint (baselight_shots_by_kitsu_id)
+    # pprint (baselight_shots_by_kitsu_id)
 
     for kitsu_shot in kitsu_shots:
-        pprint (kitsu_shot)
+        pass
+        # pprint (kitsu_shot)
 
     '''
     nshots = scene.get_num_shots()
