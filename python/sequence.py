@@ -57,12 +57,12 @@ def sequence_sync(config):
 
                 populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 # sync_shot_marks(config, gazu, baselight_linked_sequence)
-                sync_version_numbers(config, gazu, baselight_linked_sequence)
+                sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence)
             time.sleep(4)
         except KeyboardInterrupt:
             return
 
-def sync_version_numbers(config, gazu, baselight_linked_sequence):
+def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
     log = config.get('log')
     blpath = baselight_linked_sequence.get('blpath')
     baselight_shots = baselight_linked_sequence.get('baselight_shots')
@@ -86,6 +86,14 @@ def sync_version_numbers(config, gazu, baselight_linked_sequence):
         log.error( "Error opening scene: %s" % ex )
         return None
 
+    baselight_shots = baselight_linked_sequence.get('baselight_shots')
+    kitsu_shots = baselight_linked_sequence.get('kitsu_shots')
+    kitsu_uid_metadata_obj = baselight_linked_sequence.get('kitsu_uid_metadata_obj')
+
+    for kitsu_shot in kitsu_shots:
+        pprint (kitsu_shot)
+
+    '''
     nshots = scene.get_num_shots()
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
@@ -95,9 +103,12 @@ def sync_version_numbers(config, gazu, baselight_linked_sequence):
             shot = scene.get_shot(shot_inf.ShotId)
             descriptor = shot.get_sequence_descriptor()
             filename = descriptor.get_name()
+
+            kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
             pprint (filename)
             shot.release()
-
+    '''
+    
     scene.close_scene()
     scene.release()
 
