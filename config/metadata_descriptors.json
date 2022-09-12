@@ -105,5 +105,13 @@
     {
         "name": "25.Rec-Frame",
         "entity_type": "Shot"
+    },
+    {
+        "name": "26.BL-Shot-Filename",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "27.VFX-Latest-Pub",
+        "entity_type": "Shot"
     }
 ]
