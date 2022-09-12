@@ -49,10 +49,51 @@ def sequence_sync(config):
                 baselight_linked_sequence['kitsu_shots'] = kitsu_shots
 
                 # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
-                sync_shot_marks(config, gazu, baselight_linked_sequence)
+                # sync_shot_marks(config, gazu, baselight_linked_sequence)
+                sync_version_numbers(config, gazu, baselight_linked_sequence)
             time.sleep(4)
         except KeyboardInterrupt:
             return
+
+def sync_version_numbers(config, gazu, baselight_linked_sequence):
+    log = config.get('log')
+    blpath = baselight_linked_sequence.get('blpath')
+    baselight_shots = baselight_linked_sequence.get('baselight_shots')
+    kitsu_uid_metadata_obj = baselight_linked_sequence.get('kitsu_uid_metadata_obj')
+    kitsu_shots = baselight_linked_sequence.get('kitsu_shots')
+    baselight_shots_by_kitsu_uid = {x['shot_md'].get(kitsu_uid_metadata_obj.Key):x for x in baselight_shots}
+
+    flapi = import_flapi(config)
+    flapi_host = resolve_flapi_host(config, blpath)
+    conn = fl_connect(config, flapi, flapi_host)
+    if not conn:
+        return None
+    scene_path = fl_get_scene_path(config, flapi, conn, blpath)
+    if not scene_path:
+        return None
+
+    try:
+        log.verbose('Opening scene: %s' % scene_path)
+        scene = conn.Scene.open_scene( scene_path, { flapi.OPENFLAG_READ_ONLY } )
+    except flapi.FLAPIException as ex:
+        log.error( "Error opening scene: %s" % ex )
+        return None
+
+    nshots = scene.get_num_shots()
+    if nshots > 0:
+        shots = scene.get_shot_ids(0, nshots)
+        for shot_ix, shot_inf in enumerate(shots):
+            print( "\r Syncing version for shot %d of %s" % (shot_ix + 1, nshots), end="" )
+            # log.verbose("Shot %d:" % shot_ix)
+            shot = scene.get_shot(shot_inf.ShotId)
+            descriptor = shot.get_sequence_descriptor()
+            metadata = descriptor.get_metadata()
+            pprint (metadata)
+            shot.release()
+
+    scene.close_scene()
+    scene.release()
+
 
 def sync_shot_marks(config, gazu, baselight_linked_sequence):
     import json
