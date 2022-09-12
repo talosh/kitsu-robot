@@ -94,10 +94,8 @@ def sync_version_numbers(config, gazu, baselight_linked_sequence):
             # log.verbose("Shot %d:" % shot_ix)
             shot = scene.get_shot(shot_inf.ShotId)
             descriptor = shot.get_sequence_descriptor()
-            filename_with_f = descriptor.get_base_filename_with_F()
-            filename_with_d = descriptor.get_base_filename_with_d()
-            metadata = descriptor.get_metadata()
-            pprint (filename_with_f)
+            filename = descriptor.get_name()
+            pprint (filename)
             shot.release()
 
     scene.close_scene()
