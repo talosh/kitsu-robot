@@ -488,14 +488,18 @@ def create_kitsu_shot_name(config, baselight_shot):
 def build_kitsu_shot_data(config, baselight_shot):
     data = {}
     md_descriptors = config.get('metadata_descriptors')
-    print ('metadata decriptors: ---')
-    pprint (md_descriptors)
-    print ('baselight shot: ---')
-    pprint (baselight_shot)
     md_descriptors_by_bl_key = {}
     for md_desc in md_descriptors:
         bl_key = md_desc.get('bl_metadata_key')
         if not bl_key:
+            bl_name = md_desc.get('bl_metadata_name')
+            if not bl_name:
+                continue
+            else:
+                mddefns = baselight_shot.get('mddefns')
+                for md_def in mddefns:
+                    name = md_def.Name
+                    print (name)
             continue
         md_descriptors_by_bl_key[bl_key] = md_desc
     shot_md = baselight_shot.get('shot_md')
