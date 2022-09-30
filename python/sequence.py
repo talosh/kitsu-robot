@@ -370,6 +370,8 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
 
+        pprint (shot_data)
+
         task_types = gazu.task.all_task_types()
         shot_task_types = [t for t in task_types if t['for_entity'] == 'Shot']
         shot_task_types = sorted(shot_task_types, key=lambda d: d['priority'])
