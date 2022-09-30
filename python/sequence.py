@@ -40,7 +40,8 @@ def sequence_sync(config):
                 blpath = resolve_blpath(config, baselight_linked_sequence)
                 
                 # debug filter block
-                if not 'dlj9001' in blpath:
+                # if not 'dlj9001' in blpath:
+                if not 'dlj0412_catching_dust' in blpath:
                     # pass
                     continue
                 # end of debug filter block
@@ -598,8 +599,6 @@ def get_baselight_scene_shots(config, blpath):
     mddefns = scene.get_metadata_definitions()
     for mdfn in mddefns:
         md_keys.add(mdfn.Key)
-
-    pprint (md_keys)
 
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
