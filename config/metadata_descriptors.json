@@ -14,6 +14,8 @@
     },
     {
         "name": "02.Prod-Opt-Notes",
+        "kitsu_key": "02_prod_otp_notes",
+        "bl_metadata_name": "02.Prod-Opt-Notes",
         "entity_type": "Shot"
     },
     {
@@ -30,6 +32,8 @@
     },
     {
         "name": "06.DL-Time-Est",
+        "kitsu_key": "06_dl_time_est",
+        "bl_metadata_name": "06.DL-Time-Est",
         "entity_type": "Shot"
     },
     {
