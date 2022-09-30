@@ -260,6 +260,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             continue
         kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
         if kitsu_uid in kitsu_shot_uids:
+            continue
 
             shot_data = build_kitsu_shot_data(config, baselight_shot)
             kitsu_shot = gazu.shot.get_shot(shot_id)
@@ -270,7 +271,6 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             print ('/n---- shot data ----')
             pprint (shot_data)
 
-            continue
         
         new_shots.append(baselight_shot)
 
