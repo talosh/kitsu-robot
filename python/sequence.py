@@ -41,11 +41,9 @@ def sequence_sync(config):
                 
                 # debug filter block
                 # if not 'dlj9001' in blpath:
-                '''
                 if not 'dlj0412_catching_dust' in blpath:
                     # pass
                     continue
-                '''
                 # end of debug filter block
                 
                 if not blpath:
@@ -543,6 +541,9 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
 
     md_names = {}
     mddefns = scene.get_metadata_definitions()
+
+    pprint (mddefns)
+
     for mdfn in mddefns:
         md_names[mdfn.Name] = mdfn
 
