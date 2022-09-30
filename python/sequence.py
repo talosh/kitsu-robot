@@ -494,7 +494,7 @@ def build_kitsu_shot_data(config, baselight_shot):
     for md_desc in md_descriptors:
         bl_key = md_desc.get('bl_metadata_key')
         if not bl_key:
-            mddefn = baselight_shot.get(mddefn'')
+            mddefn = baselight_shot.get('mddefn')
             pprint (mddefn)
             continue
         md_descriptors_by_bl_key[bl_key] = md_desc
