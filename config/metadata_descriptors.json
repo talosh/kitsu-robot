@@ -8,6 +8,8 @@
     },
     {
         "name": "01.Locator",
+        "kitsu_key": "01_locator",
+        "bl_metadata_name": "01.Locator",
         "entity_type": "Shot"
     },
     {
