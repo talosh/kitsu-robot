@@ -499,8 +499,10 @@ def build_kitsu_shot_data(config, baselight_shot):
                 mddefns = baselight_shot.get('mddefns')
                 for md_def in mddefns:
                     name = md_def.Name
-                    print (name)
-            continue
+                    if name == bl_name:
+                        bl_key = md_def.Key
+                        break
+                continue
         md_descriptors_by_bl_key[bl_key] = md_desc
     shot_md = baselight_shot.get('shot_md')
     for bl_key in md_descriptors_by_bl_key.keys():
