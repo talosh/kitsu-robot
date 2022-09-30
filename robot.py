@@ -20,7 +20,7 @@ APP_NAME = 'KitsuRobot'
 VERBOSE=True
 DEBUG=True
 
-__version__ = 'v0.0.3'
+__version__ = 'v0.0.4'
 
 if __name__ == "__main__":
     app_location = os.path.dirname(os.path.abspath(__file__))

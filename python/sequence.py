@@ -12,15 +12,17 @@ def sequence_sync(config):
     log = config.get('log')
 
     import gazu
-    config_gazu = config.get('gazu')
-    host = config_gazu.get('host')
-    name = config_gazu.get('name')
-    password = config_gazu.get('password')
-    gazu.set_host(host)
-    gazu.log_in(name, password)
 
     while True:
         try:
+
+            config_gazu = config.get('gazu')
+            host = config_gazu.get('host')
+            name = config_gazu.get('name')
+            password = config_gazu.get('password')
+            gazu.client.set_host(host)
+            gazu.client.log_in(name, password)
+
             baselight_linked_sequences = []
             projects = gazu.project.all_open_projects()
             for project in projects:
@@ -58,6 +60,8 @@ def sequence_sync(config):
                 populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 # sync_shot_marks(config, gazu, baselight_linked_sequence)
                 # sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence)
+                
+                gazu.client.log_out()
             time.sleep(4)
         except KeyboardInterrupt:
             return
@@ -108,6 +112,7 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
     
         k_shot = gazu.shot.get_shot()
         if not k_shot:
+
             continue
     
         bl_shot = baselight_shots_by_kitsu_id[]
@@ -255,7 +260,18 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             continue
         kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
         if kitsu_uid in kitsu_shot_uids:
+
+            shot_data = build_kitsu_shot_data(config, baselight_shot)
+            kitsu_shot = gazu.shot.get_shot(shot_id)
+
+            print ('/n---- kitsu shot ----')
+            pprint (kitsu_shot)
+
+            print ('/n---- shot data ----')
+            pprint (shot_data)
+
             continue
+        
         new_shots.append(baselight_shot)
 
     # try to open baselight scene and fill the shots back in with kitsu-related metadata
