@@ -20,8 +20,8 @@ def sequence_sync(config):
             host = config_gazu.get('host')
             name = config_gazu.get('name')
             password = config_gazu.get('password')
-            gazu.client.set_host(host)
-            gazu.client.log_in(name, password)
+            gazu.set_host(host)
+            gazu.log_in(name, password)
 
             baselight_linked_sequences = []
             projects = gazu.project.all_open_projects()
@@ -61,7 +61,7 @@ def sequence_sync(config):
                 # sync_shot_marks(config, gazu, baselight_linked_sequence)
                 # sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence)
                 
-                gazu.client.log_out()
+                gazu.log_out()
             time.sleep(4)
         except KeyboardInterrupt:
             return
