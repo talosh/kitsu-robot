@@ -599,6 +599,8 @@ def get_baselight_scene_shots(config, blpath):
     for mdfn in mddefns:
         md_keys.add(mdfn.Key)
 
+    pprint (md_keys)
+
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
         for shot_ix, shot_inf in enumerate(shots):
