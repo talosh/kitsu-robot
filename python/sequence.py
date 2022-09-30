@@ -115,7 +115,7 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
 
             continue
     
-        bl_shot = baselight_shots_by_kitsu_id[]
+        bl_shot = baselight_shots_by_kitsu_id[kitsu_id]
         shot = scene.get_shot(shot_inf.ShotId)
         pprint (kitsu_shot)
 
