@@ -276,7 +276,10 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             if not new_data:
                 continue
             
+            log('updating shot:')
+            pprint (kitsu_shot)
             gazu.shot.update_shot(kitsu_shot, new_data)
+            pprint (new_data)
 
         new_shots.append(baselight_shot)
 
@@ -541,8 +544,6 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
 
     md_names = {}
     mddefns = scene.get_metadata_definitions()
-
-    pprint (mddefns)
 
     for mdfn in mddefns:
         md_names[mdfn.Name] = mdfn

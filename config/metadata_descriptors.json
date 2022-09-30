@@ -50,6 +50,8 @@
     },
     {
         "name": "10.Tape",
+        "kitsu_key": "10_tape",
+        "bl_metadata_key": "tape",
         "entity_type": "Shot"
     },
     {
