@@ -278,8 +278,11 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             if not new_data:
                 continue
             
+            for new_data_key in new_data.keys():
+                kitsu_shot_data[new_data_key] = new_data.get(new_data_key)
+            kitsu_shot['data'] = kitsu_shot_data
             log.info('updating shot: %s' % kitsu_shot.get('name'))
-            # gazu.shot.update_shot(kitsu_shot, data = new_data)
+            gazu.shot.update_shot(kitsu_shot)
             pprint (new_data)
 
         new_shots.append(baselight_shot)
