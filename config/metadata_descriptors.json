@@ -113,5 +113,13 @@
     {
         "name": "27.VFX-Latest-Pub",
         "entity_type": "Shot"
+    },
+    {
+        "name": "28.DL-VFX-cost-est",
+        "entity_type": "Shot"
+    },
+    {
+        "name": "29.DL-VFX-hours-est",
+        "entity_type": "Shot"
     }
 ]
