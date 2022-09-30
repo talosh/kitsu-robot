@@ -262,18 +262,22 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
         if kitsu_uid in kitsu_shot_uids:
 
-            shot_data = build_kitsu_shot_data(config, baselight_shot)
+            new_data = {}
+            bl_shot_data = build_kitsu_shot_data(config, baselight_shot)
             kitsu_shot = gazu.shot.get_shot(kitsu_uid)
             kitsu_shot_data = kitsu_shot.get('data', dict())
 
-            print ('/n---- kitsu shot data ----')
-            pprint (kitsu_shot_data)
+            for data_key in bl_shot_data.keys():
+                if kitsu_shot_data.get(data_key):
+                    continue
+                else:
+                    new_data[data_key] = bl_shot_data.get(data_key)
 
-            print ('/n---- shot data ----')
-            pprint (shot_data)
+            if not new_data:
+                continue
+            
+            gazu.shot.update_shot(kitsu_shot, new_data)
 
-            continue
-        
         new_shots.append(baselight_shot)
 
     # try to open baselight scene and fill the shots back in with kitsu-related metadata
