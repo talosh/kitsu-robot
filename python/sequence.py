@@ -279,7 +279,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
                 continue
             
             log.info('updating shot: %s' % kitsu_shot.get('name'))
-            gazu.shot.update_shot(kitsu_shot, new_data)
+            gazu.shot.update_shot(kitsu_shot, data = new_data)
             pprint (new_data)
 
         new_shots.append(baselight_shot)
