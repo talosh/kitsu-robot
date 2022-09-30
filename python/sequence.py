@@ -598,9 +598,6 @@ def get_baselight_scene_shots(config, blpath):
     md_keys = set()
     mddefns = scene.get_metadata_definitions()
 
-    pprint (mddefns)
-    sys.exit()
-
     for mdfn in mddefns:
         md_keys.add(mdfn.Key)
 
@@ -628,6 +625,7 @@ def get_baselight_scene_shots(config, blpath):
                 {
                     'shot_ix': shot_ix + 1,
                     'shot_id': shot_inf.ShotId,
+                    'mddefns': mddefns,
                     'shot_md': shot_md,
                     'mark_ids': mark_ids,
                     'categories': categories,

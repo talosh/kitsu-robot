@@ -116,6 +116,8 @@
     },
     {
         "name": "28.DL-VFX-cost-est",
+        "kitsu_key": "28_dl_vfx_cost_est",
+        "bl_metadata_name": "28.DL-VFX-cost-est",
         "entity_type": "Shot"
     },
     {
