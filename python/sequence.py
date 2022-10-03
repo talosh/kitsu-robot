@@ -273,7 +273,8 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
                 if kitsu_shot_data.get(data_key):
                     continue
                 else:
-                    new_data[data_key] = bl_shot_data.get(data_key)
+                    if bl_shot_data.get(data_key):
+                        new_data[data_key] = bl_shot_data.get(data_key)
 
             if not new_data:
                 continue
