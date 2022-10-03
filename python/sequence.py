@@ -334,6 +334,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         exSettings.Source = flapi.EXPORT_SOURCE_SELECTEDSHOTS
 
         print ('')
+        print ('Generating thumbnail for %s' % shot_name)
         log.verbose( "Submitting to queue" )
         exportInfo = ex.do_export_still( qm, scene, exSettings)
         waitForExportToComplete(qm, exportInfo)
