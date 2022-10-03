@@ -315,7 +315,12 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         shot_id = baselight_shot.get('shot_id')
         shot = scene.get_shot(shot_id)
         
-        qm = conn.QueueManager.create_local()
+        try:
+            qm = conn.QueueManager.create_local()
+        except flapi.FLAPIException as ex:
+            log.error( "Can npt create queue manager: %s" % ex )
+            continue
+        
         ex = conn.Export.create()
         ex.select_shot(shot)
         exSettings = flapi.StillExportSettings()
