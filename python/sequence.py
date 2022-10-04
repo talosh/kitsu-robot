@@ -41,11 +41,9 @@ def sequence_sync(config):
                 
                 # debug filter block
                 # if not 'dlj9001' in blpath:
-                '''
-                if not 'dlj0412_catching_dust' in blpath:
+                if not 'dlj9001' in blpath:
                     # pass
                     continue
-                '''
                 # end of debug filter block
                 
                 if not blpath:
