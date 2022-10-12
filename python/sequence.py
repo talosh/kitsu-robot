@@ -177,6 +177,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             continue
         if not (locator_string.startswith('[') and locator_string.endswith(']')):
             continue
+        pprint (locator_string)
         try:
             locator = json.loads(locator_string)
         except:
