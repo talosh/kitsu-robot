@@ -223,6 +223,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                     (src_start_frame - start_frame) + new_mark.get('frame', 0), 
                     new_mark.get('type', mark_categories[0]), 
                     new_mark.get('label', ''))
+                print ('--- adding mark: %s' % pformat(new_mark))
             else:
                 print ('mark exists')
                 pprint (new_mark)
