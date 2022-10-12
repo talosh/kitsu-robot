@@ -42,8 +42,8 @@ def sequence_sync(config):
                 # debug filter block
                 # if not 'dlj9001' in blpath:
                 if not 'dlj9001' in blpath:
-                    # pass
-                    continue
+                    pass
+                    # continue
                 # end of debug filter block
                 
                 if not blpath:
@@ -58,8 +58,8 @@ def sequence_sync(config):
                 kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
                 baselight_linked_sequence['kitsu_shots'] = kitsu_shots
 
-                populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
-                # sync_shot_marks(config, gazu, baselight_linked_sequence)
+                # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
+                sync_shot_marks(config, gazu, baselight_linked_sequence)
                 # sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence)
                 
             time.sleep(4)
@@ -311,9 +311,20 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     for baselight_shot in new_shots:
         shot_name = create_kitsu_shot_name(config, baselight_shot)
         shot_data = build_kitsu_shot_data(config, baselight_shot)
+
+        new_shot = gazu.shot.new_shot(
+            project_dict, 
+            baselight_linked_sequence, 
+            shot_name,
+            data = shot_data
+            # data = {'00_shot_id': baselight_shot.get('shot_id')}
+        )
+
+        pprint (shot_data)
+
         shot_id = baselight_shot.get('shot_id')
         shot = scene.get_shot(shot_id)
-        
+
         try:
             qm = conn.QueueManager.create_local()
         except flapi.FLAPIException as ex:
@@ -371,18 +382,8 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             )
         
         if not thumbnail_local_path:
-            log.verbose('No thumbnail generated, skipping shot creation...')
+            log.verbose('Unable generate thumbnail for %s' % shot_name)
             continue
-
-        new_shot = gazu.shot.new_shot(
-            project_dict, 
-            baselight_linked_sequence, 
-            shot_name,
-            data = shot_data
-            # data = {'00_shot_id': baselight_shot.get('shot_id')}
-        )
-
-        pprint (shot_data)
 
         task_types = gazu.task.all_task_types()
         shot_task_types = [t for t in task_types if t['for_entity'] == 'Shot']
