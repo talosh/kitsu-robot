@@ -181,7 +181,8 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         try:
             locator = json.loads(locator_string)
         except:
-            return
+            print ('unable to parse json locator: %s' % locator_string)
+            continue
 
 
         baselight_shot = baselight_shots_by_kitsu_uid.get(kitsu_shot['id'])
