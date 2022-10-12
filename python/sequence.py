@@ -213,9 +213,14 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                 # shot.delete_mark(m)
 
         for new_mark_info in locator:
+            try:
+                frame = int(new_mark_info.get('frame', 0))
+            except:
+                frame = 0
+
             new_mark = {
                 'type': new_mark_info.get('type', mark_categories[0]),
-                'frame': start_frame + new_mark_info.get('frame', 0),
+                'frame': start_frame + frame,
                 'label': new_mark_info.get('label', '')
             }
 
