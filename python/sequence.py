@@ -229,7 +229,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
 
             if pformat(new_mark) not in existing_marks:
                 if mark_type not in mark_categories:
-                    print ('mark type %s is not in mark categories: %s' % mark_type, pformat(mark_categories))
+                    print ('mark type %s is not in mark categories: %s' % (mark_type, pformat(mark_categories)))
                     print ('skipping marker creation')
                     continue
 
