@@ -218,13 +218,21 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             except:
                 frame = 0
 
+            mark_type = new_mark_info.get('type', mark_categories[0])
+            
             new_mark = {
-                'type': new_mark_info.get('type', mark_categories[0]),
+                'type': mark_type,
                 'frame': start_frame + frame,
                 'label': new_mark_info.get('label', '')
             }
 
+
             if pformat(new_mark) not in existing_marks:
+                if mark_type not in mark_categories:
+                    print ('mark type %s is not in mark categories: %s' % mark_type, pformat(mark_categories))
+                    print ('skipping marker creation')
+                    continue
+
                 shot.add_mark(
                     (src_start_frame - start_frame) + new_mark.get('frame', 0), 
                     new_mark.get('type', mark_categories[0]), 
