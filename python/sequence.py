@@ -58,7 +58,7 @@ def sequence_sync(config):
                 kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
                 baselight_linked_sequence['kitsu_shots'] = kitsu_shots
 
-                # populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
+                populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 sync_shot_marks(config, gazu, baselight_linked_sequence)
                 # sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence)
                 
@@ -142,6 +142,10 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
 
 def sync_shot_marks(config, gazu, baselight_linked_sequence):
     import json
+
+    def parse_locator(localtor_string):
+        pass
+
     log = config.get('log')
     blpath = baselight_linked_sequence.get('blpath')
     baselight_shots = baselight_linked_sequence.get('baselight_shots')
@@ -173,6 +177,9 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         if not data:
             continue
         locator_string = data.get('01_locator')
+
+        # locator = parse_locator(locator_string)
+
         if not locator_string:
             continue
         if not (locator_string.startswith('[') and locator_string.endswith(']')):
