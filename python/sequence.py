@@ -290,8 +290,8 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
     log = config.get('log')
     print ('---')
-    log.verbose('--- Populating Kitsu from baselight sequence ---')
-    log.verbose(pformat(baselight_linked_sequence))
+    print('--- Populating Kitsu from baselight sequence ---')
+    log.verbose(pformat(baselight_linked_sequence.keys()))
 
     blpath = baselight_linked_sequence.get('blpath')
 
@@ -589,7 +589,7 @@ def build_kitsu_shot_data(config, baselight_shot):
 def check_or_add_kitsu_metadata_definition(config, blpath):
     log = config.get('log')
     print ('---')
-    log.verbose('--- Checking KITSU metadata in: %s' % blpath)
+    print('--- Checking KITSU metadata in: %s' % blpath)
 
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
@@ -657,7 +657,7 @@ def resolve_flapi_host(config, blpath):
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
     print ('---')
-    log.verbose('--- Looking for Baselight shots in: %s' % blpath)
+    print('--- Looking for Baselight shots in: %s' % blpath)
 
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
