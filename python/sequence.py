@@ -141,9 +141,12 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
 
 
 def sync_shot_marks(config, gazu, baselight_linked_sequence):
-    import json
+    log = config.get('log')
+    log.verbose('syncing cshot marks')
 
     def parse_locator(localtor_string, mark_categories):
+        import json
+
         try:
             locator = json.loads(locator_string)
         except:
@@ -162,7 +165,6 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
             return [locator]
 
 
-    log = config.get('log')
     blpath = baselight_linked_sequence.get('blpath')
     baselight_shots = baselight_linked_sequence.get('baselight_shots')
     kitsu_uid_metadata_obj = baselight_linked_sequence.get('kitsu_uid_metadata_obj')
