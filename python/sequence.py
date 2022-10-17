@@ -142,7 +142,7 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
 
 def sync_shot_marks(config, gazu, baselight_linked_sequence):
     log = config.get('log')
-    print ('\n')
+    print ('---')
     log.verbose('--- Syncing shot marks ---')
 
     def parse_locator(localtor_string, mark_categories):
@@ -288,6 +288,9 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
 
 def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence):
     log = config.get('log')
+    print ('---')
+    log.verbose('--- Populating Kitsu from baselight sequence ---')
+    log.verbose(pformat(baselight_linked_sequence))
 
     blpath = baselight_linked_sequence.get('blpath')
 
