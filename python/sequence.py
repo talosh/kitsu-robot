@@ -143,7 +143,7 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
 def sync_shot_marks(config, gazu, baselight_linked_sequence):
     log = config.get('log')
     print ('\n')
-    log.verbose('--- Syncing shot marks ---\n')
+    log.verbose('--- Syncing shot marks ---')
 
     def parse_locator(localtor_string, mark_categories):
         import json
