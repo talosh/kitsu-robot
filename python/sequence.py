@@ -268,8 +268,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                     continue
 
             else:
-                log.verbose('mark exists')
-                log.verbose(pformat(new_mark))
+                log.verbose('mark exists: %s' % pformat(new_mark))
         shot.release()
 
     scene.end_delta()
