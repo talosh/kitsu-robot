@@ -188,6 +188,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         return
 
     mark_categories = scene.get_mark_categories()
+    log.verbose('avaliable mark categorise: %s' % pformat(mark_categories))
     scene.start_delta('Add marks')
 
     for kitsu_shot in kitsu_shots:
