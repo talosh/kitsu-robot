@@ -49,9 +49,12 @@ def sequence_sync(config):
                 if not blpath:
                     continue
                 baselight_linked_sequence['blpath'] = blpath
+                print ('---')
+                log.verbose('--- Looking for Baselight shots in: %s' % blpath)
                 baselight_shots = get_baselight_scene_shots(config, blpath)
                 if not baselight_shots:
                     continue
+                
                 baselight_linked_sequence['baselight_shots'] = baselight_shots
                 kitsu_uid_metadata_obj = check_or_add_kitsu_metadata_definition(config, blpath)
                 baselight_linked_sequence['kitsu_uid_metadata_obj'] = kitsu_uid_metadata_obj
