@@ -49,12 +49,10 @@ def sequence_sync(config):
                 if not blpath:
                     continue
                 baselight_linked_sequence['blpath'] = blpath
-                print ('---')
-                log.verbose('--- Looking for Baselight shots in: %s' % blpath)
                 baselight_shots = get_baselight_scene_shots(config, blpath)
                 if not baselight_shots:
                     continue
-                
+
                 baselight_linked_sequence['baselight_shots'] = baselight_shots
                 kitsu_uid_metadata_obj = check_or_add_kitsu_metadata_definition(config, blpath)
                 baselight_linked_sequence['kitsu_uid_metadata_obj'] = kitsu_uid_metadata_obj
@@ -590,6 +588,9 @@ def build_kitsu_shot_data(config, baselight_shot):
 
 def check_or_add_kitsu_metadata_definition(config, blpath):
     log = config.get('log')
+    print ('---')
+    log.verbose('--- Checking KITSU metadata in: %s' % blpath)
+
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
     conn = fl_connect(config, flapi, flapi_host)
@@ -655,6 +656,8 @@ def resolve_flapi_host(config, blpath):
 
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
+    print ('---')
+    log.verbose('--- Looking for Baselight shots in: %s' % blpath)
 
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
