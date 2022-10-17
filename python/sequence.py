@@ -143,8 +143,24 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
 def sync_shot_marks(config, gazu, baselight_linked_sequence):
     import json
 
-    def parse_locator(localtor_string):
-        pass
+    def parse_locator(localtor_string, mark_categories):
+        try:
+            locator = json.loads(locator_string)
+        except:
+            if localtor_string in mark_categories:
+                locator = [{'type': localtor_string}]
+            elif localtor_string.lower() in mark_categories:
+                locator = [{'type': localtor_string.lower()}]
+            elif localtor_string.upper() in mark_categories:
+                locator = [{'type': localtor_string.upper()}]
+            else:
+                return []
+        
+        if isinstance(locator, list):
+            return locator
+        else:
+            return [locator]
+
 
     log = config.get('log')
     blpath = baselight_linked_sequence.get('blpath')
@@ -177,19 +193,14 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         if not data:
             continue
         locator_string = data.get('01_locator')
-
-        # locator = parse_locator(locator_string)
-
         if not locator_string:
             continue
-        if not (locator_string.startswith('[') and locator_string.endswith(']')):
-            continue
-        try:
-            locator = json.loads(locator_string)
-        except:
-            print ('unable to parse json locator: %s' % locator_string)
-            continue
 
+        locator = parse_locator(locator_string, mark_categories)
+        if not locator:
+            log.verbose('unable to parse json locator: %s' % locator_string)
+            continue
+        pprint (locator)
 
         baselight_shot = baselight_shots_by_kitsu_uid.get(kitsu_shot['id'])
         if not baselight_shot:
@@ -255,8 +266,8 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                     continue
 
             else:
-                print ('mark exists')
-                pprint (new_mark)
+                log.verbose('mark exists')
+                log.verbose(pformat(new_mark))
         shot.release()
 
     scene.end_delta()
