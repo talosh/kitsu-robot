@@ -236,9 +236,9 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
 
         for new_mark_info in locator:
             if not isinstance(new_mark_info, dict):
-                log.verbose('Skipping mark: mark info is not a dict but %s: %s' (type(new_mark_info), pformat(new_mark_info)))
+                log.verbose('Skipping mark: mark info is not a dict but %s: %s' % (type(new_mark_info), pformat(new_mark_info)))
                 continue
-            
+
             try:
                 frame = int(new_mark_info.get('frame', 0))
             except:
