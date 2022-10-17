@@ -202,7 +202,6 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         if not locator:
             log.verbose('unable to parse json locator: %s' % locator_string)
             continue
-        pprint (locator)
 
         baselight_shot = baselight_shots_by_kitsu_uid.get(kitsu_shot['id'])
         if not baselight_shot:
@@ -231,7 +230,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                 )
                 mark.release()
                 # shot.delete_mark(m)
-        log.verbose('existing marks: %s' % pformat(existing_marks))
+        # log.verbose('existing marks: %s' % pformat(existing_marks))
 
         for new_mark_info in locator:
             try:
