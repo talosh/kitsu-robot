@@ -215,13 +215,13 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         if len(mark_ids) > 0:
             for ix,m in enumerate(mark_ids):
                 mark = shot.get_mark(m)
-                print( "%20d: Frame %d Type '%s' Message '%s'" % (
-                        ix,
-                        mark.get_record_frame(),
-                        mark.get_category(),
-                        mark.get_note_text()
-                    )
-                )
+                # print( "%20d: Frame %d Type '%s' Message '%s'" % (
+                #        ix,
+                #        mark.get_record_frame(),
+                #        mark.get_category(),
+                #        mark.get_note_text()
+                #    )
+                #)
                 existing_marks.append(
                     pformat({
                         'type': mark.get_category(),
@@ -231,6 +231,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
                 )
                 mark.release()
                 # shot.delete_mark(m)
+        log.verbose('existing marks: %s' % pformat(existing_marks))
 
         for new_mark_info in locator:
             try:
