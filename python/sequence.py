@@ -291,7 +291,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     log = config.get('log')
     print ('---')
     print('--- Populating Kitsu from baselight sequence ---')
-    log.verbose(pformat(baselight_linked_sequence.keys()))
+    print (baselight_linked_sequence.get('blpath'))
 
     blpath = baselight_linked_sequence.get('blpath')
 
