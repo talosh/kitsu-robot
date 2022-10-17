@@ -657,7 +657,7 @@ def resolve_flapi_host(config, blpath):
 def get_baselight_scene_shots(config, blpath):
     log = config.get('log')
     print ('---')
-    print('--- Looking for Baselight shots in: %s' % blpath)
+    print('--- Collecting metadata of Baselight shots in: %s' % blpath)
 
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
