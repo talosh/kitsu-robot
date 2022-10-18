@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>DB_HOST</key>
+		<string>192.168.15.99</string>
+		<key>DB_USERNAME</key>
+		<string>dladmin</string>
+		<key>DB_PASSWORD</key>
+		<string>mysecretpassword</string>
+		<key>SECRET_KEY</key>
+		<string>yourrandomsecretkey</string>
+		<key>PREVIEW_FOLDER</key>
+		<string>/opt/zou/previews</string>
+		<key>TMP_DIR</key>
+		<string>/opt/zou/tmp</string>
+		<key>PATH</key>
+		<string>/opt/zou/zouenv/bin:/usr/local/bin:/usr/bin:/bin</string>
+		<key>AUTH_STRATEGY</key>
+		<string>auth_remote_ldap</string>
+		<key>LDAP_HOST</key>
+		<string>10.1.5.200</string>
+		<key>LDAP_PORT</key>
+		<string>389</string>
+		<key>LDAP_BASE_DN</key>
+		<string>CN=Users,DC=stormzy,DC=local</string>
+		<key>LDAP_DOMAIN</key>
+		<string>stormzy.local</string>
+		<key>LDAP_FALLBACK</key>
+		<string>True</string>
+	</dict>
+	<key>Label</key>
+	<string>com.dirtylooks.zou</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/opt/zou/zouenv/bin/gunicorn</string>
+		<string>-c</string>
+		<string>/etc/zou/gunicorn.conf</string>
+		<string>-b</string>
+		<string>127.0.0.1:5000</string>
+		<string>zou.app:app</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>WorkingDirectory</key>
+	<string>/opt/zou</string>
+</dict>
+</plist>
