@@ -68,7 +68,7 @@ def sequence_sync(config):
         except KeyboardInterrupt:
             return
         except Exception as e:
-            pprint (e)
+            log.error('exception in "sequence_sync": %s' % pformat(e))
             time.sleep(4)
 
 

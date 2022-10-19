@@ -46,5 +46,5 @@ def set_metadata_fields(config):
         except KeyboardInterrupt:
             return
         except Exception as e:
-            log.error(pformat(e))
+            log.error('exception in "set_metadata_fields": %s' % pformat(e))
             time.sleep(4)
