@@ -4,6 +4,7 @@ import time
 from pprint import pprint, pformat
 
 def set_metadata_fields(config):
+    log = config.get('log')
     import gazu
 
     config_gazu = config.get('gazu')
@@ -45,5 +46,5 @@ def set_metadata_fields(config):
         except KeyboardInterrupt:
             return
         except Exception as e:
-            pprint (e)
+            log.error(pformat(e))
             time.sleep(4)
