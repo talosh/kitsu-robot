@@ -13,13 +13,13 @@ def set_metadata_fields(config):
     name = config_gazu.get('name')
     password = config_gazu.get('password')
 
-    gazu.set_host(host)
-    gazu.log_in(name, password)
-
     metadata_descriptors = config.get('metadata_descriptors')
 
     while True:
         try:
+            gazu.set_host(host)
+            gazu.log_in(name, password)
+
             projects = gazu.project.all_open_projects()
             for project in projects:
                 descriptors_api_path = '/data/projects/' + project.get('id') + '/metadata-descriptors'
@@ -41,5 +41,9 @@ def set_metadata_fields(config):
                         gazu.client.post(descriptors_api_path, data)
 
             time.sleep(4)
+            gazu.log_out()
         except KeyboardInterrupt:
             return
+        except Exception as e:
+            pprint (e)
+            time.sleep(4)

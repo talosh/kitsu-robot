@@ -71,6 +71,7 @@ def sequence_sync(config):
             pprint (e)
             time.sleep(4)
 
+
 def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
     log = config.get('log')
     blpath = baselight_linked_sequence.get('blpath')
