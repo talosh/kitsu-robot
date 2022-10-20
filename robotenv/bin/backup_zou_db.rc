@@ -1,3 +1,0 @@
-cd /Volumes/storage/opt/zou/backups/
-DB_PASSWORD=mysecretpassword /opt/zou/zouenv/bin/zou dump-database
-exit
