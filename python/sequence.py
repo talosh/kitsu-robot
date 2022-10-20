@@ -25,6 +25,7 @@ def sequence_sync(config):
         password = config_gazu.get('password')
         
         try:
+            pprint (gazu.create_client(host))
             gazu.set_host(host)
             gazu.log_in(name, password)
 
