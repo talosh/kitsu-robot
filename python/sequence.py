@@ -64,7 +64,7 @@ def sequence_sync(config):
                 kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
                 baselight_linked_sequence['kitsu_shots'] = kitsu_shots
 
-                shot = gazu.shot.get_shot('1066cb87-54af-4fb8-8c88-414c7cb4998b')
+                shot = gazu.shot.get_shot('412aa6b2-5d30-49c1-84b8-631b8c15fd3c')
                 pprint (shot)
 
                 populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
