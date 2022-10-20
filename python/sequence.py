@@ -14,9 +14,6 @@ def sequence_sync(config):
     log = config.get('log')
 
     import gazu
-    pprint(dir(gazu.client))
-    pprint (gazu.__version__)
-    sys.exit()
 
     while True:
         # read config again in case of changes
@@ -27,6 +24,11 @@ def sequence_sync(config):
         name = config_gazu.get('name')
         password = config_gazu.get('password')
         
+        pprint(gazu.client.create_client())
+        pprint (gazu.__version__)
+        sys.exit()
+
+
         try:
             gazu.set_host(host)
             gazu.log_in(name, password)
