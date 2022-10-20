@@ -36,3 +36,11 @@ add line
 ```
 0 4 * * * /usr/local/opt/logrotate/sbin/logrotate --state /opt/kitsu-robot/log/logrotate.status /opt/kitsu-robot/logrotate.conf
 ```
+
+### Crontab
+* crontab
+```
+0 0 * * * sudo /usr/local/bin/rsnapshot -c /usr/local/etc/rsnapshot.conf daily
+0 4 * * * /usr/local/opt/logrotate/sbin/logrotate --state /opt/kitsu-robot/log/logrotate.status /opt/kitsu-robot/logrotate.conf
+40 * * * * /usr/bin/osascript /opt/kitsu-robot/robotenv/bin/backup_zou_db.scpt
+```
