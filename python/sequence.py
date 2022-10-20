@@ -15,6 +15,7 @@ def sequence_sync(config):
 
     import gazu
     pprint(dir(gazu))
+    pprint (gazu.__version__)
     sys.exit()
 
     while True:
