@@ -30,6 +30,8 @@ def sequence_sync(config):
         gazu.log_in(name, password, client=cl)
         gazu.log_in(name, password, client=cl2)
 
+        gazu.log_out(client=cl)
+
         pprint (cl.session)
         pprint (cl2.session)
 
