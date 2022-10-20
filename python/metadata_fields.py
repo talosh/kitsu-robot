@@ -1,22 +1,25 @@
 import os
 import sys
 import time
+from .config import get_config_data
 from pprint import pprint, pformat
 
 def set_metadata_fields(config):
     log = config.get('log')
     import gazu
 
-    config_gazu = config.get('gazu')
-    if not config_gazu:
-        return
-    host = config_gazu.get('host')
-    name = config_gazu.get('name')
-    password = config_gazu.get('password')
-
-    metadata_descriptors = config.get('metadata_descriptors')
-
     while True:
+        # read config again in case of changes
+        config.update(get_config_data(config.get('config_folder_path')))
+        
+        config_gazu = config.get('gazu')
+        if not config_gazu:
+            return
+        host = config_gazu.get('host')
+        name = config_gazu.get('name')
+        password = config_gazu.get('password')
+        metadata_descriptors = config.get('metadata_descriptors')
+
         try:
             gazu.set_host(host)
             gazu.log_in(name, password)

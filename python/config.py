@@ -54,6 +54,7 @@ def default_config_data():
 def get_config_data(config_folder_path):
     print ('reading config files from ' + config_folder_path)
     data = default_config_data()
+    data['config_folder_path'] = config_folder_path
     
     if not os.path.isdir(config_folder_path):
         return data
