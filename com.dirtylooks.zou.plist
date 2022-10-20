@@ -13,7 +13,7 @@
 		<key>SECRET_KEY</key>
 		<string>yourrandomsecretkey</string>
 		<key>PREVIEW_FOLDER</key>
-		<string>/opt/zou/previews</string>
+		<string>/Volumes/storage/opt/zou/previews</string>
 		<key>TMP_DIR</key>
 		<string>/opt/zou/tmp</string>
 		<key>PATH</key>
