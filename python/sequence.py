@@ -95,9 +95,9 @@ def sequence_sync(config):
             gazu.log_out()
         except KeyboardInterrupt:
             return
-        # except Exception as e:
-        #    log.error('exception in "sequence_sync": %s' % pformat(e))
-        #    time.sleep(4)
+        except Exception as e:
+            log.error('exception in "sequence_sync": %s' % pformat(e))
+            time.sleep(4)
 
 
 def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
