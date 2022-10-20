@@ -28,9 +28,15 @@ def sequence_sync(config):
         cl2 = gazu.client.create_client(host)
         
         gazu.log_in(name, password, client=cl)
+        gazu.log_in(name, password, client=cl2)
 
         pprint (cl.session)
+        pprint (cl2.session)
+
         pprint (cl.tokens)
+        pprint (cl2.tokens)
+
+
         pprint (gazu.__version__)
         sys.exit()
 
