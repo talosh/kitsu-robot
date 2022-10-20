@@ -14,7 +14,7 @@ def sequence_sync(config):
     log = config.get('log')
 
     import gazu
-    pprint(dir(gazu))
+    pprint(dir(gazu.client))
     pprint (gazu.__version__)
     sys.exit()
 
