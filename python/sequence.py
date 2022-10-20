@@ -325,8 +325,8 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     print('--- Populating Kitsu from baselight sequence ---')
     print (baselight_linked_sequence.get('blpath'))
 
-    shot = gazu.shot.get_shot('412aa6b2-5d30-49c1-84b8-631b8c15fd3c')
-    pprint (shot)
+    # shot = gazu.shot.get_shot('412aa6b2-5d30-49c1-84b8-631b8c15fd3c')
+    # pprint (shot)
 
     blpath = baselight_linked_sequence.get('blpath')
 
