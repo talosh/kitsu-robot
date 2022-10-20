@@ -27,8 +27,6 @@ def sequence_sync(config):
         try:
             gazu.set_host(host)
             gazu.log_in(name, password)
-            shot = gazu.shot.get_shot('1066cb87-54af-4fb8-8c88-414c7cb4998b')
-            pprint (shot)
 
             baselight_linked_sequences = []
             projects = gazu.project.all_open_projects()
@@ -65,6 +63,9 @@ def sequence_sync(config):
                 baselight_linked_sequence['kitsu_uid_metadata_obj'] = kitsu_uid_metadata_obj
                 kitsu_shots = gazu.shot.all_shots_for_sequence(baselight_linked_sequence)
                 baselight_linked_sequence['kitsu_shots'] = kitsu_shots
+
+                shot = gazu.shot.get_shot('1066cb87-54af-4fb8-8c88-414c7cb4998b')
+                pprint (shot)
 
                 populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequence)
                 sync_shot_marks(config, gazu, baselight_linked_sequence)
