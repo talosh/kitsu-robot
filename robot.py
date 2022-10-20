@@ -25,6 +25,7 @@ __version__ = 'v0.0.4'
 if __name__ == "__main__":
     app_location = os.path.dirname(os.path.abspath(__file__))
     config_folder_path = os.path.join(app_location, 'config')
+    print ('reading config files from ' + config_folder_path)
     app_config = get_config_data(config_folder_path)
     app_config['app_name'] = APP_NAME
     app_config['verbose'] = VERBOSE
