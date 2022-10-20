@@ -27,6 +27,8 @@ def sequence_sync(config):
         try:
             gazu.set_host(host)
             gazu.log_in(name, password)
+            shot = gazu.shot.get_shot('1066cb87-54af-4fb8-8c88-414c7cb4998b')
+            pprint (shot)
 
             baselight_linked_sequences = []
             projects = gazu.project.all_open_projects()
