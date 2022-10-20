@@ -6,6 +6,8 @@ from .util import remote_listdir
 from .util import remote_rm
 from .util import rsync
 
+from .config import get_config_data
+
 from pprint import pprint, pformat
 
 def sequence_sync(config):
@@ -14,12 +16,15 @@ def sequence_sync(config):
     import gazu
 
     while True:
-        try:
+        # read config again in case of changes
+        config.update(get_config_data(config.get('config_folder_path')))
 
-            config_gazu = config.get('gazu')
-            host = config_gazu.get('host')
-            name = config_gazu.get('name')
-            password = config_gazu.get('password')
+        config_gazu = config.get('gazu')
+        host = config_gazu.get('host')
+        name = config_gazu.get('name')
+        password = config_gazu.get('password')
+        
+        try:
             gazu.set_host(host)
             gazu.log_in(name, password)
 
