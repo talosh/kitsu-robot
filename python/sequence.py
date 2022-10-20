@@ -24,7 +24,7 @@ def sequence_sync(config):
         name = config_gazu.get('name')
         password = config_gazu.get('password')
         
-        pprint(gazu.client.create_client(host))
+        pprint(dir(gazu.client.create_client(host)))
         pprint (gazu.__version__)
         sys.exit()
 
