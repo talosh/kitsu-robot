@@ -420,27 +420,29 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         except flapi.FLAPIException as ex:
             log.error( "Can not create queue manager: %s" % ex )
             continue
-        
-        ex = conn.Export.create()
-        ex.select_shot(shot)
-        exSettings = flapi.StillExportSettings()
-        exSettings.ColourSpace = "sRGB"
-        exSettings.Format = "HD 1920x1080"
-        exSettings.Overwrite = flapi.EXPORT_OVERWRITE_REPLACE
-        exSettings.Directory = config.get('remote_temp_folder', '/var/tmp')
-        exSettings.Frames = flapi.EXPORT_FRAMES_FIRST 
-        # exSettings.Filename = "%{Job}/%{Clip}_%{TimelineFrame}"
-        exSettings.Filename = str(shot_id)
-        exSettings.Source = flapi.EXPORT_SOURCE_SELECTEDSHOTS
+        try:
+            ex = conn.Export.create()
+            ex.select_shot(shot)
+            exSettings = flapi.StillExportSettings()
+            exSettings.ColourSpace = "sRGB"
+            exSettings.Format = "HD 1920x1080"
+            exSettings.Overwrite = flapi.EXPORT_OVERWRITE_REPLACE
+            exSettings.Directory = config.get('remote_temp_folder', '/var/tmp')
+            exSettings.Frames = flapi.EXPORT_FRAMES_FIRST 
+            # exSettings.Filename = "%{Job}/%{Clip}_%{TimelineFrame}"
+            exSettings.Filename = str(shot_id)
+            exSettings.Source = flapi.EXPORT_SOURCE_SELECTEDSHOTS
 
-        print ('')
-        print ('Generating thumbnail for %s' % shot_name)
-        log.verbose( "Submitting to queue" )
-        exportInfo = ex.do_export_still( qm, scene, exSettings)
-        waitForExportToComplete(qm, exportInfo)
-        del ex
-        log.verbose( "Closing QueueManager" )
-        qm.release()
+            print ('')
+            print ('Generating thumbnail for %s' % shot_name)
+            log.verbose( "Submitting to queue" )
+            exportInfo = ex.do_export_still( qm, scene, exSettings)
+            waitForExportToComplete(qm, exportInfo)
+            del ex
+            log.verbose( "Closing QueueManager" )
+            qm.release()
+        except Exception as ex:
+            log.error( "Can not export thumbnail: %s" % ex )
 
         file_list = remote_listdir(
             config.get('remote_temp_folder', '/var/tmp'),
