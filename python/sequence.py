@@ -409,7 +409,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             data = shot_data
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
-        
+
         pprint (shot_data)
 
         shot_id = baselight_shot.get('shot_id')
@@ -485,6 +485,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         todo = gazu.task.get_task_status_by_short_name("todo")
         comment = gazu.task.add_comment(task, todo, "Add thumbnail")
 
+        log.verbose('Adding preview on task %s' % task)
         preview_file = gazu.task.add_preview(
             task,
             comment,
