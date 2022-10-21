@@ -409,7 +409,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             data = shot_data
             # data = {'00_shot_id': baselight_shot.get('shot_id')}
         )
-
+        
         pprint (shot_data)
 
         shot_id = baselight_shot.get('shot_id')
