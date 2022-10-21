@@ -346,20 +346,17 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     new_shots = []
     
     log.verbose('Looking for metadata updates...')
-    for shot_ix, baselight_shot in enumerate(baselight_shots):
-    # for baselight_shot in baselight_shots:
-        
+    for shot_ix, baselight_shot in enumerate(baselight_shots):        
         print( "\r Checking KITSU metadata against Baselight for shot %d of %s" % (shot_ix + 1, len(baselight_shots)), end="" )
-
         shot_md = baselight_shot.get('shot_md')
         if not shot_md:
             continue
-        kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
-        if kitsu_uid in kitsu_shot_uids:
+        bl_kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
+        if bl_kitsu_uid in kitsu_shot_uids:
 
             new_data = {}
             bl_shot_data = build_kitsu_shot_data(config, baselight_shot)
-            kitsu_shot = gazu.shot.get_shot(kitsu_uid)
+            kitsu_shot = gazu.shot.get_shot(bl_kitsu_uid)
             kitsu_shot_data = kitsu_shot.get('data', dict())
 
             for data_key in bl_shot_data.keys():
@@ -378,6 +375,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             log.info('updating shot: %s' % kitsu_shot.get('name'))
             gazu.shot.update_shot(kitsu_shot)
             pprint (new_data)
+            continue
 
         new_shots.append(baselight_shot)
 
@@ -490,7 +488,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         todo = gazu.task.get_task_status_by_short_name("todo")
         comment = gazu.task.add_comment(task, todo, "Add thumbnail")
 
-        log.verbose('Adding preview on task %s' % shot_task_types[0].get('name'))
+        log.verbose('Adding preview on task "%s"' % shot_task_types[0].get('name'))
         preview_file = gazu.task.add_preview(
             task,
             comment,
