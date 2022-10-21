@@ -434,6 +434,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             exSettings.Source = flapi.EXPORT_SOURCE_SELECTEDSHOTS
 
             print ('')
+            print ('Baselight sequence: %s' % blpath)
             print ('Generating thumbnail for %s' % shot_name)
             log.verbose( "Submitting to queue" )
             exportInfo = ex.do_export_still( qm, scene, exSettings)
@@ -492,6 +493,8 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
                 thumbnail_file_name
             )
         )
+
+        log.verbose('Updating thumbnail on %s' % shot_name)
         gazu.task.set_main_preview(preview_file)
         # gazu.task.remove_task(task)
 
