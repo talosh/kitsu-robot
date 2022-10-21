@@ -485,7 +485,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         todo = gazu.task.get_task_status_by_short_name("todo")
         comment = gazu.task.add_comment(task, todo, "Add thumbnail")
 
-        log.verbose('Adding preview on task %s' % task)
+        log.verbose('Adding preview on task %s' % shot_task_types)
         preview_file = gazu.task.add_preview(
             task,
             comment,
