@@ -349,7 +349,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     for shot_ix, baselight_shot in enumerate(baselight_shots):
     # for baselight_shot in baselight_shots:
         
-        print( "\r Checking kitsu metadata for shot %d of %s" % (shot_ix + 1, len(baselight_shots)), end="" )
+        print( "\r Checking KITSU metadata against Baselight for shot %d of %s" % (shot_ix + 1, len(baselight_shots)), end="" )
 
         shot_md = baselight_shot.get('shot_md')
         if not shot_md:
