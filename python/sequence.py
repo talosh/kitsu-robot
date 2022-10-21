@@ -344,7 +344,8 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         kitsu_shot_uids.add(kitsu_shot.get('id'))
 
     new_shots = []
-        
+    
+    log.verbose('Looking for metadata updates...')
     for baselight_shot in baselight_shots:
         shot_md = baselight_shot.get('shot_md')
         if not shot_md:
@@ -485,7 +486,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         todo = gazu.task.get_task_status_by_short_name("todo")
         comment = gazu.task.add_comment(task, todo, "Add thumbnail")
 
-        log.verbose('Adding preview on task %s' % shot_task_types)
+        log.verbose('Adding preview on task %s' % shot_task_types[0].get('name'))
         preview_file = gazu.task.add_preview(
             task,
             comment,
