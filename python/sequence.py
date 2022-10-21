@@ -349,7 +349,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     for shot_ix, baselight_shot in enumerate(baselight_shots):
     # for baselight_shot in baselight_shots:
         
-        print( "\r Checking metadata updates for shot %d of %s" % (shot_ix + 1, len(baselight_shots)), end="" )
+        print( "\r Checking kitsu metadata for shot %d of %s" % (shot_ix + 1, len(baselight_shots)), end="" )
 
         shot_md = baselight_shot.get('shot_md')
         if not shot_md:
@@ -739,7 +739,7 @@ def get_baselight_scene_shots(config, blpath):
     if nshots > 0:
         shots = scene.get_shot_ids(0, nshots)
         for shot_ix, shot_inf in enumerate(shots):
-            print( "\r Querying metadata for shot %d of %s" % (shot_ix + 1, nshots), end="" )
+            print( "\r Querying Baselight metadata for shot %d of %s" % (shot_ix + 1, nshots), end="" )
             # log.verbose("Shot %d:" % shot_ix)
             shot = scene.get_shot(shot_inf.ShotId)
             shot_md = shot.get_metadata(md_keys)
