@@ -335,6 +335,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     kitsu_uid_metadata_obj = baselight_linked_sequence.get('kitsu_uid_metadata_obj')
     if not kitsu_uid_metadata_obj:
         return
+
     baselight_shots = baselight_linked_sequence.get('baselight_shots')
     project_dict = gazu.project.get_project(baselight_linked_sequence.get('project_id'))
     kitsu_shots = baselight_linked_sequence.get('kitsu_shots')
@@ -351,6 +352,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         shot_md = baselight_shot.get('shot_md')
         if not shot_md:
             continue
+
         bl_kitsu_uid = shot_md.get(kitsu_uid_metadata_obj.Key)
         if bl_kitsu_uid in kitsu_shot_uids:
 
@@ -376,8 +378,8 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             gazu.shot.update_shot(kitsu_shot)
             pprint (new_data)
             continue
-
-        new_shots.append(baselight_shot)
+        else:
+            new_shots.append(baselight_shot)
 
     # try to open baselight scene and fill the shots back in with kitsu-related metadata
     flapi = import_flapi(config)
