@@ -383,8 +383,6 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             new_shots.append(baselight_shot)
 
 
-    return
-
     # try to open baselight scene and fill the shots back in with kitsu-related metadata
     flapi = import_flapi(config)
     flapi_host = resolve_flapi_host(config, blpath)
@@ -423,6 +421,8 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
 
         shot_id = baselight_shot.get('shot_id')
         shot = scene.get_shot(shot_id)
+
+        '''
 
         try:
             qm = conn.QueueManager.create_local()
@@ -512,6 +512,8 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             os.remove(thumbnail_local_path)
         except:
             pass
+
+        '''
 
         new_md_values = {
             kitsu_uid_metadata_obj.Key: new_shot.get('id')
