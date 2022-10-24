@@ -378,9 +378,11 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             gazu.shot.update_shot(kitsu_shot)
             pprint (new_data)
             continue
-        
+
         else:
             new_shots.append(baselight_shot)
+
+    return
 
     # try to open baselight scene and fill the shots back in with kitsu-related metadata
     flapi = import_flapi(config)
