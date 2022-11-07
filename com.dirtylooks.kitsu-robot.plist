@@ -11,16 +11,7 @@
 	</dict>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/bin/screen</string>
-		<string>-L</string>
-		<string>-c</string>
-		<string>/opt/kitsu-robot/screen.conf</string>
-		<string>-S</string>
-		<string>kitsu-robot</string>
-		<string>-d</string>
-		<string>-m</string>
-		<string>/opt/kitsu-robot/robotenv/bin/python3</string>
-		<string>/opt/kitsu-robot/robot.py</string>
+		<string>/opt/kitsu-robot/robotenv/bin/init_mac.sh</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
