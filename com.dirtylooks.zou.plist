@@ -27,7 +27,7 @@
 		<key>LDAP_BASE_DN</key>
 		<string>CN=Users,DC=stormzy,DC=dirtylooks,DC=co,DC=uk</string>
 		<key>LDAP_DOMAIN</key>
-		<string>stormzy.local</string>
+		<string>stormzy.dirtylooks.co.uk</string>
 		<key>LDAP_FALLBACK</key>
 		<string>True</string>
 	</dict>
