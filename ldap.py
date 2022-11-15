@@ -1,5 +1,6 @@
 import ldap3
 import os
+from getpass import getpass
 
 LDAP_HOST = "10.1.5.200"
 LDAP_PORT = "389"
@@ -19,7 +20,7 @@ ldap_server = LDAP_HOST # No Domain
 SSL = False
 authentication = ldap3.SIMPLE
 
-LDAP_PASSWORD = input('PASSWORD:')
+LDAP_PASSWORD = getpass()
 
 print ('ldap_server: %s' % ldap_server)
 print ('use_ssl: %s' % SSL)
