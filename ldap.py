@@ -4,7 +4,7 @@ from getpass import getpass
 
 LDAP_HOST = "10.1.5.200"
 LDAP_PORT = "389"
-LDAP_BASE_DN = "cn=Users,dc=stormzy,dc=local"
+LDAP_BASE_DN = "cn=Users,dc=stormzy,dc=dirtylooks,dc=co,dc=uk"
 LDAP_DOMAIN = "stormzy.local"
 LDAP_USER = "dladmin"
 LDAP_EXCLUDED_ACCOUNTS = ""
