@@ -25,7 +25,7 @@
 		<key>LDAP_PORT</key>
 		<string>389</string>
 		<key>LDAP_BASE_DN</key>
-		<string>CN=Users,DC=stormzy,DC=local</string>
+		<string>CN=Users,DC=stormzy,DC=dirtylooks,DC=co,DC=uk</string>
 		<key>LDAP_DOMAIN</key>
 		<string>stormzy.local</string>
 		<key>LDAP_FALLBACK</key>
