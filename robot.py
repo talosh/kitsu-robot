@@ -9,6 +9,7 @@ import inspect
 import re
 import subprocess
 import uuid
+from copy import deepcopy
 from pprint import pprint, pformat
 
 from python.config import get_config_data
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     for app_config_key in app_config.keys():
         app_data['config'][app_config_key] = app_config[app_config_key]
 
-    pprint (app_data.copy())
+    pprint (deepcopy(app_data))
     sys.exit()
 
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
