@@ -81,7 +81,7 @@ def tailon(app_data):
             sys.exit()
 
         except Exception as e:
-            message = 'Exception at ' + datetime.now().strftime("%Y-%m-%d %H:%M") + ': ' + pformat(e)
+            message = 'Exception at ' + datetime.datetime.now().strftime("%Y-%m-%d %H:%M") + ': ' + pformat(e)
             log (message)
             log (traceback.format_exc())
             time.sleep(1)
