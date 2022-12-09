@@ -48,9 +48,8 @@ if __name__ == "__main__":
     for app_config_key in app_config.keys():
         app_data['config'][app_config_key] = app_config[app_config_key]
 
-    pprint (app_data['config'].copy())
-    sys.exit()
 
+    '''
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
     weblog_thread.daemon = True
     weblog_thread.start()
@@ -62,12 +61,10 @@ if __name__ == "__main__":
     sequence_sync_thread = threading.Thread(target=sequence_sync, args=(app_config, ))
     sequence_sync_thread.daemon = True
     sequence_sync_thread.start()
-    
+    '''
 
     while True:
         try:
             time.sleep(4)
         except KeyboardInterrupt:
             sys.exit()
-
-"wookie:dlj0356_mr_malcolms_list:grade:reel_01_v*"
