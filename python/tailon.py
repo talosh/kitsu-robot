@@ -60,7 +60,7 @@ def tailon(app_data):
             for host_ip in cmd_hostname_result:
                 if not host_ip:
                     continue
-                bind_string += host_ip + ':' + config.get('port', '8088') + ','
+                bind_string += host_ip + ':' + str(config.get('port', '8088')) + ','
             if bind_string.endswith(','):
                 bind_string = bind_string[:-1]
 
