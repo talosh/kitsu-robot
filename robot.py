@@ -51,6 +51,10 @@ if __name__ == "__main__":
     # pprint (app_data['config'].copy())
     # sys.exit()
 
+    tailon_thread = threading.Thread(target=tailon, args=(app_config, ))
+    tailon_thread.daemon = True
+    tailon_thread.start()
+
     '''
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
     weblog_thread.daemon = True
