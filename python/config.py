@@ -84,4 +84,7 @@ def get_config_data(config_folder_path):
     return data
 
 def config_reader(app_data):
-    pass
+    app_config = app_data['config'].copy()
+    app_location = app_config['app_location']
+    config_folder_path = os.path.join(app_location, 'config')
+    print (config_folder_path)
