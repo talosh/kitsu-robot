@@ -11,7 +11,7 @@ from pprint import pprint, pformat
 def tailon(config):
     while True:
         try:
-            cmd_hostname_result = []
+            cmd_hostname_result = ['127.0.0.1']
             if sys.platform == 'darwin':
                 interface_names = []
                 cmd_networksetup = [
@@ -35,8 +35,6 @@ def tailon(config):
                     cmd_ipconfig_result = cmd_ipconfig_result.replace('\n', '')
                     if cmd_ipconfig_result:
                         cmd_hostname_result.append(cmd_ipconfig_result)
-
-                pprint (cmd_hostname_result)
             else:
                 cmd_hostname = [
                         'hostname',
