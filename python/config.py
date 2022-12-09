@@ -1,7 +1,10 @@
 import os
 import sys
 import json
+import time
+from copy import deepcopy
 
+from .common import log
 from pprint import pprint, pformat
 
 def default_config_data():
@@ -78,13 +81,23 @@ def get_config_data(config_folder_path):
             print(e)
 
         name, ext = os.path.splitext(config_file_name)
-        from copy import deepcopy
         data[name] = deepcopy(config)
 
     return data
 
 def config_reader(app_data):
-    app_config = app_data['config'].copy()
-    app_location = app_config['app_location']
-    config_folder_path = os.path.join(app_location, 'config')
-    print (config_folder_path)
+    while True:
+        try:
+            app_config = deepcopy(app_data['config'])
+            app_location = app_config['app_location']
+            config_folder_path = os.path.join(app_location, 'config')
+            current_config = get_config_data(config_folder_path)
+            for config_key in current_config.keys():
+                app_config[config_key] = current_config[config_key]
+            app_data['config'] = app_config
+            time.sleep(4)
+        except KeyboardInterrupt:
+            return
+        except Exception as e:
+            log('exception in "sequence_sync": %s' % pformat(e))
+            time.sleep(4)
