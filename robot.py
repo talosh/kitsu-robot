@@ -68,9 +68,9 @@ if __name__ == "__main__":
     config_reader_therad.daemon = True
     config_reader_therad.start()
 
-    # tailon_thread = threading.Thread(target=tailon, args=(app_config, ))
-    # tailon_thread.daemon = True
-    # tailon_thread.start()
+    tailon_thread = threading.Thread(target=tailon, args=(app_data, ))
+    tailon_thread.daemon = True
+    tailon_thread.start()
 
     '''
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
