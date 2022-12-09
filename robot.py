@@ -53,16 +53,18 @@ if __name__ == "__main__":
     # for app_config_key in app_config.keys():
     #    app_data['config'][app_config_key] = app_config[app_config_key]
 
-    pprint (app_data['config'].copy())
-    sys.exit()
+    # pprint (app_data['config'].copy())
+    # sys.exit()
 
     active_threads = []
 
-    config_reader_therad = threading.Thread(target=tailon, args=(app_data, ))
+    config_reader_therad = threading.Thread(target=config_reader, args=(app_data, ))
+    config_reader_therad.daemon = True
+    config_reader_therad.start()
 
-    tailon_thread = threading.Thread(target=tailon, args=(app_config, ))
-    tailon_thread.daemon = True
-    tailon_thread.start()
+    # tailon_thread = threading.Thread(target=tailon, args=(app_config, ))
+    # tailon_thread.daemon = True
+    # tailon_thread.start()
 
     '''
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
@@ -80,6 +82,8 @@ if __name__ == "__main__":
 
     while True:
         try:
+            config = app_data['config'].copy()
+            pprint (config.get('robot'))
             time.sleep(4)
         except KeyboardInterrupt:
             sys.exit()
