@@ -1,3 +1,7 @@
 {
+    "tailon": {
+        "bind_all": true,
+        "port": 8088
+    },
     "timeout": 4
 }

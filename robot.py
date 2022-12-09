@@ -13,6 +13,7 @@ from copy import deepcopy
 from pprint import pprint, pformat
 
 from python.config import get_config_data
+from python.config import config_reader
 from python.tailon import tailon
 from python.metadata_fields import set_metadata_fields
 from python.sequence import sequence_sync
@@ -33,23 +34,32 @@ if __name__ == "__main__":
     app_data['baselight'] = manager.dict()
     app_data['kitsu'] = manager.dict()
 
-    # read config and populate default values
-    app_location = os.path.dirname(os.path.abspath(__file__))
-    config_folder_path = os.path.join(app_location, 'config')
-    print ('reading config files from ' + config_folder_path)
-    app_config = get_config_data(config_folder_path)
-    app_config['app_name'] = APP_NAME
-    app_config['verbose'] = VERBOSE
-    app_config['debug'] = DEBUG
-    app_config['version'] = ('version %s' % __version__)
-    app_config['log_folder'] = os.path.join(app_location, 'log')
-    app_config['temp_folder'] = os.path.join(app_location, 'tmp')
-    app_config['remote_temp_folder'] = '/var/tmp'
-    for app_config_key in app_config.keys():
-        app_data['config'][app_config_key] = app_config[app_config_key]
+    # read initial config
+    # app_location = os.path.dirname(os.path.abspath(__file__))
+    # config_folder_path = os.path.join(app_location, 'config')
 
-    # pprint (app_data['config'].copy())
-    # sys.exit()
+    # set some defaut values in config
+    app_data['config']['app_location'] = os.path.dirname(os.path.abspath(__file__))
+    app_data['config']['app_name'] = APP_NAME
+    app_data['config']['verbose'] = VERBOSE
+    app_data['config']['debug'] = DEBUG
+    app_data['config']['version'] = ('version %s' % __version__)
+    app_data['config']['log_folder'] = os.path.join(app_location, 'log')
+    app_data['config']['temp_folder'] = os.path.join(app_location, 'tmp')
+    app_data['config']['remote_temp_folder'] = '/var/tmp'
+
+    # print ('reading config files from ' + config_folder_path)
+    
+    # app_config = get_config_data(config_folder_path)
+    # for app_config_key in app_config.keys():
+    #    app_data['config'][app_config_key] = app_config[app_config_key]
+
+    pprint (app_data['config'].copy())
+    sys.exit()
+
+    active_threads = []
+
+    config_reader_therad = threading.Thread(target=tailon, args=(app_data, ))
 
     tailon_thread = threading.Thread(target=tailon, args=(app_config, ))
     tailon_thread.daemon = True

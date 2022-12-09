@@ -82,3 +82,6 @@ def get_config_data(config_folder_path):
         data[name] = deepcopy(config)
 
     return data
+
+def config_reader(app_data):
+    
