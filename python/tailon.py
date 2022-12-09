@@ -66,11 +66,11 @@ def tailon(app_data):
 
             tailon_location = config.get('tailon_binary', '/opt/kitsu-robot/robotenv/bin/tailon')
             logfile_string = os.path.join(log_folder, '*.log')
-            relative_root_string = '--relative-root ' + config.get('relative_root', '/')
             if os.path.isfile(tailon_location):
                 cmd_tailon = [
                     tailon_location,
-                    relative_root_string,
+                    '--relative-root',
+                    config.get('relative_root', '/'),
                     '-b',
                     bind_string,
                     logfile_string
