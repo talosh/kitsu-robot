@@ -18,6 +18,7 @@ from python.tailon import tailon
 from python.metadata_fields import set_metadata_fields
 from python.sequence import sequence_sync
 from python.util import RobotLog
+from python.baselight import baselight_process
 
 APP_NAME = 'KitsuRobot'
 VERBOSE=True
@@ -61,8 +62,6 @@ if __name__ == "__main__":
 
     # pprint (app_data['config'].copy())
     # sys.exit()
-
-    active_threads = []
 
     config_reader_therad = threading.Thread(target=config_reader, args=(app_data, ))
     config_reader_therad.daemon = True

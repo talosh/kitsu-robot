@@ -2,11 +2,11 @@ import ldap3
 import os
 from getpass import getpass
 
-LDAP_HOST = "10.1.5.200"
+LDAP_HOST = "ldap.jumpcloud.com"
 LDAP_PORT = "389"
-LDAP_BASE_DN = "cn=Users,dc=stormzy,dc=dirtylooks,dc=co,dc=uk"
-LDAP_DOMAIN = "stormzy.local"
-LDAP_USER = "dladmin"
+LDAP_BASE_DN = "ou=Users,o=638853a7676fe04ccf41a9ed,dc=jumpcloud,dc=com"
+LDAP_DOMAIN = "jumpcloud.com"
+LDAP_USER = "jumpcloud"
 LDAP_EXCLUDED_ACCOUNTS = ""
 
 # Main changes are in the user and server : 
@@ -17,7 +17,7 @@ ldap_server = "%s:%s" % (LDAP_HOST, LDAP_PORT)
 user = "uid=%s,%s" % (LDAP_USER, LDAP_BASE_DN) 
 ldap_server = LDAP_HOST # No Domain
 
-SSL = False
+SSL = True
 authentication = ldap3.SIMPLE
 
 LDAP_PASSWORD = getpass()

@@ -10,7 +10,8 @@ from .config import get_config_data
 
 from pprint import pprint, pformat
 
-def scan_baselight_metadata(app_data):
+
+def baselight_process(app_data):
     log = app_data['config'].get('log')
 
     while True:
