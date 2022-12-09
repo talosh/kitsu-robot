@@ -84,4 +84,4 @@ def get_config_data(config_folder_path):
     return data
 
 def config_reader(app_data):
-    
+    pass
