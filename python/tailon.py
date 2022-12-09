@@ -65,7 +65,9 @@ def tailon(config):
                     bind_string,
                     logfile_location
                     ]
-
+                
+                pprint (cmd_tailon)
+                sys.exit()
                 subprocess.run(cmd_tailon, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
         except KeyboardInterrupt:

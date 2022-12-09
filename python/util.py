@@ -4,8 +4,10 @@ import subprocess
 from pprint import pprint, pformat
 
 
-class Log(object):
-    def __init__(self, *args) -> None:
+class RobotLog(object):
+    def __init__(self, **kwargs) -> None:
+        pprint (kwargs)
+        '''
         if len(args) == 0:
             config_data = {}
         else:
@@ -16,6 +18,7 @@ class Log(object):
         self.is_debug = config_data.get('debug', False)
 
         self.logfile = None
+        '''
 
     def msg(self, message):
         msg = '[%s] %s' % (self.app_name, message)

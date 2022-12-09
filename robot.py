@@ -41,15 +41,15 @@ if __name__ == "__main__":
     app_config['app_name'] = APP_NAME
     app_config['verbose'] = VERBOSE
     app_config['debug'] = DEBUG
-    app_config['log'] = Log(app_config)
-    app_config['log'].info('version %s' % __version__)
+    app_config['version'] = ('version %s' % __version__)
+    app_config['log_folder'] = os.path.join(app_location, 'log')
     app_config['temp_folder'] = os.path.join(app_location, 'tmp')
     app_config['remote_temp_folder'] = '/var/tmp'
     for app_config_key in app_config.keys():
         app_data['config'][app_config_key] = app_config[app_config_key]
 
-    pprint (app_data['config'].copy())
-    sys.exit()
+    # pprint (app_data['config'].copy())
+    # sys.exit()
 
     '''
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
