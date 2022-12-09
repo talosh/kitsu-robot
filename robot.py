@@ -16,7 +16,7 @@ from python.config import get_config_data
 from python.tailon import tailon
 from python.metadata_fields import set_metadata_fields
 from python.sequence import sequence_sync
-from python.util import Log
+from python.util import RobotLog
 
 APP_NAME = 'KitsuRobot'
 VERBOSE=True
