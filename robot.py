@@ -49,8 +49,8 @@ if __name__ == "__main__":
         app_data['config'][app_config_key] = app_config[app_config_key]
 
     pprint (app_data['config'].copy())
-    sys.eixt()
-    
+    sys.exit()
+
     '''
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
     weblog_thread.daemon = True
