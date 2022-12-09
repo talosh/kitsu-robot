@@ -47,6 +47,12 @@ if __name__ == "__main__":
     app_data['config']['temp_folder'] = os.path.join(app_location, 'tmp')
     app_data['config']['remote_temp_folder'] = '/var/tmp'
 
+    # read config on startup so we can safely start other processes and threads
+    config_folder_path = os.path.join(app_location, 'config')
+    current_config = get_config_data(config_folder_path)
+    for config_key in current_config.keys():
+        app_data['config'][config_key] = current_config[config_key]
+
     # print ('reading config files from ' + config_folder_path)
     
     # app_config = get_config_data(config_folder_path)
