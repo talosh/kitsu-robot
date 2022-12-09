@@ -1,7 +1,8 @@
 {
     "tailon": {
         "bind_all": true,
-        "port": 5002
+        "port": 5002,
+        "relative_root": "/log"
     },
     "timeout": 4
 }
