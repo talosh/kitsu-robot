@@ -12,7 +12,7 @@ class RobotLog(object):
         else:
             config_data = args[0]
             
-        self.app_name = config_data.get('app_name', kwargs.get('name', 'myApp'))
+        self.app_name = kwargs.get('name', config_data.get('app_name', 'myApp'))
         self.is_verbose = config_data.get('verbose', False)
         self.is_debug = config_data.get('debug', False)
 
