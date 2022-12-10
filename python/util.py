@@ -17,7 +17,7 @@ class RobotLog(object):
 
         self.logfile = None
 
-        pprint (args.copy())
+        pprint (config_data)
         pprint (kwargs)
 
 
