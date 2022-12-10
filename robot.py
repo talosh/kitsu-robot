@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     bl_process = multiprocessing.Process(
         target=baselight_process,
-        name = 'baselight_process',
+        name = 'Baselight Process',
         args=(app_data, )
         )
     processes.append(bl_process)
@@ -98,11 +98,9 @@ if __name__ == "__main__":
     while True:
         try:
             try:
-                pprint (app_data['config']['robot'])
                 timeout = app_data['config']['robot']['timeout']
             except:
                 timeout = 4
-            print (timeout)
             time.sleep(timeout)
         except KeyboardInterrupt:
             for p in processes:
