@@ -63,6 +63,9 @@ if __name__ == "__main__":
     # pprint (app_data['config'].copy())
     # sys.exit()
 
+    log = RobotLog(app_data['config'], filename = 'baselight.log')
+    sys.exit()
+
     config_reader_therad = threading.Thread(target=config_reader, args=(app_data, ))
     config_reader_therad.daemon = True
     config_reader_therad.start()
