@@ -55,7 +55,8 @@ if __name__ == "__main__":
         app_data['config'][config_key] = current_config[config_key]
 
     log = RobotLog(app_data['config'], filename = 'robot.log')
-    log('hello', 'world')
+    # compatibility with old code
+    app_data['config']['log'] = log
 
     # print ('reading config files from ' + config_folder_path)
     
@@ -77,7 +78,7 @@ if __name__ == "__main__":
     # tailon_thread = threading.Thread(target=tailon, args=(app_data, ))
     # tailon_thread.daemon = True
     # tailon_thread.start()
-    
+
     bl_process = multiprocessing.Process(
         target=baselight_process,
         name = 'Baselight Flapi Process',
@@ -87,19 +88,14 @@ if __name__ == "__main__":
     log.debug ('Starting Baselight Flapi Process')
     bl_process.start()
 
-    '''
-    weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
-    weblog_thread.daemon = True
-    weblog_thread.start()
 
-    metadata_thread = threading.Thread(target=set_metadata_fields, args=(app_config, ))
+    metadata_thread = threading.Thread(target=set_metadata_fields, args=(app_data['config'], ))
     metadata_thread.daemon = True
     metadata_thread.start()
 
-    sequence_sync_thread = threading.Thread(target=sequence_sync, args=(app_config, ))
+    sequence_sync_thread = threading.Thread(target=sequence_sync, args=(app_data['config'], ))
     sequence_sync_thread.daemon = True
     sequence_sync_thread.start()
-    '''
 
     while True:
         try:
