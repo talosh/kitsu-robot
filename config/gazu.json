@@ -1,5 +1,5 @@
 {
     "host": "http://192.168.15.99/api",
     "name": "kitsobot",
-    "password": ""
+    "password": "mypassword"
 }
