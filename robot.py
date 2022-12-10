@@ -101,6 +101,7 @@ if __name__ == "__main__":
             time.sleep(timeout)
         except KeyboardInterrupt:
             for p in processes:
+                print ('terminating %s' % p.name)
                 p.terminate()
                 p.join()
             sys.exit()
