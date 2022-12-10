@@ -55,6 +55,7 @@ if __name__ == "__main__":
         app_data['config'][config_key] = current_config[config_key]
 
     log = RobotLog(app_data['config'], filename = 'robot.log')
+    log('hello', 'world')
 
     # print ('reading config files from ' + config_folder_path)
     
@@ -109,7 +110,7 @@ if __name__ == "__main__":
             time.sleep(timeout)
         except KeyboardInterrupt:
             for p in processes:
-                log.msg('terminating %s' % p.name)
+                log('terminating %s' % p.name)
                 p.terminate()
                 p.join()
             sys.exit()
