@@ -32,7 +32,7 @@ class RobotLog(object):
             for arg in args:
                 self.msg(arg)
 
-    def timestamp():
+    def timestamp(self):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
         return timestamp
 
