@@ -6,19 +6,20 @@ from pprint import pprint, pformat
 
 class RobotLog(object):
     def __init__(self, *args, **kwargs) -> None:
-        pprint (kwargs)
-        '''
         if len(args) == 0:
             config_data = {}
         else:
-            config_data = args[0]
+            config_data = args[0]['config']
             
         self.app_name = config_data.get('app_name', 'myApp')
         self.is_verbose = config_data.get('verbose', False)
         self.is_debug = config_data.get('debug', False)
 
         self.logfile = None
-        '''
+
+        pprint (args.copy())
+        pprint (kwargs)
+
 
     def msg(self, message):
         msg = '[%s] %s' % (self.app_name, message)
