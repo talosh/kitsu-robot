@@ -37,10 +37,11 @@ add line
 0 4 * * * /usr/local/opt/logrotate/sbin/logrotate --state /opt/kitsu-robot/log/logrotate.status /opt/kitsu-robot/logrotate.conf
 ```
 
-* Web logging
+* Web logging:
+
+```
 copy com.dirtylooks.tailon.plist to ~/Library/LaunchAgents
 add proxy string to /usr/local/etc/nginx/servers/zou
-```
     location /log {
     proxy_http_version 1.1;
         proxy_pass http://localhost:5002;
