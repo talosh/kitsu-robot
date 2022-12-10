@@ -73,7 +73,11 @@ if __name__ == "__main__":
     tailon_thread.daemon = True
     tailon_thread.start()
 
-    bl_process = multiprocessing.Process(target=baselight_process, args=(app_data,))
+    bl_process = multiprocessing.Process(
+        target=baselight_process,
+        name = 'baselight_process',
+        args=(app_data, )
+        )
     processes.append(bl_process)
     bl_process.start()
 
@@ -94,6 +98,7 @@ if __name__ == "__main__":
     while True:
         try:
             try:
+                pprint (app_data['config']['robot'])
                 timeout = app_data['config']['robot']['timeout']
             except:
                 timeout = 4
