@@ -5,7 +5,7 @@ from pprint import pprint, pformat
 
 
 class RobotLog(object):
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         pprint (kwargs)
         '''
         if len(args) == 0:
