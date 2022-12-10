@@ -96,11 +96,9 @@ if __name__ == "__main__":
     metadata_thread.daemon = True
     metadata_thread.start()
 
-    '''
     sequence_sync_thread = threading.Thread(target=sequence_sync, args=(config, ))
     sequence_sync_thread.daemon = True
     sequence_sync_thread.start()
-    '''
 
     while True:
         try:
