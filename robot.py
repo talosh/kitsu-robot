@@ -77,7 +77,7 @@ if __name__ == "__main__":
     # tailon_thread = threading.Thread(target=tailon, args=(app_data, ))
     # tailon_thread.daemon = True
     # tailon_thread.start()
-
+    
     bl_process = multiprocessing.Process(
         target=baselight_process,
         name = 'Baselight Flapi Process',

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.dirtylooks.tailon</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/opt/kitsu-robot/robotenv/bin/tailon</string>
+		<string>--relative-root</string>
+		<string>/log</string>
+		<string>-b</string>
+		<string>127.0.0.1:5002</string>
+		<string>/opt/kitsu-robot/log/*.log</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>WorkingDirectory</key>
+	<string>/opt/kitsu-robot</string>
+</dict>
+</plist>
