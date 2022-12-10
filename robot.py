@@ -63,16 +63,19 @@ if __name__ == "__main__":
     # pprint (app_data['config'].copy())
     # sys.exit()
 
-    log = RobotLog(app_data['config'], filename = 'baselight.log')
-    sys.exit()
+    processes = []
 
-    config_reader_therad = threading.Thread(target=config_reader, args=(app_data, ))
-    config_reader_therad.daemon = True
-    config_reader_therad.start()
+    config_reader_thread = threading.Thread(target=config_reader, args=(app_data, ))
+    config_reader_thread.daemon = True
+    config_reader_thread.start()
 
     tailon_thread = threading.Thread(target=tailon, args=(app_data, ))
     tailon_thread.daemon = True
     tailon_thread.start()
+
+    bl_process = multiprocessing.Process(target=baselight_process, args=(app_data,))
+    processes.append(bl_process)
+    bl_process.start()
 
     '''
     weblog_thread = threading.Thread(target=tailon, args=(app_config, ))
@@ -90,8 +93,14 @@ if __name__ == "__main__":
 
     while True:
         try:
-            config = app_data['config'].copy()
-            pprint (config.get('robot'))
-            time.sleep(4)
+            try:
+                timeout = app_data['config']['robot']['timeout']
+            except:
+                timeout = 4
+            print (timeout)
+            time.sleep(timeout)
         except KeyboardInterrupt:
+            for p in processes:
+                p.terminate()
+                p.join()
             sys.exit()
