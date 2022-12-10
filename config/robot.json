@@ -4,5 +4,5 @@
         "port": 5002,
         "relative_root": "/log"
     },
-    "timeout": 8
+    "timeout": 4
 }
