@@ -87,7 +87,9 @@ if __name__ == "__main__":
 
 
     # compatibility with old code
-    config = app_data['config']
+    config = {}
+    for key in app_data['config'].keys:
+        config[key] = app_data['config'][key]
     config['log'] = log
 
     metadata_thread = threading.Thread(target=set_metadata_fields, args=(config, ))
