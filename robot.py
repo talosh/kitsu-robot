@@ -54,6 +54,8 @@ if __name__ == "__main__":
     for config_key in current_config.keys():
         app_data['config'][config_key] = current_config[config_key]
 
+    log = RobotLog(app_data['config'], filename = 'robot.log')
+
     # print ('reading config files from ' + config_folder_path)
     
     # app_config = get_config_data(config_folder_path)
@@ -64,21 +66,24 @@ if __name__ == "__main__":
     # sys.exit()
 
     processes = []
-
+    log.debug ('creating config reader thread')
     config_reader_thread = threading.Thread(target=config_reader, args=(app_data, ))
     config_reader_thread.daemon = True
     config_reader_thread.start()
 
+    log.debug ('creating tailon thread')
     tailon_thread = threading.Thread(target=tailon, args=(app_data, ))
     tailon_thread.daemon = True
     tailon_thread.start()
 
+
     bl_process = multiprocessing.Process(
         target=baselight_process,
-        name = 'Baselight Process',
+        name = 'Baselight Flapi Process',
         args=(app_data, )
         )
     processes.append(bl_process)
+    log.debug ('Starting Baselight Flapi Process')
     bl_process.start()
 
     '''
@@ -104,7 +109,7 @@ if __name__ == "__main__":
             time.sleep(timeout)
         except KeyboardInterrupt:
             for p in processes:
-                print ('terminating %s' % p.name)
+                log('terminating %s' % p.name)
                 p.terminate()
                 p.join()
             sys.exit()
