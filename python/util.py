@@ -9,7 +9,7 @@ class RobotLog(object):
         if len(args) == 0:
             config_data = {}
         else:
-            config_data = args[0]['config']
+            config_data = args[0]
             
         self.app_name = config_data.get('app_name', 'myApp')
         self.is_verbose = config_data.get('verbose', False)
