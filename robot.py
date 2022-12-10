@@ -55,9 +55,6 @@ if __name__ == "__main__":
         app_data['config'][config_key] = current_config[config_key]
 
     log = RobotLog(app_data['config'], filename = 'robot.log')
-    # compatibility with old code
-    app_data['config']['log'] = log
-
     # print ('reading config files from ' + config_folder_path)
     
     # app_config = get_config_data(config_folder_path)
@@ -89,11 +86,15 @@ if __name__ == "__main__":
     bl_process.start()
 
 
-    metadata_thread = threading.Thread(target=set_metadata_fields, args=(app_data['config'], ))
+    # compatibility with old code
+    config = app_data['config']
+    config['log'] = log
+
+    metadata_thread = threading.Thread(target=set_metadata_fields, args=(config, ))
     metadata_thread.daemon = True
     metadata_thread.start()
 
-    sequence_sync_thread = threading.Thread(target=sequence_sync, args=(app_data['config'], ))
+    sequence_sync_thread = threading.Thread(target=sequence_sync, args=(config, ))
     sequence_sync_thread.daemon = True
     sequence_sync_thread.start()
 
