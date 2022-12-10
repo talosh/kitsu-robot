@@ -27,7 +27,7 @@ class RobotLog(object):
                 self.error('Can not open log file %s' % logfile_path)
                 self.logfile = None
 
-    def __repr__(self, *args):
+    def __call__(self, *args):
         if len(args) > 0:
             for arg in args:
                 self.msg(arg)
