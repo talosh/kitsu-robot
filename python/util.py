@@ -15,11 +15,10 @@ class RobotLog(object):
         self.is_verbose = config_data.get('verbose', False)
         self.is_debug = config_data.get('debug', False)
 
+        if config_data.get('log_folder') and kwargs.get('filename'):
+            pprint (config_data.copy())
+            pprint (kwargs)
         self.logfile = None
-
-        pprint (config_data.copy())
-        pprint (kwargs)
-
 
     def msg(self, message):
         msg = '[%s] %s' % (self.app_name, message)
