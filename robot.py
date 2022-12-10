@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     # compatibility with old code
     config = {}
-    for key in app_data['config'].keys:
+    for key in app_data['config'].keys():
         config[key] = app_data['config'][key]
     config['log'] = log
 
