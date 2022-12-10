@@ -72,11 +72,11 @@ if __name__ == "__main__":
     config_reader_thread.daemon = True
     config_reader_thread.start()
 
-    log.debug ('creating tailon thread')
-    tailon_thread = threading.Thread(target=tailon, args=(app_data, ))
-    tailon_thread.daemon = True
-    tailon_thread.start()
-
+    # TailOn starts as a separate process
+    # log.debug ('creating tailon thread')
+    # tailon_thread = threading.Thread(target=tailon, args=(app_data, ))
+    # tailon_thread.daemon = True
+    # tailon_thread.start()
 
     bl_process = multiprocessing.Process(
         target=baselight_process,
