@@ -16,9 +16,15 @@ class RobotLog(object):
         self.is_debug = config_data.get('debug', False)
 
         if config_data.get('log_folder') and kwargs.get('filename'):
-            pprint (config_data.copy())
-            pprint (kwargs)
-        self.logfile = None
+            logfile_path = os.path.join(
+                config_data.get('log_folder'), 
+                kwargs.get('filename')
+                )
+            try:
+                self.logfile = open(logfile_path,'a')
+            except:
+                self.error('Can not open log file %s' % logfile_path)
+                self.logfile = None
 
     def msg(self, message):
         msg = '[%s] %s' % (self.app_name, message)
