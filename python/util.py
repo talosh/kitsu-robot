@@ -27,6 +27,11 @@ class RobotLog(object):
                 self.error('Can not open log file %s' % logfile_path)
                 self.logfile = None
 
+    def __repr__(self, *args):
+        if len(args) > 0:
+            for arg in args:
+                self.msg(arg)
+
     def timestamp():
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
         return timestamp
