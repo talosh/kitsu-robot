@@ -54,7 +54,7 @@ if __name__ == "__main__":
     for config_key in current_config.keys():
         app_data['config'][config_key] = current_config[config_key]
 
-    log = RobotLog(app_data['config'], name = 'FancyName', filename = 'robot.log')
+    log = RobotLog(app_data['config'], filename = 'robot.log')
     log('hello', 'world')
 
     # print ('reading config files from ' + config_folder_path)
