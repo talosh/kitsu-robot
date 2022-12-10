@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+from datetime import datetime
 from pprint import pprint, pformat
 
 
@@ -26,8 +27,12 @@ class RobotLog(object):
                 self.error('Can not open log file %s' % logfile_path)
                 self.logfile = None
 
+    def timestamp():
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        return timestamp
+
     def msg(self, message):
-        msg = '[%s] %s' % (self.app_name, message)
+        msg = '[%s] [%s] %s' % (self.timestamp(), self.app_name, message)
         print (msg)
         if self.logfile:
             try:
@@ -37,7 +42,7 @@ class RobotLog(object):
                 pass
 
     def info(self, message):
-        msg = '[%s] [INFO]: %s' % (self.app_name, message)
+        msg = '[%s] [%s] [INFO]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
         if self.logfile:
             try:
@@ -47,7 +52,7 @@ class RobotLog(object):
                 pass
 
     def warning(self, message):
-        msg = '[%s] [WARNING]: %s' % (self.app_name, message)
+        msg = '[%s] [%s] [WARNING]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
         if self.logfile:
             try:
@@ -57,7 +62,7 @@ class RobotLog(object):
                 pass
 
     def error(self, message):
-        msg = '[%s] [ERROR]: %s' % (self.app_name, message)
+        msg = '[%s] [%s] [ERROR]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
         if self.logfile:
             try:
@@ -69,8 +74,8 @@ class RobotLog(object):
     def verbose(self, message):
         if not self.is_verbose:
             return
-        
-        msg = '[%s] [VERBOSE]: %s' % (self.app_name, message)
+
+        msg = '[%s] [%s] [VERBOSE]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
         if self.logfile:
             try:
@@ -82,8 +87,8 @@ class RobotLog(object):
     def debug(self, message):
         if not self.is_debug:
             return
-        
-        msg = '[%s] [DEBUG]: %s' % (self.app_name, message)
+
+        msg = '[%s] [%s] [DEBUG]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
         if self.logfile:
             try:
