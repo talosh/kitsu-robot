@@ -88,7 +88,7 @@ def get_config_data(config_folder_path):
 def config_reader(app_data):
     while True:
         try:
-            app_config = deepcopy(app_data['config'])
+            app_config = app_data['config']
             app_location = app_config['app_location']
             config_folder_path = os.path.join(app_location, 'config')
             current_config = get_config_data(config_folder_path)

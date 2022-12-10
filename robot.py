@@ -38,7 +38,7 @@ if __name__ == "__main__":
     app_location = os.path.dirname(os.path.abspath(__file__))
     # config_folder_path = os.path.join(app_location, 'config')
 
-    # set some defaut values in config
+    # set some default values in config
     app_data['config']['app_location'] = app_location
     app_data['config']['app_name'] = APP_NAME
     app_data['config']['verbose'] = VERBOSE
