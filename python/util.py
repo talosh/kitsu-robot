@@ -16,16 +16,12 @@ class RobotLog(object):
         self.is_verbose = config_data.get('verbose', False)
         self.is_debug = config_data.get('debug', False)
 
+        self.logfile_path = None
         if config_data.get('log_folder') and kwargs.get('filename'):
-            logfile_path = os.path.join(
+            self.logfile_path = os.path.join(
                 config_data.get('log_folder'), 
                 kwargs.get('filename')
                 )
-            try:
-                self.logfile = open(logfile_path,'a')
-            except:
-                self.error('Can not open log file %s' % logfile_path)
-                self.logfile = None
 
     def __call__(self, *args):
         if len(args) > 0:
@@ -36,45 +32,36 @@ class RobotLog(object):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         return timestamp
 
+    def write_to_logfile(self, msg):
+        if self.logfile_path:
+            try:
+                self.logfile = open(self.logfile_path, 'a')
+                self.logfile.write(msg + '\n')
+                self.logfile.flush()
+                self.logfile.close()
+            except:
+                self.error('Can not open log file %s' % self.logfile_path)
+                self.logfile = None
+
     def msg(self, message):
         msg = '[%s] [%s] %s' % (self.timestamp(), self.app_name, message)
         print (msg)
-        if self.logfile:
-            try:
-                self.logfile.write(msg + '\n')
-                self.logfile.flush()
-            except:
-                pass
+        self.write_to_logfile(msg)
 
     def info(self, message):
         msg = '[%s] [%s] [INFO]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
-        if self.logfile:
-            try:
-                self.logfile.write(msg + '\n')
-                self.logfile.flush()
-            except:
-                pass
+        self.write_to_logfile(msg)
 
     def warning(self, message):
         msg = '[%s] [%s] [WARNING]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
-        if self.logfile:
-            try:
-                self.logfile.write(msg + '\n')
-                self.logfile.flush()
-            except:
-                pass
+        self.write_to_logfile(msg)
 
     def error(self, message):
         msg = '[%s] [%s] [ERROR]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
-        if self.logfile:
-            try:
-                self.logfile.write(msg + '\n')
-                self.logfile.flush()
-            except:
-                pass
+        self.write_to_logfile(msg)
 
     def verbose(self, message):
         if not self.is_verbose:
@@ -82,12 +69,7 @@ class RobotLog(object):
 
         msg = '[%s] [%s] [VERBOSE]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
-        if self.logfile:
-            try:
-                self.logfile.write(msg + '\n')
-                self.logfile.flush()
-            except:
-                pass
+        self.write_to_logfile(msg)
 
     def debug(self, message):
         if not self.is_debug:
@@ -95,12 +77,7 @@ class RobotLog(object):
 
         msg = '[%s] [%s] [DEBUG]: %s' % (self.timestamp(), self.app_name, message)
         print (msg)
-        if self.logfile:
-            try:
-                self.logfile.write(msg + '\n')
-                self.logfile.flush()
-            except:
-                pass
+        self.write_to_logfile(msg)
 
 def create_timestamp():
     # generates UUID for the batch setup
