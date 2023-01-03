@@ -67,6 +67,8 @@ def get_config_data(config_folder_path):
         return data
     
     for config_file_name in config_files:
+        if not config_file_name.endswith('.json'):
+            continue
         config_file_path = os.path.join(
             config_folder_path,
             config_file_name
