@@ -4,6 +4,8 @@ import time
 from .config import get_config_data
 from pprint import pprint, pformat
 
+import gazu
+
 from .util import RobotLog
 
 def kitsu_loop(app_data):
