@@ -1,20 +1,13 @@
 import os
 import sys
 import time
-import threading
-
-from .util import remote_listdir
-from .util import remote_rm
-from .util import rsync
-
 from .config import get_config_data
-from .util import RobotLog
-
 from pprint import pprint, pformat
 
+from .util import RobotLog
 
-def baselight_loop(app_data):
-    log = RobotLog(app_data['config'], filename = 'baselight.log')
+def kitsu_loop(app_data):
+    log = RobotLog(app_data['config'], filename = 'kitsu.log')
 
     while True:
         try:

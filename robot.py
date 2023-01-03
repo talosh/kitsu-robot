@@ -18,13 +18,15 @@ from python.tailon import tailon
 from python.metadata_fields import set_metadata_fields
 from python.sequence import sequence_sync
 from python.util import RobotLog
-from python.baselight import baselight_process
+from python.kitsu import kitsu_loop
+from python.baselight import baselight_loop
+
 
 APP_NAME = 'KitsuRobot'
 VERBOSE=True
 DEBUG=True
 
-__version__ = 'v0.0.5 dev 001'
+__version__ = 'v0.0.6 dev 001'
 
 if __name__ == "__main__":
 
@@ -75,17 +77,26 @@ if __name__ == "__main__":
     # tailon_thread.daemon = True
     # tailon_thread.start()
 
-    bl_process = multiprocessing.Process(
-        target=baselight_process,
+    kitsu_loop = multiprocessing.Process(
+        target=kitsu_loop,
+        name = 'Kitsu Gazu Loop',
+        args=(app_data, )
+        )
+    processes.append(kitsu_loop)
+    log.debug ('Starting Kitsu Gazu Process')
+    kitsu_loop.start()
+
+    bl_loop = multiprocessing.Process(
+        target=baselight_loop,
         name = 'Baselight Flapi Process',
         args=(app_data, )
         )
     processes.append(bl_process)
     log.debug ('Starting Baselight Flapi Process')
-    bl_process.start()
-
+    bl_loop.start()
 
     # compatibility with old code
+    '''
     config = {}
     for key in app_data['config'].keys():
         config[key] = app_data['config'][key]
@@ -98,6 +109,7 @@ if __name__ == "__main__":
     sequence_sync_thread = threading.Thread(target=sequence_sync, args=(config, ))
     sequence_sync_thread.daemon = True
     sequence_sync_thread.start()
+    '''
 
     while True:
         try:
