@@ -12,11 +12,15 @@ from .util import RobotLog
 def kitsu_loop(app_data):
     log = RobotLog(app_data['config'], filename = 'kitsu.log')
 
-    kitsu_data = {'hui': 'pizda'}
+    kitsu_data = dict()
 
     write_kitsu_data_thread = threading.Thread(target=write_kitsu_data, args=(app_data, kitsu_data, log))
     write_kitsu_data_thread.daemon = True
     write_kitsu_data_thread.start()
+
+    get_kitsu_projects_thread = threading.Thread(target=get_kitsu_projects, args=(app_data, kitsu_data, log))
+    get_kitsu_projects_thread.daemon = True
+    get_kitsu_projects_thread.start()
 
     while True:
         try:
@@ -26,6 +30,7 @@ def kitsu_loop(app_data):
             name = config_gazu.get('name')
             password = config_gazu.get('password')
             kitsu_data.update(config_gazu.copy())
+
             time.sleep(4)
         except KeyboardInterrupt:
             return
@@ -38,6 +43,18 @@ def write_kitsu_data(app_data, kitsu_data, log):
         try:
             app_data['kitsu'].update(kitsu_data)
             time.sleep(0.1)
+        except KeyboardInterrupt:
+            return
+        except Exception as e:
+            log.error('exception in "write_kitsu_data": %s' % pformat(e))
+            time.sleep(4)
+
+def get_kitsu_projects(app_data, kitsu_data, log):
+    while True:
+        try:
+            config = app_data.get('config').copy()
+            pprint (config)
+            time.sleep(4)
         except KeyboardInterrupt:
             return
         except Exception as e:
