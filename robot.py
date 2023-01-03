@@ -91,7 +91,7 @@ if __name__ == "__main__":
         name = 'Baselight Flapi Process',
         args=(app_data, )
         )
-    processes.append(bl_process)
+    processes.append(bl_loop)
     log.debug ('Starting Baselight Flapi Process')
     bl_loop.start()
 
