@@ -24,7 +24,7 @@ APP_NAME = 'KitsuRobot'
 VERBOSE=True
 DEBUG=True
 
-__version__ = 'v0.0.5'
+__version__ = 'v0.0.5 dev 001'
 
 if __name__ == "__main__":
 
