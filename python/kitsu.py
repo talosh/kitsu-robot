@@ -14,21 +14,16 @@ def kitsu_loop(app_data):
 
     kitsu_data = dict()
 
-    write_kitsu_data_thread = threading.Thread(target=write_kitsu_data, args=(app_data, kitsu_data, log))
+    write_kitsu_data_thread = threading.Thread(target=update_app_data_kitsu, args=(app_data, kitsu_data, log))
     write_kitsu_data_thread.daemon = True
     write_kitsu_data_thread.start()
 
-    get_kitsu_projects_thread = threading.Thread(target=get_kitsu_projects, args=(app_data, kitsu_data, log))
+    get_kitsu_projects_thread = threading.Thread(target=get_kitsu_metadata, args=(app_data, kitsu_data, log))
     get_kitsu_projects_thread.daemon = True
     get_kitsu_projects_thread.start()
 
     while True:
         try:
-            config = app_data.get('config').copy()
-            config_gazu = config.get('gazu')
-            host = config_gazu.get('host')
-            name = config_gazu.get('name')
-            password = config_gazu.get('password')
             kitsu_data.update(config_gazu.copy())
 
             time.sleep(4)
@@ -38,7 +33,7 @@ def kitsu_loop(app_data):
             log.error('exception in "sequence_sync": %s' % pformat(e))
             time.sleep(4)
 
-def write_kitsu_data(app_data, kitsu_data, log):
+def update_app_data_kitsu(app_data, kitsu_data, log):
     while True:
         try:
             app_data['kitsu'].update(kitsu_data)
@@ -49,12 +44,23 @@ def write_kitsu_data(app_data, kitsu_data, log):
             log.error('exception in "write_kitsu_data": %s' % pformat(e))
             time.sleep(4)
 
-def get_kitsu_projects(app_data, kitsu_data, log):
+def get_kitsu_metadata(app_data, kitsu_data, log):
     while True:
         try:
             config = app_data.get('config').copy()
-            pprint (config)
-            time.sleep(4)
+            try:
+                timeout = config['robot']['timeout']
+            except:
+                timeout = 4
+            config_gazu = config.get('gazu')
+            host = config_gazu.get('host')
+            name = config_gazu.get('name')
+            password = config_gazu.get('password')
+            gazu_client = gazu.client.create_client(host)
+            gazu.log_in(name, password, client = gazu_client)
+
+            time.sleep(timeout)
+            gazu.log_out(client=gazu_client)
         except KeyboardInterrupt:
             return
         except Exception as e:
