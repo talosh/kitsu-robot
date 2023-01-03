@@ -24,8 +24,6 @@ def kitsu_loop(app_data):
 
     while True:
         try:
-            kitsu_data.update(config_gazu.copy())
-
             time.sleep(4)
         except KeyboardInterrupt:
             return
