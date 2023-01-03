@@ -12,7 +12,7 @@ from .util import RobotLog
 def kitsu_loop(app_data):
     log = RobotLog(app_data['config'], filename = 'kitsu.log')
 
-    kitsu_data = dict()
+    kitsu_data = {}
 
     write_kitsu_data_thread = threading.Thread(target=write_kitsu_data, args=(app_data, kitsu_data, log))
     write_kitsu_data_thread.daemon = True
