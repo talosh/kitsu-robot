@@ -11,7 +11,7 @@ from .util import RobotLog
 def kitsu_loop(app_data):
     log = RobotLog(app_data['config'], filename = 'kitsu.log')
 
-    pprint (app_data)
+    pprint (app_data.copy())
 
     while True:
         try:
