@@ -18,6 +18,8 @@ def baselight_loop(app_data):
 
     while True:
         try:
+            kitsu_data = app_data.get('kitsu')
+            pprint (kitsu_data)
             time.sleep(4)
         except KeyboardInterrupt:
             return
