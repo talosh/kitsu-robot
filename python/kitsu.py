@@ -27,6 +27,7 @@ def kitsu_loop(app_data):
             password = config_gazu.get('password')
 
             kitsu_data = config_gazu.copy()
+            pprint (kitsu_data)
 
             time.sleep(4)
         except KeyboardInterrupt:
