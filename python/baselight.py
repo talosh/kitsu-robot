@@ -18,7 +18,7 @@ def baselight_loop(app_data):
 
     while True:
         try:
-            pprint (app_data['kitsu'])
+            pprint (app_data['kitsu'].copy())
             time.sleep(4)
         except KeyboardInterrupt:
             return
