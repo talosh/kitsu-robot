@@ -37,6 +37,7 @@ def kitsu_loop(app_data):
 def write_kitsu_data(app_data, kitsu_data, log):
     while True:
         try:
+            pprint (kitsu_data)
             for key in kitsu_data.keys():
                 app_data['kitsu'][key] = kitsu_data[key]
             time.sleep(0.1)
