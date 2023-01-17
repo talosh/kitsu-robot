@@ -6,7 +6,7 @@ LDAP_HOST = "ldap.jumpcloud.com"
 LDAP_PORT = "389"
 LDAP_BASE_DN = "ou=Users,o=638853a7676fe04ccf41a9ed,dc=jumpcloud,dc=com"
 LDAP_DOMAIN = "jumpcloud.com"
-LDAP_USER = "jumpcloud"
+LDAP_USER = "engineering@dirtylooks.co.uk"
 LDAP_EXCLUDED_ACCOUNTS = ""
 
 # Main changes are in the user and server : 
