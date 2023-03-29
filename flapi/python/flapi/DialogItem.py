@@ -27,6 +27,7 @@ class DialogItem:
             self.FloatMax = obj.get("FloatMax")
             self.FloatSnap = obj.get("FloatSnap")
             self.Style = obj.get("Style")
+            self.Height = obj.get("Height")
         else:
             self.Key = None
             self.Label = None
@@ -42,6 +43,7 @@ class DialogItem:
             self.FloatMax = None
             self.FloatSnap = None
             self.Style = None
+            self.Height = 0
 
     @staticmethod
     def from_dict(o):
@@ -64,6 +66,7 @@ class DialogItem:
             "FloatMax": self.FloatMax,
             "FloatSnap": self.FloatSnap,
             "Style": self.Style,
+            "Height": self.Height,
         }
 
     def __repr__(self):

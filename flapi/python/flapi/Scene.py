@@ -622,6 +622,27 @@ class Scene(Interface):
             {}
         )
 
+    # get_record_timecode_for_frame
+    #
+    # Get record timecode for a given (timeline) frame number
+    #
+    # Arguments:
+    #    'frame_num' (int): Timeline frame number
+    #
+    # Returns:
+    #    (timecode): Record timecode
+    #
+    def get_record_timecode_for_frame(self, frame_num):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.get_record_timecode_for_frame",
+            {
+                'frame_num': frame_num,
+            }
+        )
+
     # get_shot_index_range
     #
     # Get index range of shots intersecting the (end exclusive) timeline frame range supplied
@@ -664,6 +685,27 @@ class Scene(Interface):
             {}
         )
 
+    # get_shot_id_at
+    #
+    # Return the ID of the shot at the timeline frame number supplied
+    #
+    # Arguments:
+    #    'frame' (int): Timeline frame number
+    #
+    # Returns:
+    #    (int): ID of shot at frame, or -1 if none found
+    #
+    def get_shot_id_at(self, frame):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.get_shot_id_at",
+            {
+                'frame': frame,
+            }
+        )
+
     # get_shot_id
     #
     # Return the ID for the shot at the given index within the Scene
@@ -693,6 +735,7 @@ class Scene(Interface):
     # * ShotId - A shot idenfifier (which can be used to obtain a Shot object via get_shot() if required).
     # * StartFrame - The shot's timeline start frame
     # * EndFrame - The shot's timeline end frame
+    # * PosterFrame - The shot's timeline poster frame
     # Returns new array shot list on success, NULL on error.
     #
     # Arguments:
@@ -1225,6 +1268,74 @@ class Scene(Interface):
             {
                 'enable': enable,
             }
+        )
+
+    # set_custom_data
+    #
+    # Set a custom data value in the scene with the supplied (string) key. Setting a
+    # custom data value does not require a delta. Also custom data values are unaffected
+    # by undo/redo. Existing custom data values can be deleted from a scene by supplying
+    # NULL/None/null as the data value (for an existing key).
+    #
+    # Arguments:
+    #    'data_key' (string): Custom data value key
+    #    'data_value' (any): New data value for the given key (or NULL/None/null to delete) [Optional]
+    #
+    # Returns:
+    #    (none)
+    #
+    def set_custom_data(self, data_key, data_value):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.set_custom_data",
+            {
+                'data_key': data_key,
+                'data_value': data_value,
+            }
+        )
+
+    # get_custom_data
+    #
+    # Get a custom data value from the scene previously set using set_custom_data.
+    #
+    # Arguments:
+    #    'data_key' (string): Custom data value key
+    #
+    # Returns:
+    #    (any): Custom data value found
+    #
+    def get_custom_data(self, data_key):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.get_custom_data",
+            {
+                'data_key': data_key,
+            }
+        )
+
+    # get_custom_data_keys
+    #
+    # Return sorted array of (string) keys that can be used to fetch scene
+    # custom data values via get_custom_data.
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (list): 
+    #        '<n>' (string): Key string
+    #
+    def get_custom_data_keys(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Scene.get_custom_data_keys",
+            {}
         )
 
     # get_groups

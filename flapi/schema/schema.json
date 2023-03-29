@@ -22,6 +22,71 @@
           }
         }, 
         {
+          "Name": "get_sdk_versions",
+          "Desc": "Get SDK version information",
+          "Static": 1,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "array",
+            "Desc": "Array of SDKVersion objects"
+          }
+        }, 
+        {
+          "Name": "get_connections_info",
+          "Desc": "Get array of current connections. Each entry in the array will be a ConnectionInfo object describing that connection.",
+          "Static": 1,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "array",
+            "Desc": "Array of connection info objects"
+          }
+        }, 
+        {
+          "Name": "get_video_streaming_supported",
+          "Desc": "Is video streaming supported (hardware, setup & licensed)",
+          "Static": 1,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "1 if streaming supported, 0 if not"
+          }
+        }, 
+        {
+          "Name": "get_video_streaming_enabled",
+          "Desc": "Is video streaming currently enabled",
+          "Static": 1,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "1 if streaming enabled, 0 if not"
+          }
+        }, 
+        {
+          "Name": "get_video_stream_address",
+          "Desc": "Return address for video stream",
+          "Static": 1,
+          "Args": [ 
+            {
+              "Name": "context",
+              "Type": "context",
+              "Desc": null,
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "string",
+            "Desc": "Address for video stream access. Used by Client View."
+          }
+        }, 
+        {
           "Name": "is_playing",
           "Desc": "Is playback currently in progress",
           "Static": 1,
@@ -35,7 +100,7 @@
         }, 
         {
           "Name": "get",
-          "Desc": "Return instance of the Application object",
+          "Desc": "Return instance of the Application object (typically for signal connection)",
           "Static": 1,
           "Args": {
 
@@ -231,6 +296,58 @@
             "Type": "any",
             "Desc": "Key of selected object, or NULL if no selection"
           }
+        }, 
+        {
+          "Name": "set_custom_data",
+          "Desc": "Set a custom data value in the application with the supplied (string) key. Existing custom data values can be deleted from the application by supplying NULL/None/null as the data value (for an existing key).",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "data_key",
+              "Type": "string",
+              "Desc": "Custom data value key",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "data_value",
+              "Type": "any",
+              "Desc": "New data value for the given key (or NULL/None/null to delete)",
+              "Nullable": 1
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_custom_data",
+          "Desc": "Get a custom data value from the application previously set using set_custom_data.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "data_key",
+              "Type": "string",
+              "Desc": "Custom data value key",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "any",
+            "Desc": "Custom data value found"
+          }
+        }, 
+        {
+          "Name": "get_custom_data_keys",
+          "Desc": "Return sorted array of (string) keys that can be used to fetch application custom data values via get_custom_data.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "array",
+            "Desc": ""
+          }
         }
       ],
       "URIs": null
@@ -298,6 +415,117 @@
           "Result": {
             "Type": "array",
             "Desc": "Array of audio sync progress information"
+          }
+        }
+      ],
+      "URIs": null
+    }, 
+    {
+      "Name": "ClientViewManager",
+      "Desc": null,
+      "Signals": [ 
+        "SigStreamConfigsChanged", 
+        "SigConnectedClientConfigsChanged", 
+        "SigSessionClientConfigsChanged", 
+        "SigCurrentSessionChanged", 
+        "SigSessionPropertyChanged", 
+        "SigClientViewEnabledChanged", 
+        "SigStreamingEnabledChanged", 
+        "SigStreamResListChanged", 
+        "ClientConfigsChanged", 
+        "SigHostUserSettingsChanged", 
+        "StreamConfigsChangedStart", 
+        "StreamConfigsChangedEnd", 
+        "PerformSimAdAction"
+      ],
+      "Methods": [ 
+        {
+          "Name": "get",
+          "Desc": "Get reference to the (singleton) ClientViewManager object",
+          "Static": 1,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "ClientViewManager",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "get_host_user_settings",
+          "Desc": "Get object containing Settings for the Client View's host user",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "ClientViewHostUserSettings",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "get_client_settings",
+          "Desc": "Get the connected Client View's config/settings object.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "client",
+              "Type": "context",
+              "Desc": null,
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "ClientViewClientSettings",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "get_stream_settings",
+          "Desc": "Get array of stream settings objects.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "array",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "get_streaming_enabled",
+          "Desc": "Is streaming currently enabled.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "1 if streaming enabled, otherwise 0"
+          }
+        }, 
+        {
+          "Name": "get_session_name",
+          "Desc": "Get the current Client View session name.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "string",
+            "Desc": "Current session name"
+          }
+        }, 
+        {
+          "Name": "get_session_clients",
+          "Desc": "Get array of current session clients. Each entry in the array will be a ConnectionInfo object describing that connection.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "array",
+            "Desc": "Array of current session clients"
           }
         }
       ],
@@ -393,15 +621,15 @@
           }
         }, 
         {
-          "Name": "get_viewing_format_dims",
-          "Desc": "Get basic geometry (width, height and aspect ratio) of the cursor's current viewing format",
+          "Name": "get_record_timecode",
+          "Desc": "Get cursor's position in the timeline as a timecode",
           "Static": null,
           "Args": {
 
           },
           "Result": {
-            "Type": "struct",
-            "Desc": "Viewing format dimensions"
+            "Type": "timecode",
+            "Desc": "Record timecode"
           }
         }, 
         {
@@ -417,6 +645,42 @@
           }
         }, 
         {
+          "Name": "get_viewing_format_dims",
+          "Desc": "Get basic geometry (width, height and aspect ratio) of the cursor's current viewing format",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "struct",
+            "Desc": "Viewing format dimensions"
+          }
+        }, 
+        {
+          "Name": "get_viewing_format_mask_name",
+          "Desc": "Get current viewing format mask name",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "FormatMask",
+            "Desc": ""
+          }
+        }, 
+        {
+          "Name": "get_viewing_format_mask",
+          "Desc": "Get current viewing format mask rectangle",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "FormatMask",
+            "Desc": ""
+          }
+        }, 
+        {
           "Name": "get_age",
           "Desc": "Get the cursor's 'age'. The age is an integer, incremented whenever an attribute which could result in a visual change to the image display has been modfied.",
           "Static": null,
@@ -426,6 +690,18 @@
           "Result": {
             "Type": "int",
             "Desc": "Cursor age value"
+          }
+        }, 
+        {
+          "Name": "is_using_truelight",
+          "Desc": "Is Truelight currently in use (ie. a profile has been selected & Truelight is enabled) in this cursor.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "Flag indicating if Truelight is in use"
           }
         }
       ],
@@ -3585,6 +3861,35 @@
           }
         }, 
         {
+          "Name": "get_output_filename_for_deliverable",
+          "Desc": "Return the full filename for the given frame number of a deliverable",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "index",
+              "Type": "int",
+              "Desc": "Index of deliverable",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "leave_container",
+              "Type": "int",
+              "Desc": "Leave %C container variable in returned path",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "frame",
+              "Type": "int",
+              "Desc": "Frame number to generate filename for. Default is -1 to indicate the first frame of the render operation.",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "string",
+            "Desc": "Full filename for rendered file/frame"
+          }
+        }, 
+        {
           "Name": "set_container",
           "Desc": "Set the output container directory for all deliverables",
           "Static": null,
@@ -4267,6 +4572,23 @@
           }
         }, 
         {
+          "Name": "get_record_timecode_for_frame",
+          "Desc": "Get record timecode for a given (timeline) frame number",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "frame_num",
+              "Type": "int",
+              "Desc": "Timeline frame number",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "timecode",
+            "Desc": "Record timecode"
+          }
+        }, 
+        {
           "Name": "get_shot_index_range",
           "Desc": "Get index range of shots intersecting the (end exclusive) timeline frame range supplied ",
           "Static": null,
@@ -4302,6 +4624,23 @@
           }
         }, 
         {
+          "Name": "get_shot_id_at",
+          "Desc": "Return the ID of the shot at the timeline frame number supplied",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "frame",
+              "Type": "int",
+              "Desc": "Timeline frame number",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "int",
+            "Desc": "ID of shot at frame, or -1 if none found"
+          }
+        }, 
+        {
           "Name": "get_shot_id",
           "Desc": "Return the ID for the shot at the given index within the Scene",
           "Static": null,
@@ -4320,7 +4659,7 @@
         }, 
         {
           "Name": "get_shot_ids",
-          "Desc": "Get an array of shots in the supplied indexed range. Each array entry is an object containing basic information for that shot. Explicitly, each shot entry will contain the following keys:  * ShotId - A shot idenfifier (which can be used to obtain a Shot object via get_shot() if required). * StartFrame - The shot's timeline start frame * EndFrame - The shot's timeline end frame  Returns new array shot list on success, NULL on error.",
+          "Desc": "Get an array of shots in the supplied indexed range. Each array entry is an object containing basic information for that shot. Explicitly, each shot entry will contain the following keys:  * ShotId - A shot idenfifier (which can be used to obtain a Shot object via get_shot() if required). * StartFrame - The shot's timeline start frame * EndFrame - The shot's timeline end frame * PosterFrame - The shot's timeline poster frame  Returns new array shot list on success, NULL on error.",
           "Static": null,
           "Args": [ 
             {
@@ -4862,6 +5201,58 @@
           "Result": {
             "Type": "none",
             "Desc": null
+          }
+        }, 
+        {
+          "Name": "set_custom_data",
+          "Desc": "Set a custom data value in the scene with the supplied (string) key. Setting a custom data value does not require a delta. Also custom data values are unaffected by undo/redo. Existing custom data values can be deleted from a scene by supplying NULL/None/null as the data value (for an existing key).",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "data_key",
+              "Type": "string",
+              "Desc": "Custom data value key",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "data_value",
+              "Type": "any",
+              "Desc": "New data value for the given key (or NULL/None/null to delete)",
+              "Nullable": 1
+            }
+          ],
+          "Result": {
+            "Type": "none",
+            "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_custom_data",
+          "Desc": "Get a custom data value from the scene previously set using set_custom_data.",
+          "Static": null,
+          "Args": [ 
+            {
+              "Name": "data_key",
+              "Type": "string",
+              "Desc": "Custom data value key",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "any",
+            "Desc": "Custom data value found"
+          }
+        }, 
+        {
+          "Name": "get_custom_data_keys",
+          "Desc": "Return sorted array of (string) keys that can be used to fetch scene custom data values via get_custom_data.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "array",
+            "Desc": ""
           }
         }
       ],
@@ -5514,6 +5905,18 @@
           }
         }, 
         {
+          "Name": "get_poster_frame",
+          "Desc": "Get the poster frame of the shot within the scene that contains it. ",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "float",
+            "Desc": "Poster frame number of the shot."
+          }
+        }, 
+        {
           "Name": "get_start_timecode",
           "Desc": "Get the start record timecode of the shot",
           "Static": null,
@@ -5844,8 +6247,20 @@
           }
         }, 
         {
+          "Name": "supports_client_event_data",
+          "Desc": "Does this shot support client event lists/data.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "int",
+            "Desc": "1 if the shot supports client event data, otherwise 0."
+          }
+        }, 
+        {
           "Name": "get_client_event_list",
-          "Desc": "Get array of client events (notes/flags) for either an entire shot, or a specific frame of a shot. The array returned is chronologically sorted (oldest first). Each event entry is a dictionary describing the event.",
+          "Desc": "Get array of client events (notes/flags) for either an entire shot, or a specific frame of a shot. When querying the event list at a specific frame, NULL/None/null will be returned if no event list exists at that frame or the shot. The events array returned will be chronologically sorted (oldest first). Each event entry is itself a dictionary describing that event.",
           "Static": null,
           "Args": [ 
             {
@@ -5967,7 +6382,7 @@
               "Name": "md_keys",
               "Type": "set",
               "Desc": "Set of metadata keys whose values are required, or NULL/None/null for all metadata.",
-              "Nullable": 0
+              "Nullable": 1
             }
           ],
           "Result": {
@@ -6025,6 +6440,18 @@
           "Result": {
             "Type": "none",
             "Desc": null
+          }
+        }, 
+        {
+          "Name": "get_client_data_summary",
+          "Desc": "Get summary info on any client data associated with this shot.",
+          "Static": null,
+          "Args": {
+
+          },
+          "Result": {
+            "Type": "struct",
+            "Desc": "Client summary info"
           }
         }, 
         {
@@ -6593,15 +7020,15 @@
           "Static": 1,
           "Args": [ 
             {
-              "Name": "shot_if",
-              "Type": "Shot",
-              "Desc": "Shot interface object",
+              "Name": "client",
+              "Type": "context",
+              "Desc": null,
               "Nullable": 0
             }, 
             {
-              "Name": "graded",
-              "Type": "int",
-              "Desc": "Graded/ungraded flag",
+              "Name": "shot_if",
+              "Type": "Shot",
+              "Desc": "Shot interface object",
               "Nullable": 0
             }, 
             {
@@ -6614,6 +7041,41 @@
           "Result": {
             "Type": "string",
             "Desc": "Thumbnail URI"
+          }
+        }, 
+        {
+          "Name": "get_scrub_uri_template",
+          "Desc": "Get a scrub image URI template (prefix & suffix strings). This can be used while scrubbing to generate image URIs without additional roundtrips/calls to the server.",
+          "Static": 1,
+          "Args": [ 
+            {
+              "Name": "client",
+              "Type": "context",
+              "Desc": null,
+              "Nullable": 0
+            }, 
+            {
+              "Name": "scene_if",
+              "Type": "Scene",
+              "Desc": "Scene interface object",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "shot_id",
+              "Type": "Shot",
+              "Desc": "ID of shot in scene",
+              "Nullable": 0
+            }, 
+            {
+              "Name": "options",
+              "Type": "struct",
+              "Desc": "Stucture containing optional settings used to control the type of scrub image rendered.",
+              "Nullable": 0
+            }
+          ],
+          "Result": {
+            "Type": "array",
+            "Desc": "Template array containing 2 strings; a URI prefix & suffix. To form a completeURI, the scrub frame number required should be inserted between these 2 strings."
           }
         }
       ],
@@ -6964,6 +7426,26 @@
           "Desc": "30 fps",
           "Key": "AUDIOSYNC_FPS_30000",
           "Value": "30000"
+        }, 
+        {
+          "Desc": "48 fps",
+          "Key": "AUDIOSYNC_FPS_48000",
+          "Value": "48000"
+        }, 
+        {
+          "Desc": "50 fps",
+          "Key": "AUDIOSYNC_FPS_50000",
+          "Value": "50000"
+        }, 
+        {
+          "Desc": "59.94 fps",
+          "Key": "AUDIOSYNC_FPS_59940",
+          "Value": "59940"
+        }, 
+        {
+          "Desc": "60 fps",
+          "Key": "AUDIOSYNC_FPS_60000",
+          "Value": "60000"
         }
       ]
     }, 
@@ -7730,6 +8212,36 @@
           "Desc": "Dropdown",
           "Key": "DIT_DROPDOWN",
           "Value": "Dropdown"
+        }, 
+        {
+          "Desc": "List of items",
+          "Key": "DIT_LIST",
+          "Value": "List"
+        }, 
+        {
+          "Desc": "Toggle Button",
+          "Key": "DIT_TOGGLE",
+          "Value": "Toggle"
+        }, 
+        {
+          "Desc": "Set of Toggle buttons",
+          "Key": "DIT_TOGGLE_SET",
+          "Value": "ToggleSet"
+        }, 
+        {
+          "Desc": "Dropdown menu to allow toggling multiple items",
+          "Key": "DIT_TOGGLE_DROPDOWN",
+          "Value": "ToggleDropdown"
+        }, 
+        {
+          "Desc": "List of toggle items",
+          "Key": "DIT_TOGGLE_LIST",
+          "Value": "ToggleList"
+        }, 
+        {
+          "Desc": "Set of radio buttons",
+          "Key": "DIT_RADIO_GROUP",
+          "Value": "RadioGroup"
         }, 
         {
           "Desc": "File Path",
@@ -9928,6 +10440,84 @@
       ]
     }, 
     {
+      "Name": "ClientViewClientSettings",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "StreamIndex",
+          "Type": "int",
+          "Desc": "Stream index, or -1 if streaming disabled",
+          "Values": null
+        }, 
+        {
+          "Name": "StreamConfigsAge",
+          "Type": "int",
+          "Desc": "'Age' value incremented when a stream's configuration value changes. ",
+          "Values": null
+        }, 
+        {
+          "Name": "NotesEnabled",
+          "Type": "int",
+          "Desc": "Flag set if the Client View can add/edit notes and flags",
+          "Values": null
+        }, 
+        {
+          "Name": "LaserEnabled",
+          "Type": "int",
+          "Desc": "Flag set if the Client View has a laser pointer (if streaming enabled)",
+          "Values": null
+        }, 
+        {
+          "Name": "Debug",
+          "Type": "int",
+          "Desc": "",
+          "Values": null
+        }
+      ]
+    }, 
+    {
+      "Name": "ClientViewHostUserSettings",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "UserName",
+          "Type": "string",
+          "Desc": "Host user's name",
+          "Values": null
+        }, 
+        {
+          "Name": "LaserColour",
+          "Type": "array",
+          "Desc": "Host user's laser pointer colour (0->1 per component).",
+          "Values": null
+        }
+      ]
+    }, 
+    {
+      "Name": "ClientViewStreamSettings",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "Resolution",
+          "Type": "string",
+          "Desc": "Stream resolution string eg. '1920x1080'",
+          "Values": null
+        }, 
+        {
+          "Name": "Bitrate",
+          "Type": "int",
+          "Desc": "Integer bitrate in Mbit/s",
+          "Values": null
+        }, 
+        {
+          "Name": "ColourSpace",
+          "Type": "string",
+          "Desc": "Either 'P3', 'sRGB' or 'HDR'",
+          "Values": null
+        }
+      ]
+    }, 
+    {
       "Name": "ColourSpaceInfo",
       "Desc": null,
       "Fields": [ 
@@ -9947,6 +10537,30 @@
           "Name": "Type",
           "Type": "string",
           "Desc": "Type of Colour Space (\"scene\",\"display\",\"any\")",
+          "Values": null
+        }
+      ]
+    }, 
+    {
+      "Name": "ConnectionInfo",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "ConnectionID",
+          "Type": "int",
+          "Desc": "Connection ID. Note: This can be obtained for a specific connection via a FLAPI Connection's 'get_connection_id()' method",
+          "Values": null
+        }, 
+        {
+          "Name": "UserName",
+          "Type": "string",
+          "Desc": "Connected user/client name",
+          "Values": null
+        }, 
+        {
+          "Name": "UsageType",
+          "Type": "string",
+          "Desc": "Usage type declared by a connection ('Unknown' if none explicitly set)",
           "Values": null
         }
       ]
@@ -10349,6 +10963,12 @@
           "Name": "Style",
           "Type": "any",
           "Desc": "Define the style for this dialog item",
+          "Values": null
+        }, 
+        {
+          "Name": "Height",
+          "Type": "int",
+          "Desc": "Height of this item",
           "Values": null
         }
       ]
@@ -11746,6 +12366,36 @@
       ]
     }, 
     {
+      "Name": "SDKVersion",
+      "Desc": null,
+      "Fields": [ 
+        {
+          "Name": "Key",
+          "Type": "string",
+          "Desc": "Key identifying SDK",
+          "Values": null
+        }, 
+        {
+          "Name": "Name",
+          "Type": "string",
+          "Desc": "Name of SDK",
+          "Values": null
+        }, 
+        {
+          "Name": "Description",
+          "Type": "string",
+          "Desc": "Description of SDK",
+          "Values": null
+        }, 
+        {
+          "Name": "Version",
+          "Type": "string",
+          "Desc": "Version Number",
+          "Values": null
+        }
+      ]
+    }, 
+    {
       "Name": "SceneInfo",
       "Desc": null,
       "Fields": [ 
@@ -11927,6 +12577,12 @@
           "Name": "EndFrame",
           "Type": "int",
           "Desc": "The shot's timeline end frame",
+          "Values": null
+        }, 
+        {
+          "Name": "PosterFrame",
+          "Type": "int",
+          "Desc": "The shot's timeline poster frame",
           "Values": null
         }
       ]

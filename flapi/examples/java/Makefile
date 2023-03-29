@@ -1,7 +1,7 @@
 ROOT := $(dir $(firstword $(MAKEFILE_LIST)))
 JAVA := /usr/bin/java
 JAVAC := /usr/bin/javac -g
-CLASSPATH := "/usr/fl/baselight-5.3.16845/share/flapi/java/*"
+CLASSPATH := "/usr/fl/baselight-5.3.17457/share/flapi/java/*"
 QUIET ?= @
 
 SRCS := $(shell ls $(ROOT)/*.java)

@@ -451,6 +451,32 @@ class RenderSetup(Interface):
             }
         )
 
+    # get_output_filename_for_deliverable
+    #
+    # Return the full filename for the given frame number of a deliverable
+    #
+    # Arguments:
+    #    'index' (int): Index of deliverable
+    #    'leave_container' (int): Leave %C container variable in returned path [Optional]
+    #    'frame' (int): Frame number to generate filename for.
+    #                   Default is -1 to indicate the first frame of the render operation. [Optional]
+    #
+    # Returns:
+    #    (string): Full filename for rendered file/frame
+    #
+    def get_output_filename_for_deliverable(self, index, leave_container = 0, frame = -1):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "RenderSetup.get_output_filename_for_deliverable",
+            {
+                'index': index,
+                'leave_container': leave_container,
+                'frame': frame,
+            }
+        )
+
     # set_container
     #
     # Set the output container directory for all deliverables

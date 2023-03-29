@@ -823,11 +823,12 @@ class Connection:
 
     # Register a plugin script with the host application
     #
-    def register_script(self, scriptPath, status):
+    def register_script(self, scriptPath, version, status):
         msg = {
             "jsonrpc": "2.0",
             "method": "register_script",
             "path": scriptPath,
+            "version": version,
             "status" : status
         }
 
@@ -936,6 +937,10 @@ AUDIOSYNC_CRITERIA_SHOTSCENETAKE="ShotSceneTake"
 #    AUDIOSYNC_FPS_29970 : 29.97 fps
 #    AUDIOSYNC_FPS_2997DF : 29.97 fps DF
 #    AUDIOSYNC_FPS_30000 : 30 fps
+#    AUDIOSYNC_FPS_48000 : 48 fps
+#    AUDIOSYNC_FPS_50000 : 50 fps
+#    AUDIOSYNC_FPS_59940 : 59.94 fps
+#    AUDIOSYNC_FPS_60000 : 60 fps
 if sys.version_info[0] >= 3:
     class AUDIOSYNC_FPS(enum.Enum):
         AUDIOSYNC_FPS_23976="23976"
@@ -944,6 +949,10 @@ if sys.version_info[0] >= 3:
         AUDIOSYNC_FPS_29970="29970"
         AUDIOSYNC_FPS_2997DF="2997DF"
         AUDIOSYNC_FPS_30000="30000"
+        AUDIOSYNC_FPS_48000="48000"
+        AUDIOSYNC_FPS_50000="50000"
+        AUDIOSYNC_FPS_59940="59940"
+        AUDIOSYNC_FPS_60000="60000"
         def describe(self):
             descs = {
                 AUDIOSYNC_FPS.AUDIOSYNC_FPS_23976: "23.976 fps",
@@ -952,6 +961,10 @@ if sys.version_info[0] >= 3:
                 AUDIOSYNC_FPS.AUDIOSYNC_FPS_29970: "29.97 fps",
                 AUDIOSYNC_FPS.AUDIOSYNC_FPS_2997DF: "29.97 fps DF",
                 AUDIOSYNC_FPS.AUDIOSYNC_FPS_30000: "30 fps",
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_48000: "48 fps",
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_50000: "50 fps",
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_59940: "59.94 fps",
+                AUDIOSYNC_FPS.AUDIOSYNC_FPS_60000: "60 fps",
             }
             return descs.get(self)
 
@@ -964,6 +977,10 @@ AUDIOSYNC_FPS_25000="25000"
 AUDIOSYNC_FPS_29970="29970"
 AUDIOSYNC_FPS_2997DF="2997DF"
 AUDIOSYNC_FPS_30000="30000"
+AUDIOSYNC_FPS_48000="48000"
+AUDIOSYNC_FPS_50000="50000"
+AUDIOSYNC_FPS_59940="59940"
+AUDIOSYNC_FPS_60000="60000"
 #  AUDIOSYNC_METADATA : Values for AudioSyncSettings Metadata
 #    AUDIOSYNC_METADATA_SCENETAKE : Scene & Take
 #    AUDIOSYNC_METADATA_DATE : Date
@@ -1705,6 +1722,12 @@ DIAGWEIGHT_HEAVY="DM_HEAVY"
 #    DIT_FLOAT : Floating-point number
 #    DIT_TIMECODE : Timecode
 #    DIT_DROPDOWN : Dropdown
+#    DIT_LIST : List of items
+#    DIT_TOGGLE : Toggle Button
+#    DIT_TOGGLE_SET : Set of Toggle buttons
+#    DIT_TOGGLE_DROPDOWN : Dropdown menu to allow toggling multiple items
+#    DIT_TOGGLE_LIST : List of toggle items
+#    DIT_RADIO_GROUP : Set of radio buttons
 #    DIT_FILEPATH : File Path
 #    DIT_IMAGEPATH : Image Path
 #    DIT_DIRECTORY : Directory Path
@@ -1721,6 +1744,12 @@ if sys.version_info[0] >= 3:
         DIT_FLOAT="Float"
         DIT_TIMECODE="Timecode"
         DIT_DROPDOWN="Dropdown"
+        DIT_LIST="List"
+        DIT_TOGGLE="Toggle"
+        DIT_TOGGLE_SET="ToggleSet"
+        DIT_TOGGLE_DROPDOWN="ToggleDropdown"
+        DIT_TOGGLE_LIST="ToggleList"
+        DIT_RADIO_GROUP="RadioGroup"
         DIT_FILEPATH="File"
         DIT_IMAGEPATH="Image"
         DIT_DIRECTORY="Directory"
@@ -1737,6 +1766,12 @@ if sys.version_info[0] >= 3:
                 DIALOG_ITEM_TYPE.DIT_FLOAT: "Floating-point number",
                 DIALOG_ITEM_TYPE.DIT_TIMECODE: "Timecode",
                 DIALOG_ITEM_TYPE.DIT_DROPDOWN: "Dropdown",
+                DIALOG_ITEM_TYPE.DIT_LIST: "List of items",
+                DIALOG_ITEM_TYPE.DIT_TOGGLE: "Toggle Button",
+                DIALOG_ITEM_TYPE.DIT_TOGGLE_SET: "Set of Toggle buttons",
+                DIALOG_ITEM_TYPE.DIT_TOGGLE_DROPDOWN: "Dropdown menu to allow toggling multiple items",
+                DIALOG_ITEM_TYPE.DIT_TOGGLE_LIST: "List of toggle items",
+                DIALOG_ITEM_TYPE.DIT_RADIO_GROUP: "Set of radio buttons",
                 DIALOG_ITEM_TYPE.DIT_FILEPATH: "File Path",
                 DIALOG_ITEM_TYPE.DIT_IMAGEPATH: "Image Path",
                 DIALOG_ITEM_TYPE.DIT_DIRECTORY: "Directory Path",
@@ -1757,6 +1792,12 @@ DIT_INTEGER="Integer"
 DIT_FLOAT="Float"
 DIT_TIMECODE="Timecode"
 DIT_DROPDOWN="Dropdown"
+DIT_LIST="List"
+DIT_TOGGLE="Toggle"
+DIT_TOGGLE_SET="ToggleSet"
+DIT_TOGGLE_DROPDOWN="ToggleDropdown"
+DIT_TOGGLE_LIST="ToggleList"
+DIT_RADIO_GROUP="RadioGroup"
 DIT_FILEPATH="File"
 DIT_IMAGEPATH="Image"
 DIT_DIRECTORY="Directory"
@@ -3380,7 +3421,11 @@ from .AudioSyncSettings import AudioSyncSettings
 from .BLGExportSettings import BLGExportSettings
 from .CDLExportSettings import CDLExportSettings
 from .CategoryInfo import CategoryInfo
+from .ClientViewClientSettings import ClientViewClientSettings
+from .ClientViewHostUserSettings import ClientViewHostUserSettings
+from .ClientViewStreamSettings import ClientViewStreamSettings
 from .ColourSpaceInfo import ColourSpaceInfo
+from .ConnectionInfo import ConnectionInfo
 from .CubeExportSettings import CubeExportSettings
 from .CustomerInfo import CustomerInfo
 from .DRTInfo import DRTInfo
@@ -3421,6 +3466,7 @@ from .RenderFileTypeInfo import RenderFileTypeInfo
 from .RenderOpInfo import RenderOpInfo
 from .RenderProcessorLogItem import RenderProcessorLogItem
 from .RenderStatus import RenderStatus
+from .SDKVersion import SDKVersion
 from .SceneInfo import SceneInfo
 from .ScenePath import ScenePath
 from .SceneSettingDefinition import SceneSettingDefinition
@@ -3433,6 +3479,7 @@ from .VolumeInfo import VolumeInfo
 from .APITest import APITest
 from .Application import Application
 from .AudioSync import AudioSync
+from .ClientViewManager import ClientViewManager
 from .CurrentGrade import CurrentGrade
 from .Cursor import Cursor
 from .Diagnostics import Diagnostics
