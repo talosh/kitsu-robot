@@ -29,11 +29,12 @@ def set_metadata_fields(config):
                 descriptors_api_path = '/data/projects/' + project.get('id') + '/metadata-descriptors'
                 project_descriptor_data = gazu.client.get(descriptors_api_path, client = gazu_client)
                 project_descriptor_names = [x['name'] for x in project_descriptor_data]
-
-                pprint (metadata_descriptors)
                 
                 for metadata_descriptor in metadata_descriptors:
                     if metadata_descriptor.get('name') not in project_descriptor_names:
+                        
+                        pprint (metadata_descriptor)
+
                         data = {
                             'choices': [],
                             'for_client': False,
