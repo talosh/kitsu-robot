@@ -721,7 +721,7 @@ def get_baselight_scene_shots(config, blpath):
         return []
 
     try:
-        log.verbose('loading scene: %s' % scene_path)
+        log.verbose('loading scene: %s' % scene_path.get('Scene'))
         scene = conn.Scene.open_scene( scene_path, { flapi.OPENFLAG_READ_ONLY } )
     except flapi.FLAPIException as ex:
         log.error( "Error loading scene: %s" % ex )
