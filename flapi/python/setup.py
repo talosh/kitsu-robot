@@ -5,7 +5,7 @@ with open("README.md","r") as fh:
 
 setuptools.setup(
     name="flapi",
-    version="5.3.17457",
+    version="5.3.17711",
     author="FilmLight Ltd.",
     author_email="baselight-support@filmlight.ltd.uk",
     description="FilmLight API",

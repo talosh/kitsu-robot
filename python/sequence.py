@@ -677,13 +677,13 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
     scene.release()
 
     try:
-        log.verbose('Trying to open scene %s in read-write mode' % scene_path)
+        log.verbose('Trying to open scene %s in read-write mode' % scene_path.get('Scene'))
         scene = conn.Scene.open_scene( scene_path )
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
         return None
 
-    log.verbose('Adding kistu-uid metadata columnn to scene: "%s"' % scene.get_scene_pathname())
+    log.verbose('Adding kitsu-uid metadata columnn to scene: "%s"' % scene.get_scene_pathname())
     scene.start_delta('Add kitsu-id metadata column')
     metadata_obj = scene.add_metadata_defn('kitsu-uid', 'String')
     scene.end_delta()
