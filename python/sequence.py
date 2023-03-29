@@ -217,7 +217,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         return None
 
     try:
-        log.verbose('Trying to open scene %s in read-write mode' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
+        log.verbose('Trying to open scene: %s in read-write mode' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
         scene = conn.Scene.open_scene( scene_path, {  flapi.OPENFLAG_DISCARD  })
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
@@ -397,7 +397,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     log.verbose( "Opening QueueManager connection" )
 
     try:
-        log.verbose('Trying to open scene %s in read-write mode' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
+        log.verbose('Trying to open scene: %s in read-write mode' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
         scene = conn.Scene.open_scene( scene_path, {  flapi.OPENFLAG_DISCARD  })
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
@@ -677,7 +677,7 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
     scene.release()
 
     try:
-        log.verbose('Trying to open scene %s in read-write mode' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
+        log.verbose('Trying to open scene: %s in read-write mode' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
         scene = conn.Scene.open_scene( scene_path )
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
@@ -836,10 +836,10 @@ def fl_get_scene_path(config, flapi, conn, blpath):
             log.verbose('checking baselight scene: %s' % blpath)
 
             if not conn.JobManager.scene_exists(bl_hostname, bl_jobname, bl_scene_path):
-                log.verbose('baselight scene %s does not exist' % blpath)
+                log.verbose('baselight scene: %s does not exist' % blpath)
                 return None
             else:
-                log.verbose('baselight scene %s exists' % blpath)
+                log.verbose('baselight scene: %s exists' % blpath)
 
         
         try:
