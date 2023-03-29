@@ -48,6 +48,7 @@ def set_metadata_fields(config):
                         for key in metadata_descriptor.keys():
                             data[key] = metadata_descriptor[key]
 
+                        log.info('creating %s in %s' % (metadata_descriptor_name, project.get('name')))
                         gazu.client.post(descriptors_api_path, data, client = gazu_client)
 
             time.sleep(4)
