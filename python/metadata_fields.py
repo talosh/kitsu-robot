@@ -31,7 +31,12 @@ def set_metadata_fields(config):
                 project_descriptor_names = [x['name'] for x in project_descriptor_data]
                 
                 for metadata_descriptor in metadata_descriptors:
-                    if metadata_descriptor.get('name') not in project_descriptor_names:
+                    metadata_descriptor_name = metadata_descriptor.get('name')
+                    if not metadata_descriptor_name:
+                        continue
+                    if metadata_descriptor_name not in project_descriptor_names:
+                        if metadata_descriptor_name.lower() in project_descriptor_names:
+                            continue
                         
                         pprint (metadata_descriptor)
                         pprint (project_descriptor_names)
