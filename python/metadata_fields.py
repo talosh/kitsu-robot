@@ -41,8 +41,6 @@ def set_metadata_fields(config):
                         pprint (metadata_descriptor)
                         pprint (project_descriptor_names)
 
-                        sys.exit()
-
                         data = {
                             'choices': [],
                             'for_client': False,
