@@ -217,7 +217,7 @@ def sync_shot_marks(config, gazu, baselight_linked_sequence):
         return None
 
     try:
-        log.verbose('Trying to open scene %s in read-write mode' % scene_path)
+        log.verbose('Trying to open scene %s in read-write mode' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
         scene = conn.Scene.open_scene( scene_path, {  flapi.OPENFLAG_DISCARD  })
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
@@ -397,7 +397,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
     log.verbose( "Opening QueueManager connection" )
 
     try:
-        log.verbose('Trying to open scene %s in read-write mode' % scene_path)
+        log.verbose('Trying to open scene %s in read-write mode' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
         scene = conn.Scene.open_scene( scene_path, {  flapi.OPENFLAG_DISCARD  })
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
