@@ -110,6 +110,25 @@ class Shot(Interface):
             {}
         )
 
+    # get_poster_frame
+    #
+    # Get the poster frame of the shot within the scene that contains it. 
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (float): Poster frame number of the shot.
+    #
+    def get_poster_frame(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.get_poster_frame",
+            {}
+        )
+
     # get_start_timecode
     #
     # Get the start record timecode of the shot
@@ -540,9 +559,28 @@ class Shot(Interface):
             {}
         )
 
+    # supports_client_event_data
+    #
+    # Does this shot support client event lists/data.
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (int): 1 if the shot supports client event data, otherwise 0.
+    #
+    def supports_client_event_data(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.supports_client_event_data",
+            {}
+        )
+
     # get_client_event_list
     #
-    # Get array of client events (notes/flags) for either an entire shot, or a specific frame of a shot. The array returned is chronologically sorted (oldest first). Each event entry is a dictionary describing the event.
+    # Get array of client events (notes/flags) for either an entire shot, or a specific frame of a shot. When querying the event list at a specific frame, NULL/None/null will be returned if no event list exists at that frame or the shot. The events array returned will be chronologically sorted (oldest first). Each event entry is itself a dictionary describing that event.
     #
     # Arguments:
     #    'list_frame' (int): Identifies which event list to return; either for the entire shot (if no list_frame supplied), or for a specific, shot start relative frame number [Optional]
@@ -667,12 +705,12 @@ class Shot(Interface):
     #
     # Arguments:
     #    'client_event_id' (int): ID of client event
-    #    'md_keys' (set): Set of metadata keys whose values are required, or NULL/None/null for all metadata.
+    #    'md_keys' (set): Set of metadata keys whose values are required, or NULL/None/null for all metadata. [Optional]
     #
     # Returns:
     #    (dict): Key/value pairs containing the metadata for the client event.
     #
-    def get_client_event_metadata(self, client_event_id, md_keys):
+    def get_client_event_metadata(self, client_event_id, md_keys = None):
         if self.target == None:
             raise FLAPIException( "Instance method called on object with no instance" )
         return self.conn.call(
@@ -746,6 +784,26 @@ class Shot(Interface):
             {
                 'list_frame': list_frame,
             }
+        )
+
+    # get_client_data_summary
+    #
+    # Get summary info on any client data associated with this shot.
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (dict): Client summary info
+    #        'Clients' (dict): Dictionary containing client name keys/entries for all clients who have added data to this shot. The value associated with each key is a set containing all the types of data that client has added ("Note" and/or "Flag").
+    #
+    def get_client_data_summary(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Shot.get_client_data_summary",
+            {}
         )
 
     # get_num_marks

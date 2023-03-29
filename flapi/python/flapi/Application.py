@@ -37,6 +37,103 @@ class Application(Interface):
             {}
         )
 
+    # get_sdk_versions
+    #
+    # Get SDK version information
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (list): Array of SDKVersion objects
+    #        '<n>' (SDKVersion): 
+    #
+    def get_sdk_versions(self):
+        if self.target != None:
+            raise FLAPIException( "Static method get_sdk_versions called on instance of Application" )
+        return self.conn.call(
+            None,
+            "Application.get_sdk_versions",
+            {}
+        )
+
+    # get_connections_info
+    #
+    # Get array of current connections. Each entry in the array will be a ConnectionInfo object describing that connection.
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (list): Array of connection info objects
+    #        '<n>' (ConnectionInfo): 
+    #
+    def get_connections_info(self):
+        if self.target != None:
+            raise FLAPIException( "Static method get_connections_info called on instance of Application" )
+        return self.conn.call(
+            None,
+            "Application.get_connections_info",
+            {}
+        )
+
+    # get_video_streaming_supported
+    #
+    # Is video streaming supported (hardware, setup & licensed)
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (int): 1 if streaming supported, 0 if not
+    #
+    def get_video_streaming_supported(self):
+        if self.target != None:
+            raise FLAPIException( "Static method get_video_streaming_supported called on instance of Application" )
+        return self.conn.call(
+            None,
+            "Application.get_video_streaming_supported",
+            {}
+        )
+
+    # get_video_streaming_enabled
+    #
+    # Is video streaming currently enabled
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (int): 1 if streaming enabled, 0 if not
+    #
+    def get_video_streaming_enabled(self):
+        if self.target != None:
+            raise FLAPIException( "Static method get_video_streaming_enabled called on instance of Application" )
+        return self.conn.call(
+            None,
+            "Application.get_video_streaming_enabled",
+            {}
+        )
+
+    # get_video_stream_address
+    #
+    # Return address for video stream
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (string): Address for video stream access. Used by Client View.
+    #
+    def get_video_stream_address(self):
+        if self.target != None:
+            raise FLAPIException( "Static method get_video_stream_address called on instance of Application" )
+        return self.conn.call(
+            None,
+            "Application.get_video_stream_address",
+            {}
+        )
+
     # is_playing
     #
     # Is playback currently in progress
@@ -58,7 +155,7 @@ class Application(Interface):
 
     # get
     #
-    # Return instance of the Application object
+    # Return instance of the Application object (typically for signal connection)
     #
     # Arguments:
     #    None
@@ -270,6 +367,73 @@ class Application(Interface):
                 'message': message,
                 'items': items,
             }
+        )
+
+    # set_custom_data
+    #
+    # Set a custom data value in the application with the supplied (string) key. Existing custom
+    # data values can be deleted from the application by supplying NULL/None/null as the data value
+    # (for an existing key).
+    #
+    # Arguments:
+    #    'data_key' (string): Custom data value key
+    #    'data_value' (any): New data value for the given key (or NULL/None/null to delete) [Optional]
+    #
+    # Returns:
+    #    (none)
+    #
+    def set_custom_data(self, data_key, data_value):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Application.set_custom_data",
+            {
+                'data_key': data_key,
+                'data_value': data_value,
+            }
+        )
+
+    # get_custom_data
+    #
+    # Get a custom data value from the application previously set using set_custom_data.
+    #
+    # Arguments:
+    #    'data_key' (string): Custom data value key
+    #
+    # Returns:
+    #    (any): Custom data value found
+    #
+    def get_custom_data(self, data_key):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Application.get_custom_data",
+            {
+                'data_key': data_key,
+            }
+        )
+
+    # get_custom_data_keys
+    #
+    # Return sorted array of (string) keys that can be used to fetch application
+    # custom data values via get_custom_data.
+    #
+    # Arguments:
+    #    None
+    #
+    # Returns:
+    #    (list): 
+    #        '<n>' (string): Key string
+    #
+    def get_custom_data_keys(self):
+        if self.target == None:
+            raise FLAPIException( "Instance method called on object with no instance" )
+        return self.conn.call(
+            self.target,
+            "Application.get_custom_data_keys",
+            {}
         )
 
 Library.register_class( 'Application', Application )

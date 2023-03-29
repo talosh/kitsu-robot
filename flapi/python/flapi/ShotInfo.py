@@ -16,10 +16,12 @@ class ShotInfo:
             self.ShotId = obj.get("ShotId")
             self.StartFrame = obj.get("StartFrame")
             self.EndFrame = obj.get("EndFrame")
+            self.PosterFrame = obj.get("PosterFrame")
         else:
             self.ShotId = None
             self.StartFrame = None
             self.EndFrame = None
+            self.PosterFrame = None
 
     @staticmethod
     def from_dict(o):
@@ -31,6 +33,7 @@ class ShotInfo:
             "ShotId": self.ShotId,
             "StartFrame": self.StartFrame,
             "EndFrame": self.EndFrame,
+            "PosterFrame": self.PosterFrame,
         }
 
     def __repr__(self):

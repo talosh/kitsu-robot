@@ -11,5 +11,5 @@ fi
 
 echo "Installing examples in $DEST..."
 mkdir -p `dirname $DEST`
-cp -r /usr/fl/baselight-5.3.16845/share/flapi/examples $DEST
+cp -r /usr/fl/baselight-5.3.17457/share/flapi/examples $DEST
 chmod -R ug+rw $DEST

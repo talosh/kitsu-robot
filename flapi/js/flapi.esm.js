@@ -260,9 +260,9 @@ flapi.Connection = class Connection {
         if( url == null )
         {
             if( document.location.protocol == "https:" )
-                url = "wss://" + document.location.host + "/";
+                url = "wss://" + document.location.host;
             else
-                url = "ws://" + document.location.host + "/";
+                url = "ws://" + document.location.host;
         }
 
         this.url = url;
@@ -295,6 +295,11 @@ flapi.Connection = class Connection {
      *
      * Attempts to connect to FilmLight API server.
      *
+     * Paramters:
+     *      usage_type          Optional (short) string that can be used to identify 
+     *                          the connection usage type.  
+     *      conn_info           Optional dictionary that contains keys/values describing
+     *                          the connecting devices capabilities.
      * Returns:
      *      Promise
      *
@@ -302,13 +307,32 @@ flapi.Connection = class Connection {
      * asynchronously on the result of the connection, or use the Promise.then(fn)
      * to call a callback/closure when connection is complete.
      */
-    connect()
+    connect(usage_type = null, conn_info = null)
     {
         if( this.socket == null )
         {
             return new Promise( 
                 (resolve,reject) => {
-                    this.socket = new WebSocket(this.url);
+                    // Encode optional usage type (string) and connection info
+                    // (dictionary) in url suffix
+                    let suffix = "";
+                    if (usage_type != null)
+                    {
+                        if (conn_info == null)
+                            conn_info = {};
+                            
+                        conn_info.UsageType = usage_type;
+                    }
+                    if (conn_info != null)
+                    {
+                        for (let key in conn_info)
+                        {
+                            suffix += (suffix == "") ? "?" : "&"; 
+                            suffix += key + "=" + encodeURIComponent(conn_info[key]);
+                        }
+                    }
+                    
+                    this.socket = new WebSocket(this.url + suffix);
                     this.socket.onopen = (event) => {
                         /* replace error handler with standard */
                         this.socket.onerror = (event) => { this.handle_error(event); };
@@ -346,6 +370,15 @@ flapi.Connection = class Connection {
             this.socket = null;
         }
     }
+    
+    /* is_open()
+    *
+    * Is the connection to the FilmLight API server currently open.
+    */
+    is_open()
+    {
+        return (this.socket != null);
+    }
 
     /* get_username()
      * 
@@ -369,7 +402,19 @@ flapi.Connection = class Connection {
     {
         return this.call( null, "get_permissions", null );
     }
-
+    
+    /* get_connection_id()
+     * 
+     * Get this connections (integer) ID (or -1 if not connected).
+     */
+    get_connection_id()
+    {
+        if (this.socket == null)
+            return -1;
+        
+        return this.call(null, "get_connection_id", null);
+    }
+    
     /**************************************************************************
      * Private
      **************************************************************************/
@@ -778,6 +823,113 @@ flapi.Application = class Application extends flapi.Interface {
         );
     }
 
+    // Application.get_sdk_versions
+    //
+    // Get SDK version information 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (array): Array of SDKVersion objects
+    //        '<n>' (SDKVersion): 
+    //
+    get_sdk_versions()
+    {
+        return this.conn.call(
+            null,
+            "Application.get_sdk_versions",
+            {
+            }
+        );
+    }
+
+    // Application.get_connections_info
+    //
+    // Get array of current connections. Each entry in the array will be a ConnectionInfo object describing that connection. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (array): Array of connection info objects
+    //        '<n>' (ConnectionInfo): 
+    //
+    get_connections_info()
+    {
+        return this.conn.call(
+            null,
+            "Application.get_connections_info",
+            {
+            }
+        );
+    }
+
+    // Application.get_video_streaming_supported
+    //
+    // Is video streaming supported (hardware, setup & licensed) 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (number): 1 if streaming supported, 0 if not
+    //
+    get_video_streaming_supported()
+    {
+        return this.conn.call(
+            null,
+            "Application.get_video_streaming_supported",
+            {
+            }
+        );
+    }
+
+    // Application.get_video_streaming_enabled
+    //
+    // Is video streaming currently enabled 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (number): 1 if streaming enabled, 0 if not
+    //
+    get_video_streaming_enabled()
+    {
+        return this.conn.call(
+            null,
+            "Application.get_video_streaming_enabled",
+            {
+            }
+        );
+    }
+
+    // Application.get_video_stream_address
+    //
+    // Return address for video stream 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (string): Address for video stream access. Used by Client View.
+    //
+    get_video_stream_address()
+    {
+        return this.conn.call(
+            null,
+            "Application.get_video_stream_address",
+            {
+            }
+        );
+    }
+
     // Application.is_playing
     //
     // Is playback currently in progress 
@@ -801,7 +953,7 @@ flapi.Application = class Application extends flapi.Interface {
 
     // Application.get
     //
-    // Return instance of the Application object 
+    // Return instance of the Application object (typically for signal connection) 
     //
     // Arguments:
     //
@@ -1053,6 +1205,85 @@ flapi.Application = class Application extends flapi.Interface {
         );
     }
 
+    // Application.set_custom_data
+    //
+    // Set a custom data value in the application with the supplied (string) key. Existing custom 
+    // data values can be deleted from the application by supplying NULL/None/null as the data value 
+    // (for an existing key). 
+    //
+    // Arguments:
+    //    'data_key' (string): Custom data value key
+    //    'data_value' (any): New data value for the given key (or NULL/None/null to delete) [Optional]
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (none)
+    //
+    set_custom_data(data_key, data_value = null)
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Application.set_custom_data",
+            {
+                'data_key': data_key,
+                'data_value': data_value,
+            }
+        );
+    }
+
+    // Application.get_custom_data
+    //
+    // Get a custom data value from the application previously set using set_custom_data. 
+    //
+    // Arguments:
+    //    'data_key' (string): Custom data value key
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (any): Custom data value found
+    //
+    get_custom_data(data_key)
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Application.get_custom_data",
+            {
+                'data_key': data_key,
+            }
+        );
+    }
+
+    // Application.get_custom_data_keys
+    //
+    // Return sorted array of (string) keys that can be used to fetch application 
+    // custom data values via get_custom_data. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (array): 
+    //        '<n>' (string): Key string
+    //
+    get_custom_data_keys()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Application.get_custom_data_keys",
+            {
+            }
+        );
+    }
+
 };
 flapi.library.register_class( 'Application', flapi.Application )
 
@@ -1153,6 +1384,244 @@ flapi.AudioSync = class AudioSync extends flapi.Interface {
 
 };
 flapi.library.register_class( 'AudioSync', flapi.AudioSync )
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//
+// ClientViewManager
+//
+// Manages settings for connected Client Views.
+//
+
+flapi.ClientViewManager = class ClientViewManager extends flapi.Interface {
+
+    constructor( conn, target )
+    {
+        super( conn, target );
+    }
+
+    toJSON()
+    {
+        return { "_handle": "ClientViewManager", "_id": this.target };
+    }
+
+    // ClientViewManager.get
+    //
+    // Get reference to the (singleton) ClientViewManager object 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (ClientViewManager): 
+    //
+    get()
+    {
+        return this.conn.call(
+            null,
+            "ClientViewManager.get",
+            {
+            }
+        );
+    }
+
+    // ClientViewManager.get_host_user_settings
+    //
+    // Get object containing Settings for the Client View's host user 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (ClientViewHostUserSettings): 
+    //
+    get_host_user_settings()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "ClientViewManager.get_host_user_settings",
+            {
+            }
+        );
+    }
+
+    // ClientViewManager.get_client_settings
+    //
+    // Get the connected Client View's config/settings object. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (ClientViewClientSettings): 
+    //
+    get_client_settings()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "ClientViewManager.get_client_settings",
+            {
+            }
+        );
+    }
+
+    // ClientViewManager.get_stream_settings
+    //
+    // Get array of stream settings objects. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (array): 
+    //        '<n>' (ClientViewStreamSettings): 
+    //
+    get_stream_settings()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "ClientViewManager.get_stream_settings",
+            {
+            }
+        );
+    }
+
+    // ClientViewManager.get_streaming_enabled
+    //
+    // Is streaming currently enabled. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (number): 1 if streaming enabled, otherwise 0
+    //
+    get_streaming_enabled()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "ClientViewManager.get_streaming_enabled",
+            {
+            }
+        );
+    }
+
+    // ClientViewManager.get_session_name
+    //
+    // Get the current Client View session name. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (string): Current session name
+    //
+    get_session_name()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "ClientViewManager.get_session_name",
+            {
+            }
+        );
+    }
+
+    // ClientViewManager.get_session_clients
+    //
+    // Get array of current session clients. Each entry in the array will be a ConnectionInfo object describing that connection. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (array): Array of current session clients
+    //        '<n>' (ConnectionInfo): 
+    //
+    get_session_clients()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "ClientViewManager.get_session_clients",
+            {
+            }
+        );
+    }
+
+    // ClientViewManager.log
+    //
+    // Private routine used to log client view messages for debugging 
+    //
+    // Arguments:
+    //    'category' (string): Category of message
+    //    'message' (string): Message to log
+    //    'severity' (string): Severity of message, Hard, Soft (warning) or Transient (info) [Optional]
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (none)
+    //
+    log(category, message, severity = "ERR_INFO")
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "ClientViewManager.log",
+            {
+                'category': category,
+                'message': message,
+                'severity': severity,
+            }
+        );
+    }
+
+    // ClientViewManager.set_available_simad_actions
+    //
+    // Set debug actions availble to SimAd 
+    //
+    // Arguments:
+    //    'actions' (object): 
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (none)
+    //
+    set_available_simad_actions(actions)
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "ClientViewManager.set_available_simad_actions",
+            {
+                'actions': actions,
+            }
+        );
+    }
+
+};
+flapi.library.register_class( 'ClientViewManager', flapi.ClientViewManager )
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -1332,27 +1801,24 @@ flapi.Cursor = class Cursor extends flapi.Interface {
         );
     }
 
-    // Cursor.get_viewing_format_dims
+    // Cursor.get_record_timecode
     //
-    // Get basic geometry (width, height and aspect ratio) of the cursor's current viewing format 
+    // Get cursor's position in the timeline as a timecode 
     //
     // Arguments:
     //
     // Result:
     //    Promise, which is resolved when the method call completes.
     //    Result type:
-    //    (object): Viewing format dimensions
-    //        'AspectRatio' (number): Viewing format pixel aspect ratio (for anamorphic formats)
-    //        'Height' (number): Viewing format height
-    //        'Width' (number): Viewing format width
+    //    (timecode): Record timecode
     //
-    get_viewing_format_dims()
+    get_record_timecode()
     {
         if( this.target == null )
             throw "Instance method called on object with no instance";
         return this.conn.call(
             this.target,
-            "Cursor.get_viewing_format_dims",
+            "Cursor.get_record_timecode",
             {
             }
         );
@@ -1381,6 +1847,78 @@ flapi.Cursor = class Cursor extends flapi.Interface {
         );
     }
 
+    // Cursor.get_viewing_format_dims
+    //
+    // Get basic geometry (width, height and aspect ratio) of the cursor's current viewing format 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (object): Viewing format dimensions
+    //        'AspectRatio' (number): Viewing format pixel aspect ratio (for anamorphic formats)
+    //        'Height' (number): Viewing format height
+    //        'Width' (number): Viewing format width
+    //
+    get_viewing_format_dims()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Cursor.get_viewing_format_dims",
+            {
+            }
+        );
+    }
+
+    // Cursor.get_viewing_format_mask_name
+    //
+    // Get current viewing format mask name 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (FormatMask):  [Optional]
+    //
+    get_viewing_format_mask_name()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Cursor.get_viewing_format_mask_name",
+            {
+            }
+        );
+    }
+
+    // Cursor.get_viewing_format_mask
+    //
+    // Get current viewing format mask rectangle 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (FormatMask):  [Optional]
+    //
+    get_viewing_format_mask()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Cursor.get_viewing_format_mask",
+            {
+            }
+        );
+    }
+
     // Cursor.get_age
     //
     // Get the cursor's 'age'. The age is an integer, incremented whenever an attribute which could result in a visual change to the image display has been modfied. 
@@ -1399,6 +1937,29 @@ flapi.Cursor = class Cursor extends flapi.Interface {
         return this.conn.call(
             this.target,
             "Cursor.get_age",
+            {
+            }
+        );
+    }
+
+    // Cursor.is_using_truelight
+    //
+    // Is Truelight currently in use (ie. a profile has been selected & Truelight is enabled) in this cursor. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (number): Flag indicating if Truelight is in use
+    //
+    is_using_truelight()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Cursor.is_using_truelight",
             {
             }
         );
@@ -6367,6 +6928,36 @@ flapi.RenderSetup = class RenderSetup extends flapi.Interface {
         );
     }
 
+    // RenderSetup.get_output_filename_for_deliverable
+    //
+    // Return the full filename for the given frame number of a deliverable 
+    //
+    // Arguments:
+    //    'index' (number): Index of deliverable
+    //    'leave_container' (number): Leave %C container variable in returned path [Optional]
+    //    'frame' (number): Frame number to generate filename for.
+    //        Default is -1 to indicate the first frame of the render operation. [Optional]
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (string): Full filename for rendered file/frame
+    //
+    get_output_filename_for_deliverable(index, leave_container = 0, frame = -1)
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "RenderSetup.get_output_filename_for_deliverable",
+            {
+                'index': index,
+                'leave_container': leave_container,
+                'frame': frame,
+            }
+        );
+    }
+
     // RenderSetup.set_container
     //
     // Set the output container directory for all deliverables 
@@ -7406,6 +7997,31 @@ flapi.Scene = class Scene extends flapi.Interface {
         );
     }
 
+    // Scene.get_record_timecode_for_frame
+    //
+    // Get record timecode for a given (timeline) frame number 
+    //
+    // Arguments:
+    //    'frame_num' (number): Timeline frame number
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (timecode): Record timecode
+    //
+    get_record_timecode_for_frame(frame_num)
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Scene.get_record_timecode_for_frame",
+            {
+                'frame_num': frame_num,
+            }
+        );
+    }
+
     // Scene.get_shot_index_range
     //
     // Get index range of shots intersecting the (end exclusive) timeline frame range supplied 
@@ -7456,6 +8072,31 @@ flapi.Scene = class Scene extends flapi.Interface {
         );
     }
 
+    // Scene.get_shot_id_at
+    //
+    // Return the ID of the shot at the timeline frame number supplied 
+    //
+    // Arguments:
+    //    'frame' (number): Timeline frame number
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (number): ID of shot at frame, or -1 if none found
+    //
+    get_shot_id_at(frame)
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Scene.get_shot_id_at",
+            {
+                'frame': frame,
+            }
+        );
+    }
+
     // Scene.get_shot_id
     //
     // Return the ID for the shot at the given index within the Scene 
@@ -7489,6 +8130,7 @@ flapi.Scene = class Scene extends flapi.Interface {
     // * ShotId - A shot idenfifier (which can be used to obtain a Shot object via get_shot() if required). 
     // * StartFrame - The shot's timeline start frame 
     // * EndFrame - The shot's timeline end frame 
+    // * PosterFrame - The shot's timeline poster frame 
     // Returns new array shot list on success, NULL on error. 
     //
     // Arguments:
@@ -8103,6 +8745,86 @@ flapi.Scene = class Scene extends flapi.Interface {
             "Scene.set_transient_write_lock_deltas",
             {
                 'enable': enable,
+            }
+        );
+    }
+
+    // Scene.set_custom_data
+    //
+    // Set a custom data value in the scene with the supplied (string) key. Setting a 
+    // custom data value does not require a delta. Also custom data values are unaffected 
+    // by undo/redo. Existing custom data values can be deleted from a scene by supplying 
+    // NULL/None/null as the data value (for an existing key). 
+    //
+    // Arguments:
+    //    'data_key' (string): Custom data value key
+    //    'data_value' (any): New data value for the given key (or NULL/None/null to delete) [Optional]
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (none)
+    //
+    set_custom_data(data_key, data_value = null)
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Scene.set_custom_data",
+            {
+                'data_key': data_key,
+                'data_value': data_value,
+            }
+        );
+    }
+
+    // Scene.get_custom_data
+    //
+    // Get a custom data value from the scene previously set using set_custom_data. 
+    //
+    // Arguments:
+    //    'data_key' (string): Custom data value key
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (any): Custom data value found
+    //
+    get_custom_data(data_key)
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Scene.get_custom_data",
+            {
+                'data_key': data_key,
+            }
+        );
+    }
+
+    // Scene.get_custom_data_keys
+    //
+    // Return sorted array of (string) keys that can be used to fetch scene 
+    // custom data values via get_custom_data. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (array): 
+    //        '<n>' (string): Key string
+    //
+    get_custom_data_keys()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Scene.get_custom_data_keys",
+            {
             }
         );
     }
@@ -9405,6 +10127,29 @@ flapi.Shot = class Shot extends flapi.Interface {
         );
     }
 
+    // Shot.get_poster_frame
+    //
+    // Get the poster frame of the shot within the scene that contains it.  
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (number): Poster frame number of the shot.
+    //
+    get_poster_frame()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Shot.get_poster_frame",
+            {
+            }
+        );
+    }
+
     // Shot.get_start_timecode
     //
     // Get the start record timecode of the shot 
@@ -9919,9 +10664,32 @@ flapi.Shot = class Shot extends flapi.Interface {
         );
     }
 
+    // Shot.supports_client_event_data
+    //
+    // Does this shot support client event lists/data. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (number): 1 if the shot supports client event data, otherwise 0.
+    //
+    supports_client_event_data()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Shot.supports_client_event_data",
+            {
+            }
+        );
+    }
+
     // Shot.get_client_event_list
     //
-    // Get array of client events (notes/flags) for either an entire shot, or a specific frame of a shot. The array returned is chronologically sorted (oldest first). Each event entry is a dictionary describing the event. 
+    // Get array of client events (notes/flags) for either an entire shot, or a specific frame of a shot. When querying the event list at a specific frame, NULL/None/null will be returned if no event list exists at that frame or the shot. The events array returned will be chronologically sorted (oldest first). Each event entry is itself a dictionary describing that event. 
     //
     // Arguments:
     //    'list_frame' (number): Identifies which event list to return; either for the entire shot (if no list_frame supplied), or for a specific, shot start relative frame number [Optional]
@@ -10066,14 +10834,14 @@ flapi.Shot = class Shot extends flapi.Interface {
     //
     // Arguments:
     //    'client_event_id' (number): ID of client event
-    //    'md_keys' (Set): Set of metadata keys whose values are required, or NULL/None/null for all metadata.
+    //    'md_keys' (Set): Set of metadata keys whose values are required, or NULL/None/null for all metadata. [Optional]
     //
     // Result:
     //    Promise, which is resolved when the method call completes.
     //    Result type:
     //    (object): Key/value pairs containing the metadata for the client event.
     //
-    get_client_event_metadata(client_event_id, md_keys)
+    get_client_event_metadata(client_event_id, md_keys = null)
     {
         if( this.target == null )
             throw "Instance method called on object with no instance";
@@ -10159,6 +10927,30 @@ flapi.Shot = class Shot extends flapi.Interface {
             "Shot.delete_frame_client_event_list",
             {
                 'list_frame': list_frame,
+            }
+        );
+    }
+
+    // Shot.get_client_data_summary
+    //
+    // Get summary info on any client data associated with this shot. 
+    //
+    // Arguments:
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (object): Client summary info
+    //        'Clients' (object): Dictionary containing client name keys/entries for all clients who have added data to this shot. The value associated with each key is a set containing all the types of data that client has added ("Note" and/or "Flag").
+    //
+    get_client_data_summary()
+    {
+        if( this.target == null )
+            throw "Instance method called on object with no instance";
+        return this.conn.call(
+            this.target,
+            "Shot.get_client_data_summary",
+            {
             }
         );
     }
@@ -11241,9 +12033,9 @@ flapi.ThumbnailManager = class ThumbnailManager extends flapi.Interface {
     //
     // Arguments:
     //    'shot_if' (Shot): Shot interface object
-    //    'graded' (number): Graded/ungraded flag
     //    'options' (object): Stucture containing optional settings used to control the type of thumbnail image rendered.
     //        'DCSpace' (string): Display colourspace (sRGB or P3) [Optional]
+    //        'Graded' (number): Graded/ungraded flag [Optional]
     //        'HiRes' (string): Flag indicating hi-res image preferable [Optional]
     //        'ShotFrame' (number): Optional timeline frame number (constrained to shot range) [Optional]
     //
@@ -11252,14 +12044,44 @@ flapi.ThumbnailManager = class ThumbnailManager extends flapi.Interface {
     //    Result type:
     //    (string): Thumbnail URI
     //
-    get_poster_uri(shot_if, graded, options)
+    get_poster_uri(shot_if, options)
     {
         return this.conn.call(
             null,
             "ThumbnailManager.get_poster_uri",
             {
                 'shot_if': shot_if,
-                'graded': graded,
+                'options': options,
+            }
+        );
+    }
+
+    // ThumbnailManager.get_scrub_uri_template
+    //
+    // Get a scrub image URI template (prefix & suffix strings). This can be used while scrubbing to generate image URIs without additional roundtrips/calls to the server. 
+    //
+    // Arguments:
+    //    'scene_if' (Scene): Scene interface object
+    //    'shot_id' (Shot): ID of shot in scene
+    //    'options' (object): Stucture containing optional settings used to control the type of scrub image rendered.
+    //        'DCSpace' (string): Display colourspace (sRGB or P3) [Optional]
+    //        'Graded' (number): Graded/ungraded flag [Optional]
+    //        'HiRes' (string): Flag indicating hi-res image preferable [Optional]
+    //
+    // Result:
+    //    Promise, which is resolved when the method call completes.
+    //    Result type:
+    //    (array): Template array containing 2 strings; a URI prefix & suffix. To form a completeURI, the scrub frame number required should be inserted between these 2 strings.
+    //        '<n>' (string): 
+    //
+    get_scrub_uri_template(scene_if, shot_id, options)
+    {
+        return this.conn.call(
+            null,
+            "ThumbnailManager.get_scrub_uri_template",
+            {
+                'scene_if': scene_if,
+                'shot_id': shot_id,
                 'options': options,
             }
         );
@@ -12226,6 +13048,126 @@ flapi.library.register_value_type( 'CategoryInfo', flapi.CategoryInfo )
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //
+// ClientViewClientSettings
+//
+// Settings for a connected Client View
+//
+
+flapi.ClientViewClientSettings = class ClientViewClientSettings {
+
+    constructor( obj )
+    {
+        if( obj != null )
+        {
+             this.StreamIndex = obj.StreamIndex;
+             this.StreamConfigsAge = obj.StreamConfigsAge;
+             this.NotesEnabled = obj.NotesEnabled;
+             this.LaserEnabled = obj.LaserEnabled;
+             this.Debug = obj.Debug;
+        }
+        else
+        {
+             this.StreamIndex = null;
+             this.StreamConfigsAge = null;
+             this.NotesEnabled = null;
+             this.LaserEnabled = null;
+             this.Debug = null;
+        }
+    }
+
+    toJSON()
+    {
+        return {
+            "_type": "ClientViewClientSettings",
+            "StreamIndex": this.StreamIndex,
+            "StreamConfigsAge": this.StreamConfigsAge,
+            "NotesEnabled": this.NotesEnabled,
+            "LaserEnabled": this.LaserEnabled,
+            "Debug": this.Debug,
+        }
+    }
+
+}
+flapi.library.register_value_type( 'ClientViewClientSettings', flapi.ClientViewClientSettings )
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//
+// ClientViewHostUserSettings
+//
+// Settings for user hosting the Client View
+//
+
+flapi.ClientViewHostUserSettings = class ClientViewHostUserSettings {
+
+    constructor( obj )
+    {
+        if( obj != null )
+        {
+             this.UserName = obj.UserName;
+             this.LaserColour = obj.LaserColour;
+        }
+        else
+        {
+             this.UserName = null;
+             this.LaserColour = null;
+        }
+    }
+
+    toJSON()
+    {
+        return {
+            "_type": "ClientViewHostUserSettings",
+            "UserName": this.UserName,
+            "LaserColour": this.LaserColour,
+        }
+    }
+
+}
+flapi.library.register_value_type( 'ClientViewHostUserSettings', flapi.ClientViewHostUserSettings )
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//
+// ClientViewStreamSettings
+//
+// Settings for a Client View stream
+//
+
+flapi.ClientViewStreamSettings = class ClientViewStreamSettings {
+
+    constructor( obj )
+    {
+        if( obj != null )
+        {
+             this.Resolution = obj.Resolution;
+             this.Bitrate = obj.Bitrate;
+             this.ColourSpace = obj.ColourSpace;
+        }
+        else
+        {
+             this.Resolution = null;
+             this.Bitrate = null;
+             this.ColourSpace = null;
+        }
+    }
+
+    toJSON()
+    {
+        return {
+            "_type": "ClientViewStreamSettings",
+            "Resolution": this.Resolution,
+            "Bitrate": this.Bitrate,
+            "ColourSpace": this.ColourSpace,
+        }
+    }
+
+}
+flapi.library.register_value_type( 'ClientViewStreamSettings', flapi.ClientViewStreamSettings )
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//
 // ColourSpaceInfo
 //
 // Description of a Truelight Colour Space
@@ -12261,6 +13203,45 @@ flapi.ColourSpaceInfo = class ColourSpaceInfo {
 
 }
 flapi.library.register_value_type( 'ColourSpaceInfo', flapi.ColourSpaceInfo )
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//
+// ConnectionInfo
+//
+// Dictionary describing a single connection.
+//
+
+flapi.ConnectionInfo = class ConnectionInfo {
+
+    constructor( obj )
+    {
+        if( obj != null )
+        {
+             this.ConnectionID = obj.ConnectionID;
+             this.UserName = obj.UserName;
+             this.UsageType = obj.UsageType;
+        }
+        else
+        {
+             this.ConnectionID = null;
+             this.UserName = null;
+             this.UsageType = null;
+        }
+    }
+
+    toJSON()
+    {
+        return {
+            "_type": "ConnectionInfo",
+            "ConnectionID": this.ConnectionID,
+            "UserName": this.UserName,
+            "UsageType": this.UsageType,
+        }
+    }
+
+}
+flapi.library.register_value_type( 'ConnectionInfo', flapi.ConnectionInfo )
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -12748,6 +13729,7 @@ flapi.DialogItem = class DialogItem {
              this.FloatMax = obj.FloatMax;
              this.FloatSnap = obj.FloatSnap;
              this.Style = obj.Style;
+             this.Height = obj.Height;
         }
         else
         {
@@ -12765,6 +13747,7 @@ flapi.DialogItem = class DialogItem {
              this.FloatMax = null;
              this.FloatSnap = null;
              this.Style = null;
+             this.Height = 0;
         }
     }
 
@@ -12786,6 +13769,7 @@ flapi.DialogItem = class DialogItem {
             "FloatMax": this.FloatMax,
             "FloatSnap": this.FloatSnap,
             "Style": this.Style,
+            "Height": this.Height,
         }
     }
 
@@ -14325,6 +15309,48 @@ flapi.library.register_value_type( 'RenderStatus', flapi.RenderStatus )
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //
+// SDKVersion
+//
+// Version information for 3rd-party SDKs used in the application
+//
+
+flapi.SDKVersion = class SDKVersion {
+
+    constructor( obj )
+    {
+        if( obj != null )
+        {
+             this.Key = obj.Key;
+             this.Name = obj.Name;
+             this.Description = obj.Description;
+             this.Version = obj.Version;
+        }
+        else
+        {
+             this.Key = null;
+             this.Name = null;
+             this.Description = null;
+             this.Version = null;
+        }
+    }
+
+    toJSON()
+    {
+        return {
+            "_type": "SDKVersion",
+            "Key": this.Key,
+            "Name": this.Name,
+            "Description": this.Description,
+            "Version": this.Version,
+        }
+    }
+
+}
+flapi.library.register_value_type( 'SDKVersion', flapi.SDKVersion )
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//
 // SceneInfo
 //
 // Return general information about the state of a scene
@@ -14528,12 +15554,14 @@ flapi.ShotInfo = class ShotInfo {
              this.ShotId = obj.ShotId;
              this.StartFrame = obj.StartFrame;
              this.EndFrame = obj.EndFrame;
+             this.PosterFrame = obj.PosterFrame;
         }
         else
         {
              this.ShotId = null;
              this.StartFrame = null;
              this.EndFrame = null;
+             this.PosterFrame = null;
         }
     }
 
@@ -14544,6 +15572,7 @@ flapi.ShotInfo = class ShotInfo {
             "ShotId": this.ShotId,
             "StartFrame": this.StartFrame,
             "EndFrame": this.EndFrame,
+            "PosterFrame": this.PosterFrame,
         }
     }
 
@@ -14734,12 +15763,20 @@ flapi.AUDIOSYNC_CRITERIA_SHOTSCENETAKE = "ShotSceneTake";
 //    AUDIOSYNC_FPS_29970 : 29.97 fps
 //    AUDIOSYNC_FPS_2997DF : 29.97 fps DF
 //    AUDIOSYNC_FPS_30000 : 30 fps
+//    AUDIOSYNC_FPS_48000 : 48 fps
+//    AUDIOSYNC_FPS_50000 : 50 fps
+//    AUDIOSYNC_FPS_59940 : 59.94 fps
+//    AUDIOSYNC_FPS_60000 : 60 fps
 flapi.AUDIOSYNC_FPS_23976 = "23976";
 flapi.AUDIOSYNC_FPS_24000 = "24000";
 flapi.AUDIOSYNC_FPS_25000 = "25000";
 flapi.AUDIOSYNC_FPS_29970 = "29970";
 flapi.AUDIOSYNC_FPS_2997DF = "2997DF";
 flapi.AUDIOSYNC_FPS_30000 = "30000";
+flapi.AUDIOSYNC_FPS_48000 = "48000";
+flapi.AUDIOSYNC_FPS_50000 = "50000";
+flapi.AUDIOSYNC_FPS_59940 = "59940";
+flapi.AUDIOSYNC_FPS_60000 = "60000";
 
 // AUDIOSYNC_METADATA : Values for AudioSyncSettings Metadata
 //    AUDIOSYNC_METADATA_SCENETAKE : Scene & Take
@@ -15027,6 +16064,12 @@ flapi.DIAGWEIGHT_HEAVY = "DM_HEAVY";
 //    DIT_FLOAT : Floating-point number
 //    DIT_TIMECODE : Timecode
 //    DIT_DROPDOWN : Dropdown
+//    DIT_LIST : List of items
+//    DIT_TOGGLE : Toggle Button
+//    DIT_TOGGLE_SET : Set of Toggle buttons
+//    DIT_TOGGLE_DROPDOWN : Dropdown menu to allow toggling multiple items
+//    DIT_TOGGLE_LIST : List of toggle items
+//    DIT_RADIO_GROUP : Set of radio buttons
 //    DIT_FILEPATH : File Path
 //    DIT_IMAGEPATH : Image Path
 //    DIT_DIRECTORY : Directory Path
@@ -15041,6 +16084,12 @@ flapi.DIT_INTEGER = "Integer";
 flapi.DIT_FLOAT = "Float";
 flapi.DIT_TIMECODE = "Timecode";
 flapi.DIT_DROPDOWN = "Dropdown";
+flapi.DIT_LIST = "List";
+flapi.DIT_TOGGLE = "Toggle";
+flapi.DIT_TOGGLE_SET = "ToggleSet";
+flapi.DIT_TOGGLE_DROPDOWN = "ToggleDropdown";
+flapi.DIT_TOGGLE_LIST = "ToggleList";
+flapi.DIT_RADIO_GROUP = "RadioGroup";
 flapi.DIT_FILEPATH = "File";
 flapi.DIT_IMAGEPATH = "Image";
 flapi.DIT_DIRECTORY = "Directory";
