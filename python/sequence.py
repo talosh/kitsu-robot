@@ -677,7 +677,7 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
     scene.release()
 
     try:
-        log.verbose('Trying to open scene %s in read-write mode' % scene_path.get('Scene'))
+        log.verbose('Trying to open scene %s in read-write mode' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
         scene = conn.Scene.open_scene( scene_path )
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
