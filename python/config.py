@@ -33,17 +33,18 @@ def default_config_data():
             'Baselight-' + os.path.basename(bl_path) + '.app',
             'Contents/share/flapi/python/'
         )
-        if not os.path.isdir(flapi_module_path):
-            app_path = os.path.dirname(os.path.abspath(__file__))
-            flapi_module_path = os.path.join(
-                os.path.dirname(app_path),
-                'flapi',
-                'python'
-            )
     else:
         flapi_module_path = os.path.join(
             bl_path,
             'share/flapi/python/'
+        )
+
+    if not os.path.isdir(flapi_module_path):
+        app_path = os.path.dirname(os.path.abspath(__file__))
+        flapi_module_path = os.path.join(
+            os.path.dirname(app_path),
+            'flapi',
+            'python'
         )
 
     if not os.path.isdir(flapi_module_path):
