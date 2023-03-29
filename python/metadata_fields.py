@@ -34,6 +34,9 @@ def set_metadata_fields(config):
                     if metadata_descriptor.get('name') not in project_descriptor_names:
                         
                         pprint (metadata_descriptor)
+                        pprint (project_descriptor_names)
+
+                        sys.exit()
 
                         data = {
                             'choices': [],
