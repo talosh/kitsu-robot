@@ -118,7 +118,7 @@ def sync_filenames_and_version_numbers(config, gazu, baselight_linked_sequence):
         return None
 
     try:
-        log.verbose('Opening scene: %s' % scene_path)
+        log.verbose('Opening scene: %s' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
         scene = conn.Scene.open_scene( scene_path, { flapi.OPENFLAG_READ_ONLY } )
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
@@ -652,7 +652,7 @@ def check_or_add_kitsu_metadata_definition(config, blpath):
         return None
 
     try:
-        log.verbose('Opening scene: %s' % scene_path)
+        log.verbose('Opening scene: %s' % scene_path.Host + ':' + scene_path.Job + ':' + scene_path.Scene)
         scene = conn.Scene.open_scene( scene_path, { flapi.OPENFLAG_READ_ONLY } )
     except flapi.FLAPIException as ex:
         log.error( "Error opening scene: %s" % ex )
