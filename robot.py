@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
     metadata_thread = threading.Thread(target=set_metadata_fields, args=(config, ))
     metadata_thread.daemon = True
-    metadata_thread.start()
+    # metadata_thread.start()
 
     sequence_sync_thread = threading.Thread(target=sequence_sync, args=(config, ))
     sequence_sync_thread.daemon = True
