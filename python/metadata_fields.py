@@ -38,9 +38,6 @@ def set_metadata_fields(config):
                         if metadata_descriptor_name.lower() in project_descriptor_names:
                             continue
                         
-                        pprint (metadata_descriptor)
-                        pprint (project_descriptor_names)
-
                         data = {
                             'choices': [],
                             'for_client': False,
@@ -51,7 +48,7 @@ def set_metadata_fields(config):
                         for key in metadata_descriptor.keys():
                             data[key] = metadata_descriptor[key]
 
-                        # gazu.client.post(descriptors_api_path, data, client = gazu_client)
+                        gazu.client.post(descriptors_api_path, data, client = gazu_client)
 
             time.sleep(4)
             gazu.log_out(client=gazu_client)
