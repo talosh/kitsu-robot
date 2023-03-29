@@ -28,6 +28,9 @@ def set_metadata_fields(config):
             for project in projects:
                 descriptors_api_path = '/data/projects/' + project.get('id') + '/metadata-descriptors'
                 project_descriptor_data = gazu.client.get(descriptors_api_path, client = gazu_client)
+
+                pprint (project_descriptor_data)
+
                 project_descriptor_names = [x['name'] for x in project_descriptor_data]
                 
                 for metadata_descriptor in metadata_descriptors:
