@@ -553,14 +553,18 @@ def waitForExportToComplete( qm, exportInfo ):
         else:
             pass
             # print("")
-        print( "\r  Status: {Status} {Progress:.0%} {ProgressText} ".format(**vars(opstat)), end=""), 
-        print("%s    " % dots, end=""),
-        sys.stdout.flush()
+
+        # print( "\r  Status: {Status} {Progress:.0%} {ProgressText} ".format(**vars(opstat)), end=""), 
+        # print("%s    " % dots, end=""),
+        # sys.stdout.flush()
+        print( "  Status: {Status} {Progress:.0%} {ProgressText} ".format(**vars(opstat)))
         if opstat.Status == "Done":
-            print( "\nExport complete" )
+            # print( "\nExport complete" )
+            print( "Export complete" )
             break
         if triesSinceChange == maxTries:
-            print("\nStopped waiting for queue to complete.")
+            # print("\nStopped waiting for queue to complete.")
+            print("Stopped waiting for queue to complete.")
             break
         time.sleep(0.5)
 
