@@ -403,7 +403,6 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         log.error( "Error opening scene: %s" % ex )
         return None
 
-    scene.start_delta('Add kitsu metadata to shots')
 
     for baselight_shot in new_shots:
         shot_name = create_kitsu_shot_name(config, baselight_shot)
@@ -511,6 +510,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
         except:
             pass
 
+        scene.start_delta('Add kitsu metadata to shot %s' % shot_name)
         new_md_values = {
             kitsu_uid_metadata_obj.Key: new_shot.get('id')
         }
@@ -519,10 +519,11 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
 
         shot.release()
 
+        scene.end_delta()
+        scene.save_scene()
         # shot = scene.get_shot(shot_inf.ShotId)
 
 
-    scene.end_delta()
     scene.save_scene()
     scene.close_scene()
     scene.release()
