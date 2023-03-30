@@ -572,7 +572,7 @@ def waitForExportToComplete( qm, exportInfo ):
     for l in exportLog:
         print( "   %s %s: %s" % (l.Time, l.Message, l.Detail) )
 
-    print( "Archiving operaton" )
+    print( "Archiving operaton\n")
     qm.archive_operation ( exportInfo.ID )
 
 
