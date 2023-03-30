@@ -447,7 +447,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
             exportInfo = ex.do_export_still( qm, scene, exSettings)
             waitForExportToComplete(qm, exportInfo)
             del ex
-            log.verbose( "Closing QueueManager" )
+            print( "Closing QueueManager\n" )
             qm.release()
         except Exception as ex:
             log.error( "Can not export thumbnail: %s" % ex )
@@ -572,7 +572,7 @@ def waitForExportToComplete( qm, exportInfo ):
     for l in exportLog:
         print( "   %s %s: %s" % (l.Time, l.Message, l.Detail) )
 
-    print( "Archiving operaton\n")
+    print( "Archiving operaton" )
     qm.archive_operation ( exportInfo.ID )
 
 
