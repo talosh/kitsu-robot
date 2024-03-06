@@ -503,8 +503,7 @@ def populate_kitsu_from_baselight_sequence(config, gazu, baselight_linked_sequen
 
         log.verbose('Uploading thumbnail for shot: "%s"' % shot_name)
         gazu.task.set_main_preview(preview_file)
-        # gazu.task.remove_task(task)
-
+   
         try:
             os.remove(thumbnail_local_path)
         except:

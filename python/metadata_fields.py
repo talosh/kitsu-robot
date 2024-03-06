@@ -26,6 +26,10 @@ def set_metadata_fields(config):
 
             projects = gazu.project.all_open_projects(client = gazu_client)
             for project in projects:
+                project_descriptors = gazu.all_metadata_descriptors(project, client = gazu_client)
+                pprint (project)
+                pprint (project_descriptors)
+                '''
                 descriptors_api_path = '/data/projects/' + project.get('id') + '/metadata-descriptors'
                 project_descriptor_data = gazu.client.get(descriptors_api_path, client = gazu_client)
                 project_descriptor_names = [x['name'] for x in project_descriptor_data]
@@ -50,6 +54,7 @@ def set_metadata_fields(config):
 
                         log.info('creating %s in %s' % (metadata_descriptor_name, project.get('name')))
                         gazu.client.post(descriptors_api_path, data, client = gazu_client)
+                    '''
 
             time.sleep(4)
             gazu.log_out(client=gazu_client)
